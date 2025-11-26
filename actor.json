@@ -1,0 +1,122 @@
+{
+  "actorSpecification": 1,
+  "name": "api-first-auto-tuner",
+  "title": "API-First Auto-Tuner",
+  "description": "Automatically discovers internal API endpoints using a browser, then switches to fast HTTP requests for efficient data extraction",
+  "version": "1.0.0",
+  "meta": {
+    "templateId": "typescript-playwright"
+  },
+  "input": {
+    "title": "API-First Auto-Tuner",
+    "type": "object",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "startUrls": {
+          "title": "Start URLs",
+          "type": "array",
+          "description": "Array of URLs to start the discovery process from",
+          "editor": "urlList",
+          "prefill": [
+            {
+              "url": "https://example.com"
+            }
+          ]
+        },
+        "apiPatterns": {
+          "title": "API URL Patterns",
+          "type": "array",
+          "description": "Optional patterns to match API endpoints (e.g., ['/api/', '/v1/data']). If empty, will auto-detect JSON responses",
+          "editor": "stringList",
+          "default": []
+        },
+        "minResponseSize": {
+          "title": "Minimum Response Size (bytes)",
+          "type": "integer",
+          "description": "Minimum size of API response to consider (filters out small config responses)",
+          "default": 1000,
+          "minimum": 0
+        },
+        "discoveryTimeout": {
+          "title": "Discovery Timeout (ms)",
+          "type": "integer",
+          "description": "How long to wait for API discovery in milliseconds",
+          "default": 10000,
+          "minimum": 1000
+        },
+        "maxPages": {
+          "title": "Maximum Pages",
+          "type": "integer",
+          "description": "Maximum number of pages to scrape from the discovered API",
+          "default": 100,
+          "minimum": 1
+        },
+        "maxConcurrency": {
+          "title": "Max Concurrency",
+          "type": "integer",
+          "description": "Maximum number of concurrent requests for API processing",
+          "default": 5,
+          "minimum": 1
+        },
+        "dataPath": {
+          "title": "Data Path",
+          "type": "string",
+          "description": "JSONPath to extract data items from API response (e.g., 'data.items', 'results'). If empty, will auto-detect",
+          "default": ""
+        },
+        "paginationType": {
+          "title": "Pagination Type",
+          "type": "string",
+          "description": "Type of pagination to use",
+          "enum": ["auto", "offset", "page", "cursor"],
+          "default": "auto"
+        }
+      },
+      "required": ["startUrls"]
+    }
+  },
+  "storages": {
+    "dataset": "./storage/datasets/default"
+  },
+  "output": {
+    "title": "API-First Auto-Tuner Output",
+    "type": "object",
+    "schema": {
+      "type": "object",
+      "properties": {
+        "_metadata": {
+          "type": "object",
+          "description": "Metadata about the extraction",
+          "properties": {
+            "sourceUrl": {
+              "type": "string",
+              "description": "Original URL that triggered the discovery"
+            },
+            "apiUrl": {
+              "type": "string",
+              "description": "The API endpoint URL used for extraction"
+            },
+            "page": {
+              "type": "integer",
+              "description": "Current page number (if applicable)"
+            },
+            "offset": {
+              "type": "integer",
+              "description": "Current offset (if applicable)"
+            },
+            "extractedAt": {
+              "type": "string",
+              "format": "date-time",
+              "description": "ISO timestamp of extraction"
+            }
+          },
+          "required": ["sourceUrl", "apiUrl", "extractedAt"]
+        }
+      },
+      "additionalProperties": true,
+      "description": "Each output item contains the extracted data from the API response (structure varies by API) plus metadata fields"
+    }
+  }
+}
+

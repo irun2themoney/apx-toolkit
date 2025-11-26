@@ -1,0 +1,15 @@
+{
+  "startUrls": [
+    {
+      "url": "https://scrapethissite.com/pages/"
+    }
+  ],
+  "apiPatterns": [],
+  "minResponseSize": 500,
+  "discoveryTimeout": 20000,
+  "maxPages": 3,
+  "maxConcurrency": 2,
+  "dataPath": "",
+  "paginationType": "auto"
+}
+

@@ -1,0 +1,35 @@
+{
+  "name": "api-first-auto-tuner",
+  "version": "1.0.0",
+  "description": "An Apify Actor that automatically discovers internal API endpoints and switches to fast HTTP requests for efficient data extraction",
+  "type": "module",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/main.js",
+    "dev": "tsc --watch",
+    "test": "npm run build && node dist/test-main.js",
+    "test:watch": "npm run dev & node --watch dist/test-main.js",
+    "verify": "node verify-build.js"
+  },
+  "keywords": [
+    "apify",
+    "crawlee",
+    "scraping",
+    "api-discovery",
+    "playwright",
+    "http-crawler"
+  ],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "crawlee": "^3.9.0",
+    "playwright": "^1.48.0",
+    "apify": "^3.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "typescript": "^5.5.0"
+  }
+}
+
