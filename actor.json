@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "api-first-auto-tuner",
   "title": "API-First Auto-Tuner",
-  "description": "Automatically discovers internal API endpoints using a browser, then switches to fast HTTP requests for efficient data extraction",
+  "description": "Automatically discovers internal API endpoints and generates complete API documentation in OpenAPI, Postman, cURL, and Insomnia formats. The only tool that saves weeks of manual API documentation work by doing it automatically in seconds.",
   "version": "1.0.0",
   "meta": {
     "templateId": "typescript-playwright"
