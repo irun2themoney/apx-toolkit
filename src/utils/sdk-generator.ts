@@ -61,6 +61,7 @@ function generateTypeScriptSDK(
             scripts: {
                 build: 'tsc',
                 test: 'jest',
+                'test:ci': 'jest --ci --coverage',
             },
             keywords: ['api', 'client', 'sdk', 'auto-generated'],
             author: '',
@@ -68,7 +69,10 @@ function generateTypeScriptSDK(
             dependencies: {},
             devDependencies: {
                 '@types/node': '^20.0.0',
+                '@types/jest': '^29.5.0',
                 typescript: '^5.0.0',
+                jest: '^29.5.0',
+                'ts-jest': '^29.1.0',
             },
         },
         null,
@@ -161,13 +165,79 @@ function generatePythonSDK(
     files['src/__init__.py'] = initCode;
 
     // README.md
-    files['README.md'] = `# ${packageName}\n\nAuto-generated API client SDK.\n\n## Installation\n\n\`\`\`bash\npip install ${packageName}\n\`\`\`\n\n## Usage\n\n\`\`\`python\nfrom ${packageName} import ApiClient\n\nclient = ApiClient()\ndata = client.get_data()\n\`\`\`\n`;
+    files['README.md'] = `# ${packageName}\n\nAuto-generated API client SDK.\n\n## Installation\n\n\`\`\`bash\npip install ${packageName}\n\`\`\`\n\n## Usage\n\n\`\`\`python\nfrom ${packageName} import ApiClient\n\nclient = ApiClient()\ndata = client.get_data()\n\`\`\`\n\n## CI/CD\n\nThis package includes GitHub Actions workflows for automated testing and publishing.\n`;
+
+    // GitHub Actions workflow
+    files['.github/workflows/ci.yml'] = `name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11"]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python \${{ matrix.python-version }}
+      uses: actions/setup-python@v4
+      with:
+        python-version: \${{ matrix.python-version }}
+        cache: 'pip'
+    
+    - name: Install dependencies
+      run: |
+        pip install -e ".[dev]"
+    
+    - name: Test with pytest
+      run: |
+        pytest --cov=. --cov-report=xml
+    
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage.xml
+        fail_ci_if_error: false
+
+  publish:
+    needs: test
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install build tools
+      run: pip install build twine
+    
+    - name: Build package
+      run: python -m build
+    
+    - name: Publish to PyPI
+      env:
+        TWINE_USERNAME: __token__
+        TWINE_PASSWORD: \${{ secrets.PYPI_API_TOKEN }}
+      run: twine upload dist/*
+`;
 
     return {
         language: 'python',
         packageName,
         files,
-        description: 'Python SDK with PyPI-ready package files',
+        description: 'Python SDK with PyPI-ready package files and CI/CD',
     };
 }
 
@@ -218,13 +288,52 @@ function generateGoSDK(
     files['client.go'] = clientCode;
 
     // README.md
-    files['README.md'] = `# ${packageName}\n\nAuto-generated API client SDK.\n\n## Installation\n\n\`\`\`bash\ngo get ${packageName}\n\`\`\`\n\n## Usage\n\n\`\`\`go\nimport "${packageName}"\n\nclient := ${packageName}.NewApiClient("", nil)\ndata, err := client.GetData()\n\`\`\`\n`;
+    files['README.md'] = `# ${packageName}\n\nAuto-generated API client SDK.\n\n## Installation\n\n\`\`\`bash\ngo get ${packageName}\n\`\`\`\n\n## Usage\n\n\`\`\`go\nimport "${packageName}"\n\nclient := ${packageName}.NewApiClient("", nil)\ndata, err := client.GetData()\n\`\`\`\n\n## CI/CD\n\nThis package includes GitHub Actions workflows for automated testing.\n`;
+
+    // GitHub Actions workflow
+    files['.github/workflows/ci.yml'] = `name: CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    
+    strategy:
+      matrix:
+        go-version: ["1.19", "1.20", "1.21"]
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Go \${{ matrix.go-version }}
+      uses: actions/setup-go@v4
+      with:
+        go-version: \${{ matrix.go-version }}
+        cache-dependency-path: go.sum
+    
+    - name: Download dependencies
+      run: go mod download
+    
+    - name: Run tests
+      run: go test -v -coverprofile=coverage.out ./...
+    
+    - name: Upload coverage
+      uses: codecov/codecov-action@v3
+      with:
+        files: ./coverage.out
+        fail_ci_if_error: false
+`;
 
     return {
         language: 'go',
         packageName,
         files,
-        description: 'Go SDK with Go module files',
+        description: 'Go SDK with Go module files and CI/CD',
     };
 }
 

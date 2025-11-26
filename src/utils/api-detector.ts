@@ -123,11 +123,23 @@ export async function extractAPIMetadata(
 
         // Extract request body if POST
         let body: unknown;
+        let isGraphQL = false;
+        let graphQLQuery: string | undefined;
+        let graphQLOperationName: string | undefined;
+        
         if (method === 'POST') {
             try {
                 const postData = response.request().postData();
                 if (postData) {
-                    body = JSON.parse(postData);
+                    const parsedBody = JSON.parse(postData);
+                    body = parsedBody;
+                    
+                    // Detect GraphQL requests
+                    if (isGraphQLRequest(parsedBody)) {
+                        isGraphQL = true;
+                        graphQLQuery = typeof parsedBody.query === 'string' ? parsedBody.query : undefined;
+                        graphQLOperationName = typeof parsedBody.operationName === 'string' ? parsedBody.operationName : undefined;
+                    }
                 }
             } catch (error) {
                 // Ignore parsing errors
@@ -144,6 +156,9 @@ export async function extractAPIMetadata(
             paginationInfo,
             dataPath,
             rateLimitInfo,
+            isGraphQL,
+            graphQLQuery,
+            graphQLOperationName,
         };
     } catch (error) {
         return null;
@@ -262,5 +277,24 @@ function extractPaginationInfo(
     }
 
     return Object.keys(info).length > 1 ? (info as PaginationInfo) : undefined;
+}
+
+/**
+ * Detects if a request body is a GraphQL request
+ */
+function isGraphQLRequest(body: unknown): boolean {
+    if (!body || typeof body !== 'object') {
+        return false;
+    }
+    
+    const obj = body as Record<string, unknown>;
+    
+    // GraphQL requests typically have 'query', 'operationName', or 'variables'
+    const hasQuery = 'query' in obj && typeof obj.query === 'string';
+    const hasOperationName = 'operationName' in obj;
+    const hasVariables = 'variables' in obj;
+    
+    // If it has query (required) and at least one other GraphQL field, it's likely GraphQL
+    return hasQuery && (hasOperationName || hasVariables);
 }
 

@@ -49,7 +49,7 @@ export function generateOpenAPISpec(
                     type: typeof value === 'number' ? 'number' : 'string',
                     example: value,
                 },
-                description: `Query parameter: ${key}`,
+                description: inferFieldDescription(key, value),
             }));
         }
 
@@ -67,7 +67,7 @@ export function generateOpenAPISpec(
                     type: api.paginationInfo.type === 'cursor' ? 'string' : 'integer',
                     example: api.paginationInfo.currentPage || api.paginationInfo.currentOffset || 1,
                 },
-                description: `Pagination parameter (${api.paginationInfo.type})`,
+                description: `Pagination parameter (${api.paginationInfo.type}). Used to navigate through paginated results.`,
             });
         }
 
@@ -126,6 +126,54 @@ export function generateOpenAPISpec(
     }
 
     return JSON.stringify(spec, null, 2);
+}
+
+/**
+ * Infers human-readable descriptions for API fields based on naming patterns
+ */
+function inferFieldDescription(fieldName: string, exampleValue: unknown): string {
+    const name = fieldName.toLowerCase();
+    
+    // Common field patterns
+    const patterns: Array<[RegExp, string]> = [
+        [/^id$|_id$|Id$/, 'A unique identifier'],
+        [/^name$|_name$/, 'The name of the item'],
+        [/^email$|_email$/, 'An email address'],
+        [/^url$|_url$|Url$/, 'A URL or web address'],
+        [/^date$|_date$|Date$/, 'A date value'],
+        [/^time$|_time$|Time$|timestamp$/, 'A timestamp or time value'],
+        [/^page$|_page$/, 'Page number for pagination'],
+        [/^limit$|_limit$/, 'Maximum number of items to return'],
+        [/^offset$|_offset$/, 'Number of items to skip'],
+        [/^total$|_total$/, 'Total number of items'],
+        [/^count$|_count$/, 'Count of items'],
+        [/^status$|_status$/, 'Status of the item'],
+        [/^type$|_type$/, 'Type or category of the item'],
+        [/^title$|_title$/, 'Title of the item'],
+        [/^description$|_description$/, 'Description of the item'],
+        [/^created$|_created$|created_at$/, 'Creation timestamp'],
+        [/^updated$|_updated$|updated_at$/, 'Last update timestamp'],
+        [/^user$|_user$/, 'User information'],
+        [/^token$|_token$/, 'Authentication or access token'],
+        [/^key$|_key$/, 'API key or identifier'],
+    ];
+    
+    for (const [pattern, description] of patterns) {
+        if (pattern.test(name)) {
+            return description;
+        }
+    }
+    
+    // Default description based on type
+    if (typeof exampleValue === 'number') {
+        return `Numeric value: ${fieldName}`;
+    } else if (typeof exampleValue === 'string') {
+        return `String value: ${fieldName}`;
+    } else if (typeof exampleValue === 'boolean') {
+        return `Boolean flag: ${fieldName}`;
+    }
+    
+    return `Query parameter: ${fieldName}`;
 }
 
 /**

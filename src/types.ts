@@ -26,6 +26,9 @@ export interface ActorInput {
     authHeaders?: Record<string, string>;
     apiKey?: string;
     bearerToken?: string;
+    // OAuth flow support
+    loginUrl?: string;
+    oauthFlow?: boolean;
     // Interaction simulation for landing pages
     enableInteractionSimulation?: boolean;
     interactionWaitTime?: number;
@@ -67,6 +70,9 @@ export interface DiscoveredAPI {
     paginationInfo?: PaginationInfo;
     dataPath?: string;
     rateLimitInfo?: RateLimitInfo;
+    isGraphQL?: boolean;
+    graphQLQuery?: string;
+    graphQLOperationName?: string;
 }
 
 /**

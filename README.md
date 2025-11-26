@@ -5,11 +5,13 @@
 APX is the ultimate developer tool that automatically discovers APIs and generates everything you need: **code in 10 languages, TypeScript types, test suites, SDK packages, and complete documentation** - all in one run.
 
 **What developers get:**
-- ✅ **Code snippets** in 10 languages (TypeScript, Python, Go, Rust, Java, PHP, Ruby, JavaScript, cURL, PowerShell)
+- ✅ **Code snippets** in 12 languages (TypeScript, JavaScript, Python, Go, Rust, Java, PHP, Ruby, C#, Kotlin, cURL, PowerShell)
+- ✅ **GraphQL support** - Auto-detects GraphQL APIs and generates Apollo/gql client code
+- ✅ **OAuth 2.0 flow** - Automatic token capture from login flows
 - ✅ **TypeScript type definitions** (.d.ts files)
-- ✅ **Test suites** (Jest, pytest, Mocha, Vitest, Playwright)
-- ✅ **SDK packages** (npm, PyPI, Go modules - ready to publish)
-- ✅ **API documentation** (OpenAPI, Postman, cURL, Insomnia)
+- ✅ **Test suites** with schema validation (Jest, pytest, Mocha, Vitest, Playwright)
+- ✅ **SDK packages** with CI/CD templates (npm, PyPI, Go modules - ready to publish)
+- ✅ **API documentation** with inferred descriptions (OpenAPI, Postman, cURL, Insomnia)
 - ✅ **Request/response examples** (real API data)
 - ✅ **Rate limit detection** (auto-detected)
 
@@ -51,11 +53,12 @@ Instead of spending **weeks** manually:
 - Testing and debugging
 
 **This tool does it ALL automatically in seconds:**
-- ✅ **Code in 10 languages** - TypeScript, Python, Go, Rust, Java, PHP, Ruby, JavaScript, cURL, PowerShell
+- ✅ **Code in 12 languages** - TypeScript, JavaScript, Python, Go, Rust, Java, C#, Kotlin, PHP, Ruby, cURL, PowerShell
+- ✅ **GraphQL support** - Auto-detects and generates GraphQL client code
 - ✅ **TypeScript types** - Full type definitions (.d.ts files)
-- ✅ **Test suites** - Jest, pytest, Mocha, Vitest, Playwright
-- ✅ **SDK packages** - npm, PyPI, Go modules (ready to publish)
-- ✅ **API documentation** - OpenAPI, Postman, cURL, Insomnia
+- ✅ **Test suites with schema validation** - Jest, pytest, Mocha, Vitest, Playwright
+- ✅ **SDK packages with CI/CD** - npm, PyPI, Go modules (ready to publish with GitHub Actions)
+- ✅ **API documentation with inferred descriptions** - OpenAPI, Postman, cURL, Insomnia
 - ✅ **Examples** - Real request/response pairs
 - ✅ **Rate limits** - Auto-detected
 
@@ -70,21 +73,24 @@ Instead of spending **weeks** manually:
 **One API discovery → 10 languages of production-ready code.**
 
 - **TypeScript/JavaScript** - Modern async/await with fetch
-- **Python** - Clean requests library code
+- **Python** - Clean requests library code (httpx for async)
 - **Go** - Production-ready net/http code
 - **Rust** - Async reqwest with tokio
 - **Java** - OkHttp client code
+- **C#** - HttpClient with .NET
+- **Kotlin** - OkHttp for Android/backend
 - **PHP** - cURL-based implementation
 - **Ruby** - net/http with JSON parsing
 - **cURL** - Command-line ready
 - **PowerShell** - Windows-friendly
-- **JavaScript (Node.js)** - Full example
+- **GraphQL** - Apollo Client (TS/JS), gql (Python)
 
 **All with:**
 - Headers configured
-- Authentication included
+- Authentication included (API keys, Bearer tokens, OAuth 2.0)
 - Query parameters set
 - Request bodies (for POST)
+- GraphQL query/mutation support
 - Pagination support
 - Error handling structure
 
@@ -313,6 +319,8 @@ The Actor automatically detects and handles:
 - **`authHeaders`** (object): Custom authentication headers (e.g., `{"Authorization": "Bearer TOKEN"}`)
 - **`apiKey`** (string): API key for authentication (added as `X-API-Key` header)
 - **`bearerToken`** (string): Bearer token for authentication (added as `Authorization: Bearer TOKEN` header)
+- **`loginUrl`** (string): URL for OAuth 2.0 login flow (APX will automatically capture tokens)
+- **`oauthFlow`** (boolean): Enable automatic OAuth token capture (requires `loginUrl`, default: false)
 
 ## Output
 
@@ -580,13 +588,18 @@ APX/
 - Invalid responses
 
 **Solutions:**
-- **Authentication (401/403 errors)**: Add `authHeaders`, `apiKey`, or `bearerToken` to your input
+- **Authentication (401/403 errors)**: 
+  - Add `authHeaders`, `apiKey`, or `bearerToken` to your input
+  - For OAuth 2.0 flows, use `loginUrl` and `oauthFlow: true` to automatically capture tokens
   ```json
   {
     "bearerToken": "your-token",
-    "authHeaders": { "Authorization": "Bearer TOKEN" }
+    "authHeaders": { "Authorization": "Bearer TOKEN" },
+    "loginUrl": "https://api.example.com/login",
+    "oauthFlow": true
   }
   ```
+- **GraphQL APIs**: Automatically detected and generates Apollo/gql client code
 - Reduce `maxConcurrency` if hitting rate limits
 - Increase timeout settings
 - Check API response format

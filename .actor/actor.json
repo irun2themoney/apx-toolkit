@@ -123,6 +123,18 @@
           "type": "string",
           "description": "Bearer token for authentication (will be added as Authorization: Bearer TOKEN header)",
           "editor": "textfield"
+        },
+        "loginUrl": {
+          "title": "Login URL (OAuth Flow)",
+          "type": "string",
+          "description": "URL for OAuth 2.0 login flow. APX will navigate to this URL and capture authentication tokens automatically",
+          "editor": "textfield"
+        },
+        "oauthFlow": {
+          "title": "Enable OAuth Flow",
+          "type": "boolean",
+          "description": "Enable automatic OAuth 2.0 token capture from login flow (requires loginUrl)",
+          "default": false
         }
       },
       "required": ["startUrls"]

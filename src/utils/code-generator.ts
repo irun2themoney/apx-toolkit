@@ -15,7 +15,9 @@ export type CodeLanguage =
     | 'php'
     | 'ruby'
     | 'curl'
-    | 'powershell';
+    | 'powershell'
+    | 'csharp'
+    | 'kotlin';
 
 export interface CodeSnippet {
     language: CodeLanguage;
@@ -29,16 +31,28 @@ export interface CodeSnippet {
 export function generateCodeSnippets(api: DiscoveredAPI): CodeSnippet[] {
     const snippets: CodeSnippet[] = [];
 
-    snippets.push(generateTypeScriptSnippet(api));
-    snippets.push(generateJavaScriptSnippet(api));
-    snippets.push(generatePythonSnippet(api));
-    snippets.push(generateGoSnippet(api));
-    snippets.push(generateRustSnippet(api));
-    snippets.push(generateJavaSnippet(api));
-    snippets.push(generatePhpSnippet(api));
-    snippets.push(generateRubySnippet(api));
-    snippets.push(generateCurlSnippet(api));
-    snippets.push(generatePowerShellSnippet(api));
+    // Generate GraphQL-specific code if detected
+    if (api.isGraphQL) {
+        snippets.push(generateGraphQLTypeScriptSnippet(api));
+        snippets.push(generateGraphQLPythonSnippet(api));
+        snippets.push(generateGraphQLJavaScriptSnippet(api));
+    } else {
+        // Standard REST API code
+        snippets.push(generateTypeScriptSnippet(api));
+        snippets.push(generateJavaScriptSnippet(api));
+        snippets.push(generatePythonSnippet(api));
+        snippets.push(generateGoSnippet(api));
+        snippets.push(generateRustSnippet(api));
+        snippets.push(generateJavaSnippet(api));
+        snippets.push(generatePhpSnippet(api));
+        snippets.push(generateRubySnippet(api));
+        snippets.push(generateCurlSnippet(api));
+        snippets.push(generatePowerShellSnippet(api));
+    }
+    
+    // Always include C# and Kotlin
+    snippets.push(generateCSharpSnippet(api));
+    snippets.push(generateKotlinSnippet(api));
 
     return snippets;
 }
@@ -390,6 +404,184 @@ function buildQueryString(api: DiscoveredAPI): string {
     }
 
     return params.join('&');
+}
+
+/**
+ * Generates GraphQL code snippets
+ */
+function generateGraphQLTypeScriptSnippet(api: DiscoveredAPI): CodeSnippet {
+    let code = `// TypeScript/Node.js with GraphQL\n`;
+    code += `// Requires: npm install @apollo/client graphql\n\n`;
+    code += `import { ApolloClient, InMemoryCache, gql } from '@apollo/client';\n\n`;
+    code += `const client = new ApolloClient({\n`;
+    code += `  uri: '${api.baseUrl}',\n`;
+    code += `  cache: new InMemoryCache(),\n`;
+    if (Object.keys(api.headers).length > 0) {
+        code += `  headers: {\n`;
+        for (const [key, value] of Object.entries(api.headers)) {
+            code += `    '${key}': '${value}',\n`;
+        }
+        code += `  },\n`;
+    }
+    code += `});\n\n`;
+    
+    if (api.graphQLQuery) {
+        code += `const ${api.graphQLOperationName || 'QUERY'} = gql\`\n`;
+        code += api.graphQLQuery;
+        code += `\`;\n\n`;
+        code += `const { data } = await client.query({\n`;
+        code += `  query: ${api.graphQLOperationName || 'QUERY'},\n`;
+        if (api.body && typeof api.body === 'object' && 'variables' in api.body) {
+            code += `  variables: ${JSON.stringify((api.body as any).variables, null, 2)},\n`;
+        }
+        code += `});\n`;
+        code += `console.log(data);`;
+    } else {
+        code += `// GraphQL query detected but not captured\n`;
+        code += `// Use Apollo Client to execute queries`;
+    }
+
+    return {
+        language: 'typescript',
+        code,
+        description: 'TypeScript with Apollo Client (GraphQL)',
+    };
+}
+
+function generateGraphQLPythonSnippet(api: DiscoveredAPI): CodeSnippet {
+    let code = `# Python with GraphQL\n`;
+    code += `# Requires: pip install gql requests\n\n`;
+    code += `from gql import gql, Client\n`;
+    code += `from gql.transport.requests import RequestsHTTPTransport\n\n`;
+    code += `headers = {\n`;
+    for (const [key, value] of Object.entries(api.headers)) {
+        code += `    '${key}': '${value}',\n`;
+    }
+    code += `}\n\n`;
+    code += `transport = RequestsHTTPTransport(\n`;
+    code += `    url='${api.baseUrl}',\n`;
+    code += `    headers=headers\n`;
+    code += `)\n\n`;
+    code += `client = Client(transport=transport, fetch_schema_from_transport=True)\n\n`;
+    
+    if (api.graphQLQuery) {
+        code += `query = gql("""\n`;
+        code += api.graphQLQuery;
+        code += `""")\n\n`;
+        code += `result = client.execute(query`;
+        if (api.body && typeof api.body === 'object' && 'variables' in api.body) {
+            code += `, variable_values=${JSON.stringify((api.body as any).variables)}`;
+        }
+        code += `)\n`;
+        code += `print(result)`;
+    } else {
+        code += `# GraphQL query detected but not captured\n`;
+        code += `# Use gql client to execute queries`;
+    }
+
+    return {
+        language: 'python',
+        code,
+        description: 'Python with gql library (GraphQL)',
+    };
+}
+
+function generateGraphQLJavaScriptSnippet(api: DiscoveredAPI): CodeSnippet {
+    const snippet = generateGraphQLTypeScriptSnippet(api);
+    snippet.language = 'javascript';
+    snippet.code = snippet.code.replace('// TypeScript/Node.js', '// JavaScript/Node.js');
+    snippet.code = snippet.code.replace('import {', 'const {');
+    snippet.code = snippet.code.replace('} from', '} = require');
+    return snippet;
+}
+
+/**
+ * Generates C# code snippet
+ */
+function generateCSharpSnippet(api: DiscoveredAPI): CodeSnippet {
+    let code = `// C# (.NET)\n`;
+    code += `using System;\n`;
+    code += `using System.Net.Http;\n`;
+    code += `using System.Text;\n`;
+    code += `using System.Text.Json;\n`;
+    code += `using System.Threading.Tasks;\n\n`;
+    code += `public class ApiClient\n`;
+    code += `{\n`;
+    code += `    private static readonly HttpClient client = new HttpClient();\n\n`;
+    code += `    public static async Task Main(string[] args)\n`;
+    code += `    {\n`;
+    
+    if (api.method === 'GET') {
+        code += `        var request = new HttpRequestMessage(HttpMethod.Get, "${api.baseUrl}");\n`;
+    } else {
+        code += `        var request = new HttpRequestMessage(HttpMethod.Post, "${api.baseUrl}");\n`;
+        if (api.body) {
+            code += `        var json = JsonSerializer.Serialize(${JSON.stringify(api.body)});\n`;
+            code += `        request.Content = new StringContent(json, Encoding.UTF8, "application/json");\n`;
+        }
+    }
+    
+    code += `\n        // Add headers\n`;
+    for (const [key, value] of Object.entries(api.headers)) {
+        code += `        request.Headers.Add("${key}", "${value}");\n`;
+    }
+    
+    code += `\n        var response = await client.SendAsync(request);\n`;
+    code += `        var content = await response.Content.ReadAsStringAsync();\n`;
+    code += `        var data = JsonSerializer.Deserialize<object>(content);\n`;
+    code += `        Console.WriteLine(data);\n`;
+    code += `    }\n`;
+    code += `}`;
+
+    return {
+        language: 'csharp',
+        code,
+        description: 'C# with HttpClient (.NET)',
+    };
+}
+
+/**
+ * Generates Kotlin code snippet
+ */
+function generateKotlinSnippet(api: DiscoveredAPI): CodeSnippet {
+    let code = `// Kotlin\n`;
+    code += `// Requires: implementation("com.squareup.okhttp3:okhttp:4.11.0")\n\n`;
+    code += `import okhttp3.*\n`;
+    code += `import java.io.IOException\n\n`;
+    code += `fun main() {\n`;
+    code += `    val client = OkHttpClient()\n\n`;
+    
+    if (api.method === 'GET') {
+        code += `    val request = Request.Builder()\n`;
+        code += `        .url("${api.baseUrl}")\n`;
+    } else {
+        code += `    val json = """${api.body ? JSON.stringify(api.body) : '{}'}""".trimIndent()\n`;
+        code += `    val body = RequestBody.create(\n`;
+        code += `        MediaType.parse("application/json; charset=utf-8"),\n`;
+        code += `        json\n`;
+        code += `    )\n\n`;
+        code += `    val request = Request.Builder()\n`;
+        code += `        .url("${api.baseUrl}")\n`;
+        code += `        .post(body)\n`;
+    }
+    
+    code += `        .apply {\n`;
+    for (const [key, value] of Object.entries(api.headers)) {
+        code += `            addHeader("${key}", "${value}")\n`;
+    }
+    code += `        }\n`;
+    code += `        .build()\n\n`;
+    code += `    client.newCall(request).execute().use { response ->\n`;
+    code += `        val data = response.body?.string()\n`;
+    code += `        println(data)\n`;
+    code += `    }\n`;
+    code += `}`;
+
+    return {
+        language: 'kotlin',
+        code,
+        description: 'Kotlin with OkHttp',
+    };
 }
 
 /**

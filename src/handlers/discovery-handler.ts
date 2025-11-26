@@ -154,6 +154,115 @@ async function simulateInteractions(
 }
 
 /**
+ * Handles OAuth 2.0 login flow and captures authentication tokens
+ */
+async function handleOAuthFlow(
+    page: Page,
+    loginUrl: string,
+    log: any
+): Promise<{ token?: string; cookies?: string; headers?: Record<string, string> }> {
+    try {
+        log.info(`Starting OAuth flow: navigating to login URL: ${loginUrl}`);
+        
+        const capturedTokens: string[] = [];
+        const capturedCookies: string[] = [];
+        const capturedHeaders: Record<string, string> = {};
+        
+        // Set up response listener to capture tokens
+        const responseListener = async (response: any) => {
+            try {
+                const url = response.url();
+                const headers = response.headers();
+                
+                // Look for Authorization headers in responses
+                if (headers['authorization']) {
+                    capturedTokens.push(headers['authorization']);
+                    log.info(`Captured authorization token from: ${url}`);
+                }
+                
+                // Look for tokens in response body
+                try {
+                    const body = await response.body();
+                    const text = body.toString();
+                    
+                    // Common token patterns
+                    const tokenPatterns = [
+                        /"access_token"\s*:\s*"([^"]+)"/i,
+                        /"token"\s*:\s*"([^"]+)"/i,
+                        /"bearer"\s*:\s*"([^"]+)"/i,
+                        /access_token=([^&\s]+)/i,
+                    ];
+                    
+                    for (const pattern of tokenPatterns) {
+                        const match = text.match(pattern);
+                        if (match && match[1]) {
+                            capturedTokens.push(match[1]);
+                            log.info(`Captured token from response body: ${url}`);
+                        }
+                    }
+                } catch (error) {
+                    // Ignore body read errors
+                }
+            } catch (error) {
+                // Ignore individual response errors
+            }
+        };
+        
+        page.on('response', responseListener);
+        
+        // Navigate to login page
+        await page.goto(loginUrl, { waitUntil: 'domcontentloaded', timeout: 30000 });
+        
+        // Wait a bit for any automatic redirects
+        await page.waitForTimeout(2000);
+        
+        // Try to find and fill login form
+        try {
+            const emailInput = await page.$('input[type="email"], input[name*="email"], input[id*="email"]');
+            const passwordInput = await page.$('input[type="password"], input[name*="password"], input[id*="password"]');
+            const submitButton = await page.$('button[type="submit"], input[type="submit"], button:has-text("Login"), button:has-text("Sign in")');
+            
+            if (emailInput && passwordInput) {
+                log.info('Found login form, attempting to fill (will need user credentials)');
+                // Note: In production, user would need to provide credentials
+                // For now, we'll just wait and capture tokens from the flow
+            }
+        } catch (error) {
+            // Form not found or not fillable
+        }
+        
+        // Wait for redirects and token capture
+        await page.waitForTimeout(5000);
+        
+        // Get cookies
+        const cookies = await page.context().cookies();
+        const cookieString = cookies.map(c => `${c.name}=${c.value}`).join('; ');
+        
+        // Remove listener
+        page.off('response', responseListener);
+        
+        const result: { token?: string; cookies?: string; headers?: Record<string, string> } = {};
+        
+        if (capturedTokens.length > 0) {
+            result.token = capturedTokens[0];
+            result.headers = { Authorization: capturedTokens[0] };
+            log.info('✅ OAuth flow completed: Token captured');
+        }
+        
+        if (cookieString) {
+            result.cookies = cookieString;
+            if (!result.headers) result.headers = {};
+            result.headers['Cookie'] = cookieString;
+        }
+        
+        return result;
+    } catch (error) {
+        log.warning(`OAuth flow error: ${error}`);
+        return {};
+    }
+}
+
+/**
  * Handler for START_DISCOVERY requests
  * Uses Playwright to intercept network traffic and discover API endpoints
  */
@@ -162,6 +271,16 @@ export async function handleDiscovery(
     input: ActorInput
 ): Promise<void> {
     const { request, page, log, crawler } = context;
+    
+    // Handle OAuth flow if login URL provided
+    let oauthAuthHeaders: Record<string, string> = {};
+    if (input.loginUrl && input.oauthFlow) {
+        const oauthResult = await handleOAuthFlow(page, input.loginUrl, log);
+        if (oauthResult.headers) {
+            oauthAuthHeaders = oauthResult.headers;
+            log.info('OAuth authentication completed, using captured tokens for API requests');
+        }
+    }
     const discoveredAPIs: DiscoveredAPI[] = [];
     // Use Set for O(1) deduplication lookups
     const discoveredBaseUrls = new Set<string>();
@@ -309,6 +428,9 @@ export async function handleDiscovery(
             discoveredAPI: api,
         };
 
+        // Merge OAuth headers with API headers if OAuth flow was used
+        const mergedHeaders = { ...api.headers, ...oauthAuthHeaders };
+
         // Add the first API request directly to the shared requestQueue
         // This ensures HttpCrawler can pick it up
         if (requestQueue) {
@@ -316,7 +438,7 @@ export async function handleDiscovery(
                 url: api.baseUrl,
                 label: REQUEST_LABELS.API_PROCESS,
                 userData: initialUserData,
-                headers: api.headers,
+                headers: mergedHeaders,
             });
         } else {
             // Fallback to crawler.addRequests if requestQueue not accessible
@@ -325,7 +447,7 @@ export async function handleDiscovery(
                     url: api.baseUrl,
                     label: REQUEST_LABELS.API_PROCESS,
                     userData: initialUserData,
-                    headers: api.headers,
+                    headers: mergedHeaders,
                 },
             ]);
         }

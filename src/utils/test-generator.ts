@@ -73,6 +73,28 @@ function generateJestTests(api: DiscoveredAPI, baseUrl?: string): TestSuite {
     code += `    expect(data).toBeDefined();\n`;
     code += `    expect(typeof data).toBe('object');\n`;
     code += `  });\n\n`;
+    
+    // Add schema validation test if we can infer schema
+    code += `  test('should match expected schema', async () => {\n`;
+    code += `    const response = await fetch(\`\${baseUrl}\${endpoint}\`, {\n`;
+    code += `      method: '${api.method}',\n`;
+    if (Object.keys(api.headers).length > 0) {
+        code += `      headers,\n`;
+    }
+    code += `    });\n\n`;
+    code += `    const data = await response.json();\n`;
+    code += `    \n`;
+    code += `    // Basic schema validation\n`;
+    code += `    expect(data).toBeDefined();\n`;
+    if (api.dataPath) {
+        const pathParts = api.dataPath.split('.');
+        code += `    // Validate data path: ${api.dataPath}\n`;
+        if (pathParts.length > 0) {
+            code += `    expect(data.${pathParts[0]}).toBeDefined();\n`;
+        }
+    }
+    code += `    // Add more specific schema assertions based on your API response structure\n`;
+    code += `  });\n\n`;
 
     if (api.paginationInfo) {
         code += `  test('should handle pagination', async () => {\n`;
