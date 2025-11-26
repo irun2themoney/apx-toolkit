@@ -1,11 +1,11 @@
 {
   "startUrls": [
     {
-      "url": "https://scrapethissite.com/pages/"
+      "url": "https://quotes.toscrape.com/js/"
     }
   ],
   "apiPatterns": [],
-  "minResponseSize": 500,
+  "minResponseSize": 100,
   "discoveryTimeout": 20000,
   "maxPages": 3,
   "maxConcurrency": 2,
