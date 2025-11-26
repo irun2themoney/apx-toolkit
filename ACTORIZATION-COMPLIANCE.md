@@ -94,13 +94,13 @@ According to the guide, our Actor is:
 
 | Requirement | Status | Notes |
 |------------|--------|-------|
-| `.actor` folder | ✅ | Contains actor.json |
+| `.actor` folder | ✅ | Contains actor.json (moved from root) |
 | Dockerfile | ✅ | Complete and working |
-| Input schema | ✅ | Comprehensive |
-| Output schema | ✅ | Complete |
+| Input schema | ✅ | Comprehensive with schemaVersion 1, all editors configured |
+| Output schema | ✅ | Auto-detected from Dataset (optional) |
 | State persistence | ✅ | RequestQueue + Dataset |
 | Apify SDK integration | ✅ | Using apify package |
-| Deployment | ✅ | Successfully deployed |
+| Deployment | ✅ | **Successfully deployed to Apify platform!** |
 
 ## Conclusion
 
