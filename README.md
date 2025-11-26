@@ -54,7 +54,9 @@ Instead of spending **weeks** manually:
 
 **This tool does it ALL automatically in seconds:**
 - ✅ **Code in 12 languages** - TypeScript, JavaScript, Python, Go, Rust, Java, C#, Kotlin, PHP, Ruby, cURL, PowerShell
+- ✅ **REST, GraphQL & WebSocket** - Auto-detects all API types and generates appropriate client code
 - ✅ **GraphQL support** - Auto-detects and generates GraphQL client code
+- ✅ **WebSocket support** - Auto-detects WebSocket connections and generates client code
 - ✅ **TypeScript types** - Full type definitions (.d.ts files)
 - ✅ **Test suites with schema validation** - Jest, pytest, Mocha, Vitest, Playwright
 - ✅ **SDK packages with CI/CD** - npm, PyPI, Go modules (ready to publish with GitHub Actions)
@@ -84,6 +86,7 @@ Instead of spending **weeks** manually:
 - **cURL** - Command-line ready
 - **PowerShell** - Windows-friendly
 - **GraphQL** - Apollo Client (TS/JS), gql (Python)
+- **WebSocket** - Native WebSocket API (TS/JS), websockets library (Python)
 
 **All with:**
 - Headers configured

@@ -122,6 +122,7 @@ Generates industry-standard documentation with human-readable descriptions:
 ### 6. Advanced Features
 
 - **GraphQL API Detection**: Automatically detects GraphQL requests and generates Apollo/gql client code
+- **WebSocket API Detection**: Automatically detects WebSocket connections and generates client code (TypeScript, JavaScript, Python)
 - **OAuth 2.0 Flow Support**: Automatically captures tokens from login flows
 - **Deep Interaction Fuzzing**: Advanced SPA handling with randomized scrolls, input focus/blur, and smart clicks to trigger hidden APIs in complex SPAs
 - **Automatic Pagination Detection**: Handles page-based, offset-based, and cursor-based pagination
@@ -352,6 +353,13 @@ The Actor outputs multiple types of data to the dataset:
     - Waits for network to settle after interactions
     - Significantly improves discovery rate for complex SPAs
 
+11. **WebSocket API Detection** ✅
+    - Automatically detects WebSocket connections using Playwright
+    - Captures WebSocket URLs and protocols
+    - Generates WebSocket client code (TypeScript, JavaScript, Python)
+    - Supports real-time API discovery
+    - Completes full API type coverage: REST, GraphQL, and WebSocket
+
 ---
 
 ## Performance Metrics
@@ -388,14 +396,16 @@ The Actor outputs multiple types of data to the dataset:
 
 **APX is the ONLY tool that:**
 1. Automatically discovers APIs from a website URL (no manual DevTools work)
-2. Generates code in 12 languages (including GraphQL) from discovered APIs
+2. Generates code in 12 languages (including GraphQL & WebSocket) from discovered APIs
 3. Detects and generates GraphQL client code automatically
-4. Captures OAuth 2.0 tokens automatically from login flows
-5. Creates TypeScript types from actual API responses
-6. Generates test suites with schema validation in 5 frameworks
-7. Builds complete SDK packages with CI/CD ready to publish
-8. Generates documentation with inferred descriptions in 4 formats
-9. Does ALL of this in one automated run
+4. Detects and generates WebSocket client code automatically
+5. Captures OAuth 2.0 tokens automatically from login flows
+6. Creates TypeScript types from actual API responses
+7. Generates test suites with schema validation in 5 frameworks
+8. Builds complete SDK packages with CI/CD ready to publish
+9. Generates documentation with inferred descriptions in 4 formats
+10. Supports REST, GraphQL, and WebSocket APIs - all in one tool
+11. Does ALL of this in one automated run
 
 ### Comparison to Existing Tools
 
@@ -474,7 +484,7 @@ The Actor outputs multiple types of data to the dataset:
 ### Phase 2: Advanced Features
 - [x] OAuth flow support ✅ **COMPLETED**
 - [x] GraphQL API detection ✅ **COMPLETED**
-- [ ] WebSocket API detection
+- [x] WebSocket API detection ✅ **COMPLETED**
 - [ ] Advanced pagination patterns
 - [ ] Framework-specific code (Axios, httpx)
 - [ ] Advanced schema inference with AI
@@ -594,14 +604,15 @@ APX Toolkit is a **production-ready developer tool** that solves a real problem:
 - Complex SPA handling (ongoing improvement)
 
 **Overall Assessment:** Production-ready with major enhancements. APX now handles:
-- ✅ REST and GraphQL APIs
+- ✅ REST, GraphQL, and WebSocket APIs (complete API type coverage)
 - ✅ OAuth 2.0 authentication flows
 - ✅ 12 languages including enterprise (C#, Kotlin)
 - ✅ Production-grade tests with schema validation
 - ✅ CI/CD-ready SDK packages
 - ✅ Human-readable documentation
+- ✅ Complex SPA handling with Deep Interaction Fuzzer
 
-**Competitive Position:** APX is now the most complete API toolkit, handling the hardest problems (GraphQL, OAuth, enterprise languages) and generating production-grade artifacts.
+**Competitive Position:** APX is now the most complete API toolkit, handling the hardest problems (GraphQL, WebSocket, OAuth, enterprise languages, complex SPAs) and generating production-grade artifacts. **The only tool that supports REST, GraphQL, and WebSocket APIs automatically.**
 
 ---
 
@@ -611,9 +622,11 @@ APX Toolkit is a **production-ready developer tool** that solves a real problem:
 
 **Recent Updates:**
 - ✅ GraphQL API detection and code generation
+- ✅ WebSocket API detection and code generation
 - ✅ OAuth 2.0 flow support with automatic token capture
 - ✅ C# and Kotlin code generation (12 languages total)
 - ✅ Schema validation in test suites
 - ✅ Improved OpenAPI descriptions with inferred field descriptions
 - ✅ CI/CD templates for all SDK packages
+- ✅ Deep Interaction Fuzzer for complex SPAs
 
