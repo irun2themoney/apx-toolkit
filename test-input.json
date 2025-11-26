@@ -1,15 +1,20 @@
 {
   "startUrls": [
     {
-      "url": "https://quotes.toscrape.com/js/"
+      "url": "https://apilist.fun/"
     }
   ],
   "apiPatterns": [],
   "minResponseSize": 100,
-  "discoveryTimeout": 20000,
-  "maxPages": 3,
+  "discoveryTimeout": 15000,
+  "maxPages": 2,
   "maxConcurrency": 2,
   "dataPath": "",
-  "paginationType": "auto"
+  "paginationType": "auto",
+  "generateDocumentation": true,
+  "exportFormats": [
+    "openapi",
+    "postman",
+    "curl"
+  ]
 }
-

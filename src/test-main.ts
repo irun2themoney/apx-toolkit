@@ -8,6 +8,7 @@ import type { ActorInput } from './types.js';
 import { REQUEST_LABELS } from './types.js';
 import { handleDiscovery } from './handlers/discovery-handler.js';
 import { handleAPIProcessing } from './handlers/api-handler.js';
+import { StatisticsCollector, setStatistics, formatStatistics } from './utils/statistics.js';
 import { readFileSync } from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
@@ -52,7 +53,7 @@ const mockActor = {
  * Test version of main function
  */
 async function testMain() {
-    console.log('🧪 Starting Smart API Finder & Documenter - TEST MODE');
+    console.log('🧪 Starting APX - The API Toolkit - TEST MODE');
     console.log('==========================================\n');
 
     // Initialize mock Actor
@@ -70,6 +71,10 @@ async function testMain() {
     console.log(`   Max Pages: ${input.maxPages || 100}`);
     console.log(`   Max Concurrency: ${input.maxConcurrency || 5}`);
     console.log(`   Discovery Timeout: ${input.discoveryTimeout || 10000}ms\n`);
+
+    // Initialize statistics collector
+    const statistics = new StatisticsCollector();
+    setStatistics(statistics);
 
     // Create a shared request queue
     const requestQueue = await RequestQueue.open();

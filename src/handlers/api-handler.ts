@@ -2,6 +2,8 @@ import type { HttpCrawlingContext } from 'crawlee';
 import { Dataset } from 'crawlee';
 import type { ActorInput, APIRequestUserData, APIResponse } from '../types.js';
 import { REQUEST_LABELS } from '../types.js';
+import { retryWithBackoff } from '../utils/retry.js';
+import { getStatistics } from '../utils/statistics.js';
 
 /**
  * Extracts data items from API response using the configured data path
@@ -204,42 +206,62 @@ export async function handleAPIProcessing(
         offset: userData.offset,
     });
 
+    const statistics = getStatistics();
+    
     try {
         // Build the API URL with pagination
         const apiUrl = buildAPIUrl(api.baseUrl, userData);
 
-        // Make the HTTP request
-        const response = await sendRequest({
-            url: apiUrl,
-            headers: api.headers,
-            method: api.method,
-            payload: api.body ? JSON.stringify(api.body) : undefined,
-        });
+        // Make the HTTP request with retry logic
+        const response = await retryWithBackoff(
+            async () => {
+                return await sendRequest({
+                    url: apiUrl,
+                    headers: api.headers,
+                    method: api.method,
+                    payload: api.body ? JSON.stringify(api.body) : undefined,
+                });
+            },
+            {
+                maxAttempts: 3,
+                initialDelay: 1000,
+            }
+        );
 
         // Parse JSON response
-        const json: APIResponse = JSON.parse(response.body);
+        let json: APIResponse;
+        try {
+            json = JSON.parse(response.body);
+        } catch (parseError) {
+            log.error(`Failed to parse JSON response from ${apiUrl}`);
+            statistics?.recordRequest(false);
+            throw new Error(`Invalid JSON response: ${parseError instanceof Error ? parseError.message : String(parseError)}`);
+        }
 
         // Extract data items
         const items = extractDataItems(json, api.dataPath);
 
         if (items.length === 0) {
             log.warning('No data items found in API response');
+            statistics?.recordRequest(true, 0);
         } else {
             log.info(`Extracted ${items.length} items from API response`);
 
-            // Save items to dataset
-            for (const item of items) {
-                await Dataset.pushData({
-                    ...(typeof item === 'object' && item !== null ? item : {}),
-                    _metadata: {
-                        sourceUrl: request.url,
-                        apiUrl: apiUrl,
-                        page: userData.page,
-                        offset: userData.offset,
-                        extractedAt: new Date().toISOString(),
-                    },
-                });
-            }
+            // Batch dataset writes for better performance
+            const itemsToSave = items.map((item) => ({
+                ...(typeof item === 'object' && item !== null ? item : {}),
+                _metadata: {
+                    sourceUrl: request.url,
+                    apiUrl: apiUrl,
+                    page: userData.page,
+                    offset: userData.offset,
+                    extractedAt: new Date().toISOString(),
+                },
+            }));
+
+            // Use pushData with array for batch write (more efficient)
+            await Dataset.pushData(itemsToSave);
+            statistics?.recordRequest(true, items.length);
         }
 
         // Update pagination info from response if available
@@ -272,14 +294,27 @@ export async function handleAPIProcessing(
             ]);
 
             log.info(`Enqueued next page: ${JSON.stringify(nextPageParams)}`);
+            statistics?.recordPage();
         } else {
             log.info('Reached end of pagination or max pages limit');
         }
     } catch (error) {
-        log.error(`Error processing API request: ${error}`, {
+        statistics?.recordRequest(false);
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        log.error(`Error processing API request: ${errorMessage}`, {
             url: api.baseUrl,
-            error: error instanceof Error ? error.message : String(error),
+            error: errorMessage,
         });
+        
+        // Provide helpful error message
+        if (errorMessage.includes('timeout') || errorMessage.includes('ETIMEDOUT')) {
+            log.warning('Request timed out. The API may be slow or unavailable. Consider increasing timeout settings.');
+        } else if (errorMessage.includes('429') || errorMessage.includes('rate limit')) {
+            log.warning('Rate limit detected. The API may have rate limiting. Consider reducing concurrency or adding delays.');
+        } else if (errorMessage.includes('401') || errorMessage.includes('403')) {
+            log.warning('Authentication failed. The API may require authentication tokens or credentials.');
+        }
+        
         throw error;
     }
 }

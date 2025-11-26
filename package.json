@@ -1,7 +1,7 @@
 {
-  "name": "smart-api-finder-documenter",
+  "name": "@apx/toolkit",
   "version": "1.0.0",
-  "description": "Automatically discovers internal API endpoints and generates complete API documentation in OpenAPI, Postman, cURL, and Insomnia formats. The only tool that saves weeks of manual API documentation work.",
+  "description": "APX - The API Toolkit. From API discovery to production code in seconds. Automatically discovers APIs and generates code in 10 languages, TypeScript types, test suites, SDK packages, and complete documentation.",
   "type": "module",
   "main": "dist/main.js",
   "scripts": {
@@ -29,7 +29,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/irun2themoney/smart-api-finder-documenter.git"
+    "url": "https://github.com/irun2themoney/apx-toolkit.git"
   },
   "dependencies": {
     "crawlee": "^3.9.0",

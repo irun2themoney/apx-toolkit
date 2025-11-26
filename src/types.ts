@@ -42,6 +42,14 @@ export interface APIExport {
 /**
  * Discovered API endpoint metadata
  */
+export interface RateLimitInfo {
+    limit?: number;
+    remaining?: number;
+    reset?: number; // Unix timestamp
+    resetAfter?: number; // Seconds until reset
+    retryAfter?: number; // Seconds to wait before retry
+}
+
 export interface DiscoveredAPI {
     url: string;
     baseUrl: string;
@@ -51,6 +59,7 @@ export interface DiscoveredAPI {
     body?: unknown;
     paginationInfo?: PaginationInfo;
     dataPath?: string;
+    rateLimitInfo?: RateLimitInfo;
 }
 
 /**

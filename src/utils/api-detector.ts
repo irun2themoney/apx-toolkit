@@ -1,12 +1,14 @@
 import type { Response } from 'playwright';
 import type { DiscoveredAPI, APIResponse, PaginationInfo, ActorInput } from '../types.js';
+import { detectRateLimits } from './rate-limit-detector.js';
 
 /**
  * Checks if a response matches the criteria for an API endpoint
  */
 export async function isAPIResponse(
     response: Response,
-    config: { apiPatterns?: string[]; minResponseSize?: number }
+    config: { apiPatterns?: string[]; minResponseSize?: number },
+    cachedBody?: Buffer
 ): Promise<boolean> {
     const url = response.url();
     const headers = response.headers();
@@ -25,9 +27,9 @@ export async function isAPIResponse(
         }
     }
 
-    // Check response size
+    // Check response size (use cached body if available)
     try {
-        const body = await response.body();
+        const body = cachedBody || await response.body();
         if (config.minResponseSize && body.length < config.minResponseSize) {
             return false;
         }
@@ -59,7 +61,8 @@ export async function isAPIResponse(
  */
 export async function extractAPIMetadata(
     response: Response,
-    config: ActorInput
+    config: ActorInput,
+    cachedBody?: Buffer
 ): Promise<DiscoveredAPI | null> {
     try {
         const url = new URL(response.url());
@@ -94,12 +97,16 @@ export async function extractAPIMetadata(
             }
         });
 
+        // Detect rate limiting information
+        const rateLimitInfo = detectRateLimits(response);
+
         // Try to extract pagination info from response body
         let paginationInfo: PaginationInfo | undefined;
         let dataPath: string | undefined = config.dataPath;
 
         try {
-            const body = await response.body();
+            // Use cached body if available to avoid re-reading
+            const body = cachedBody || await response.body();
             const json: APIResponse = JSON.parse(body.toString());
 
             // Auto-detect data path if not provided
@@ -136,6 +143,7 @@ export async function extractAPIMetadata(
             body,
             paginationInfo,
             dataPath,
+            rateLimitInfo,
         };
     } catch (error) {
         return null;
