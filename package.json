@@ -11,6 +11,7 @@
     "test": "npm run build && node dist/test-main.js",
     "test:watch": "npm run dev & node --watch dist/test-main.js",
     "test:extreme": "node extreme-test-suite.js",
+    "test:fuzzer": "npm run build && cp test-fuzzer-input.json test-input.json && node dist/test-main.js",
     "analyze:extreme": "node analyze-extreme-results.js",
     "verify": "node verify-build.js"
   },
