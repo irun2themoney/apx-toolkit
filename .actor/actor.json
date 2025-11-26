@@ -3,7 +3,7 @@
   "name": "api-first-auto-tuner",
   "title": "API-First Auto-Tuner",
   "description": "Automatically discovers internal API endpoints and generates complete API documentation in OpenAPI, Postman, cURL, and Insomnia formats. The only tool that saves weeks of manual API documentation work by doing it automatically in seconds.",
-  "version": "1.0.0",
+  "version": "1.0",
   "readme": "./README.md",
   "meta": {
     "templateId": "typescript-playwright"
@@ -11,14 +11,13 @@
   "input": {
     "title": "API-First Auto-Tuner",
     "type": "object",
-    "schema": {
-      "type": "object",
-      "properties": {
+    "schemaVersion": 1,
+    "properties": {
         "startUrls": {
           "title": "Start URLs",
           "type": "array",
           "description": "Array of URLs to start the discovery process from",
-          "editor": "urlList",
+          "editor": "json",
           "prefill": [
             {
               "url": "https://example.com"
@@ -64,12 +63,14 @@
           "title": "Data Path",
           "type": "string",
           "description": "JSONPath to extract data items from API response (e.g., 'data.items', 'results'). If empty, will auto-detect",
+          "editor": "textfield",
           "default": ""
         },
         "paginationType": {
           "title": "Pagination Type",
           "type": "string",
           "description": "Type of pagination to use",
+          "editor": "select",
           "enum": ["auto", "offset", "page", "cursor"],
           "default": "auto"
         },
@@ -83,7 +84,7 @@
           "title": "Export Formats",
           "type": "array",
           "description": "Formats to export API documentation (openapi, postman, curl, insomnia)",
-          "editor": "stringList",
+          "editor": "select",
           "default": ["openapi", "postman", "curl"],
           "items": {
             "type": "string",
@@ -92,49 +93,6 @@
         }
       },
       "required": ["startUrls"]
-    }
-  },
-  "storages": {
-    "dataset": "./storage/datasets/default"
-  },
-  "output": {
-    "title": "API-First Auto-Tuner Output",
-    "type": "object",
-    "schema": {
-      "type": "object",
-      "properties": {
-        "_metadata": {
-          "type": "object",
-          "description": "Metadata about the extraction",
-          "properties": {
-            "sourceUrl": {
-              "type": "string",
-              "description": "Original URL that triggered the discovery"
-            },
-            "apiUrl": {
-              "type": "string",
-              "description": "The API endpoint URL used for extraction"
-            },
-            "page": {
-              "type": "integer",
-              "description": "Current page number (if applicable)"
-            },
-            "offset": {
-              "type": "integer",
-              "description": "Current offset (if applicable)"
-            },
-            "extractedAt": {
-              "type": "string",
-              "format": "date-time",
-              "description": "ISO timestamp of extraction"
-            }
-          },
-          "required": ["sourceUrl", "apiUrl", "extractedAt"]
-        }
-      },
-      "additionalProperties": true,
-      "description": "Each output item contains the extracted data from the API response (structure varies by API) plus metadata fields"
-    }
   }
 }
 
