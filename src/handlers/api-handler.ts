@@ -217,17 +217,29 @@ export async function handleAPIProcessing(
             async () => {
                 const requestOptions: any = {
                     url: apiUrl,
-                    headers: api.headers,
+                    headers: { ...api.headers },
                     method: api.method,
                 };
+                
+                // Add authentication headers if provided
+                if (input.authHeaders) {
+                    Object.assign(requestOptions.headers, input.authHeaders);
+                }
+                
+                // Add API key if provided
+                if (input.apiKey) {
+                    requestOptions.headers['X-API-Key'] = input.apiKey;
+                }
+                
+                // Add Bearer token if provided
+                if (input.bearerToken) {
+                    requestOptions.headers['Authorization'] = `Bearer ${input.bearerToken}`;
+                }
                 
                 // Add body for POST requests
                 if (api.method === 'POST' && api.body) {
                     requestOptions.body = JSON.stringify(api.body);
                     // Ensure Content-Type header is set for JSON
-                    if (!requestOptions.headers) {
-                        requestOptions.headers = {};
-                    }
                     if (!requestOptions.headers['Content-Type']) {
                         requestOptions.headers['Content-Type'] = 'application/json';
                     }
@@ -319,13 +331,22 @@ export async function handleAPIProcessing(
             error: errorMessage,
         });
         
-        // Provide helpful error message
+        // Provide helpful error message with actionable suggestions
         if (errorMessage.includes('timeout') || errorMessage.includes('ETIMEDOUT')) {
             log.warning('Request timed out. The API may be slow or unavailable. Consider increasing timeout settings.');
         } else if (errorMessage.includes('429') || errorMessage.includes('rate limit')) {
             log.warning('Rate limit detected. The API may have rate limiting. Consider reducing concurrency or adding delays.');
         } else if (errorMessage.includes('401') || errorMessage.includes('403')) {
-            log.warning('Authentication failed. The API may require authentication tokens or credentials.');
+            log.error('🔒 Authentication failed (401/403). The API requires authentication.');
+            log.warning('💡 To fix this:');
+            log.warning('   1. Add authentication headers using the "authHeaders" input field');
+            log.warning('   2. Or provide an API key using the "apiKey" input field');
+            log.warning('   3. Or provide a Bearer token using the "bearerToken" input field');
+            log.warning('   4. Example: { "authHeaders": { "Authorization": "Bearer YOUR_TOKEN" } }');
+            
+            // Don't throw for auth errors - just log and continue
+            statistics?.recordRequest(false);
+            return;
         }
         
         throw error;

@@ -90,6 +90,39 @@
             "type": "string",
             "enum": ["openapi", "postman", "curl", "insomnia"]
           }
+        },
+        "enableInteractionSimulation": {
+          "title": "Enable Interaction Simulation",
+          "type": "boolean",
+          "description": "Automatically scroll and click elements to trigger APIs on landing pages (default: true)",
+          "default": true
+        },
+        "interactionWaitTime": {
+          "title": "Interaction Wait Time (ms)",
+          "type": "integer",
+          "description": "Time to wait after each interaction in milliseconds (default: 2000)",
+          "default": 2000,
+          "minimum": 500,
+          "maximum": 10000
+        },
+        "authHeaders": {
+          "title": "Authentication Headers",
+          "type": "object",
+          "description": "Custom authentication headers (e.g., {\"Authorization\": \"Bearer TOKEN\"})",
+          "editor": "json",
+          "default": {}
+        },
+        "apiKey": {
+          "title": "API Key",
+          "type": "string",
+          "description": "API key for authentication (will be added as X-API-Key header)",
+          "editor": "textfield"
+        },
+        "bearerToken": {
+          "title": "Bearer Token",
+          "type": "string",
+          "description": "Bearer token for authentication (will be added as Authorization: Bearer TOKEN header)",
+          "editor": "textfield"
         }
       },
       "required": ["startUrls"]

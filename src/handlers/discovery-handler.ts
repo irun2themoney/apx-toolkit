@@ -1,5 +1,6 @@
 import type { PlaywrightCrawlingContext } from 'crawlee';
 import { Dataset } from 'crawlee';
+import type { Page } from 'playwright';
 import type { ActorInput, DiscoveredAPI, APIResponse } from '../types.js';
 import { REQUEST_LABELS } from '../types.js';
 import { isAPIResponse, extractAPIMetadata } from '../utils/api-detector.js';
@@ -9,6 +10,148 @@ import { generateTypeScriptDeclarationFile } from '../utils/typescript-generator
 import { generateAllTestSuites } from '../utils/test-generator.js';
 import { generateSDKPackages } from '../utils/sdk-generator.js';
 import { getStatistics } from '../utils/statistics.js';
+
+/**
+ * Simulates user interactions to trigger API calls on landing pages
+ */
+async function simulateInteractions(
+    page: Page,
+    log: any,
+    lastAPIActivityTime: { value: number },
+    discoveredAPIs: DiscoveredAPI[],
+    discoveredBaseUrls: Set<string>,
+    responseBodyCache: Map<string, Buffer>,
+    responseExamples: Map<string, APIResponse>,
+    input: ActorInput
+): Promise<void> {
+    const interactionWaitTime = input.interactionWaitTime || 2000;
+    
+    try {
+        log.info('Starting interaction simulation: scrolling and clicking...');
+        
+        // Set up response listener for interactions
+        const responseListener = async (response: any) => {
+            try {
+                const url = response.url();
+                const isAPI = await isAPIResponse(response, {
+                    apiPatterns: input.apiPatterns,
+                    minResponseSize: input.minResponseSize || 1000,
+                });
+
+                if (isAPI) {
+                    lastAPIActivityTime.value = Date.now();
+                    log.info(`API discovered during interaction: ${url}`);
+
+                    try {
+                        const body = await response.body();
+                        responseBodyCache.set(url, body);
+                    } catch (error) {
+                        log.debug(`Could not cache response body for ${url}`);
+                    }
+
+                    const cachedBody = responseBodyCache.get(url);
+                    const apiMetadata = await extractAPIMetadata(response, input, cachedBody);
+
+                    if (apiMetadata && !discoveredBaseUrls.has(apiMetadata.baseUrl)) {
+                        discoveredBaseUrls.add(apiMetadata.baseUrl);
+                        discoveredAPIs.push(apiMetadata);
+                        
+                        try {
+                            const body = cachedBody || await response.body();
+                            const json: APIResponse = JSON.parse(body.toString());
+                            responseExamples.set(apiMetadata.url, json);
+                        } catch (error) {
+                            log.debug(`Could not capture response example for ${url}`);
+                        }
+                        
+                        log.info(`Discovered API: ${apiMetadata.baseUrl}`);
+                    }
+                }
+            } catch (error) {
+                log.debug(`Error processing response during interaction: ${error}`);
+            }
+        };
+
+        page.on('response', responseListener);
+
+        // Scroll down to trigger lazy-loaded content
+        log.info('Scrolling page to trigger lazy-loaded APIs...');
+        await page.evaluate(async () => {
+            await new Promise<void>((resolve) => {
+                let totalHeight = 0;
+                const distance = 300;
+                const timer = setInterval(() => {
+                    const scrollHeight = document.body.scrollHeight;
+                    window.scrollBy(0, distance);
+                    totalHeight += distance;
+
+                    if (totalHeight >= scrollHeight) {
+                        clearInterval(timer);
+                        resolve();
+                    }
+                }, 100);
+            });
+        });
+        await page.waitForTimeout(interactionWaitTime);
+
+        // Try clicking common interactive elements
+        log.info('Clicking interactive elements...');
+        const clickableSelectors = [
+            'button',
+            'a[href]',
+            '[role="button"]',
+            '.btn',
+            '.button',
+            '[data-testid*="button"]',
+            '[data-testid*="link"]',
+        ];
+
+        for (const selector of clickableSelectors) {
+            try {
+                const elements = await page.$$(selector);
+                if (elements.length > 0 && elements.length <= 10) {
+                    // Only click if there are a reasonable number of elements
+                    for (let i = 0; i < Math.min(3, elements.length); i++) {
+                        try {
+                            const element = elements[i];
+                            const isVisible = await element.isVisible();
+                            if (isVisible) {
+                                await element.click({ timeout: 1000 });
+                                await page.waitForTimeout(1000);
+                                
+                                // If we found APIs, we can stop
+                                if (discoveredAPIs.length > 0) {
+                                    break;
+                                }
+                            }
+                        } catch (error) {
+                            // Element might not be clickable, continue
+                        }
+                    }
+                }
+                if (discoveredAPIs.length > 0) {
+                    break;
+                }
+            } catch (error) {
+                // Selector might not exist, continue
+            }
+        }
+
+        // Wait a bit more for any delayed API calls
+        await page.waitForTimeout(interactionWaitTime);
+
+        // Remove the response listener
+        page.off('response', responseListener);
+
+        if (discoveredAPIs.length > 0) {
+            log.info(`Interaction simulation successful! Discovered ${discoveredAPIs.length} API(s)`);
+        } else {
+            log.warning('Interaction simulation did not discover any APIs');
+        }
+    } catch (error) {
+        log.warning(`Error during interaction simulation: ${error}`);
+    }
+}
 
 /**
  * Handler for START_DISCOVERY requests
@@ -30,7 +173,7 @@ export async function handleDiscovery(
     log.info(`Starting API discovery for ${request.url}`);
 
     // Track API activity to enable early exit
-    let lastAPIActivityTime = Date.now();
+    const lastAPIActivityTime = { value: Date.now() };
     const API_ACTIVITY_TIMEOUT = 3000; // 3 seconds of no activity = likely done
     let apiActivityCheckInterval: NodeJS.Timeout | null = null;
 
@@ -46,7 +189,7 @@ export async function handleDiscovery(
             });
 
             if (isAPI) {
-                lastAPIActivityTime = Date.now();
+                lastAPIActivityTime.value = Date.now();
                 log.info(`Potential API endpoint found: ${url}`);
 
                 // Cache response body for later use
@@ -106,7 +249,7 @@ export async function handleDiscovery(
         
         // Monitor for API activity
         apiActivityCheckInterval = setInterval(() => {
-            const timeSinceLastActivity = Date.now() - lastAPIActivityTime;
+            const timeSinceLastActivity = Date.now() - lastAPIActivityTime.value;
             if (timeSinceLastActivity > API_ACTIVITY_TIMEOUT && discoveredAPIs.length > 0) {
                 // We have APIs and no recent activity - likely done
                 log.debug('No recent API activity, proceeding with discovered APIs');
@@ -125,6 +268,12 @@ export async function handleDiscovery(
 
         // Short wait for any final lazy-loaded calls (reduced from 2s to 1s)
         await page.waitForTimeout(1000);
+
+        // If no APIs discovered yet and interaction simulation is enabled, try to trigger APIs
+        if (discoveredAPIs.length === 0 && input.enableInteractionSimulation !== false) {
+            log.info('No APIs discovered on initial load. Attempting interaction simulation...');
+            await simulateInteractions(page, log, lastAPIActivityTime, discoveredAPIs, discoveredBaseUrls, responseBodyCache, responseExamples, input);
+        }
     } catch (error) {
         log.warning(`Error navigating to page: ${error}`);
         // Continue anyway - we might have captured some responses
@@ -135,10 +284,13 @@ export async function handleDiscovery(
         }
     }
 
-    // If no APIs were discovered, log a warning
+    // If no APIs were discovered, log a warning with helpful suggestions
     if (discoveredAPIs.length === 0) {
         log.warning(
             'No API endpoints discovered. The page might not use API calls, or they might be triggered by user interaction.'
+        );
+        log.warning(
+            '💡 Tip: Try enabling interaction simulation or provide a direct API endpoint URL instead of a landing page.'
         );
         return;
     }

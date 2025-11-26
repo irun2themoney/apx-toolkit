@@ -10,6 +10,8 @@
     "dev": "tsc --watch",
     "test": "npm run build && node dist/test-main.js",
     "test:watch": "npm run dev & node --watch dist/test-main.js",
+    "test:extreme": "node extreme-test-suite.js",
+    "analyze:extreme": "node analyze-extreme-results.js",
     "verify": "node verify-build.js"
   },
   "keywords": [

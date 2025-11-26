@@ -308,6 +308,11 @@ The Actor automatically detects and handles:
 - **`paginationType`** (string): `'auto'`, `'offset'`, `'page'`, or `'cursor'` (default: `'auto'`)
 - **`generateDocumentation`** (boolean): Generate API documentation (default: true)
 - **`exportFormats`** (array): Formats to export: `'openapi'`, `'postman'`, `'curl'`, `'insomnia'` (default: all)
+- **`enableInteractionSimulation`** (boolean): Automatically scroll and click to trigger APIs on landing pages (default: true)
+- **`interactionWaitTime`** (number): Time to wait after each interaction in milliseconds (default: 2000)
+- **`authHeaders`** (object): Custom authentication headers (e.g., `{"Authorization": "Bearer TOKEN"}`)
+- **`apiKey`** (string): API key for authentication (added as `X-API-Key` header)
+- **`bearerToken`** (string): Bearer token for authentication (added as `Authorization: Bearer TOKEN` header)
 
 ## Output
 
@@ -412,6 +417,53 @@ If you know the API endpoints follow a specific pattern:
     }
   ],
   "apiPatterns": ["/api/v1/products", "/api/products"]
+}
+```
+
+### With Authentication
+
+For APIs that require authentication:
+
+```json
+{
+  "startUrls": [
+    {
+      "url": "https://api.example.com/"
+    }
+  ],
+  "bearerToken": "your-token-here"
+}
+```
+
+Or with custom headers:
+
+```json
+{
+  "startUrls": [
+    {
+      "url": "https://api.example.com/"
+    }
+  ],
+  "authHeaders": {
+    "Authorization": "Bearer your-token",
+    "X-API-Key": "your-api-key"
+  }
+}
+```
+
+### With Interaction Simulation
+
+For landing pages that require user interaction to trigger APIs:
+
+```json
+{
+  "startUrls": [
+    {
+      "url": "https://example.com/"
+    }
+  ],
+  "enableInteractionSimulation": true,
+  "interactionWaitTime": 2000
 }
 ```
 
@@ -528,10 +580,30 @@ APX/
 - Invalid responses
 
 **Solutions:**
-- Check if APIs require authentication tokens
+- **Authentication (401/403 errors)**: Add `authHeaders`, `apiKey`, or `bearerToken` to your input
+  ```json
+  {
+    "bearerToken": "your-token",
+    "authHeaders": { "Authorization": "Bearer TOKEN" }
+  }
+  ```
 - Reduce `maxConcurrency` if hitting rate limits
 - Increase timeout settings
 - Check API response format
+
+### No APIs Discovered on Landing Pages
+
+**Problem:** Landing pages that require user interaction don't automatically trigger APIs.
+
+**Solution:** Enable interaction simulation (enabled by default):
+```json
+{
+  "enableInteractionSimulation": true,
+  "interactionWaitTime": 2000
+}
+```
+
+This will automatically scroll the page and click interactive elements to trigger API calls.
 
 ## Testing
 

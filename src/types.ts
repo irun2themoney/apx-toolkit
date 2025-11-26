@@ -22,6 +22,13 @@ export interface ActorInput {
     paginationType?: 'auto' | 'offset' | 'page' | 'cursor';
     exportFormats?: ExportFormat[];
     generateDocumentation?: boolean;
+    // Authentication support
+    authHeaders?: Record<string, string>;
+    apiKey?: string;
+    bearerToken?: string;
+    // Interaction simulation for landing pages
+    enableInteractionSimulation?: boolean;
+    interactionWaitTime?: number;
 }
 
 /**
