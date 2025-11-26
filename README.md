@@ -21,6 +21,26 @@ APX is the ultimate developer tool that automatically discovers APIs and generat
 
 **APX** - Your complete API toolkit.
 
+## Quick Start
+
+### CLI (Recommended for Local Development)
+
+```bash
+# Install globally
+npm install -g @apx/toolkit
+
+# Run APX
+apx --url https://api.example.com
+
+# Output saved to ./apx-output
+```
+
+### Apify Platform
+
+Deploy to Apify and run via web interface or API.
+
+---
+
 ## Overview
 
 The biggest pain point for developers working with APIs is the manual work:

@@ -4,10 +4,14 @@
   "description": "APX - The API Toolkit. From API discovery to production code in seconds. Automatically discovers APIs and generates code in 10 languages, TypeScript types, test suites, SDK packages, and complete documentation.",
   "type": "module",
   "main": "dist/main.js",
+  "bin": {
+    "apx": "./dist/cli.js"
+  },
   "scripts": {
     "build": "tsc",
     "start": "node dist/main.js",
     "dev": "tsc --watch",
+    "cli": "npm run build && node dist/cli.js",
     "test": "npm run build && node dist/test-main.js",
     "test:watch": "npm run dev & node --watch dist/test-main.js",
     "test:extreme": "node extreme-test-suite.js",
@@ -35,13 +39,13 @@
     "url": "https://github.com/irun2themoney/apx-toolkit.git"
   },
   "dependencies": {
+    "apify": "^3.0.0",
     "crawlee": "^3.9.0",
     "playwright": "^1.48.0",
-    "apify": "^3.0.0"
+    "yargs": "^17.7.2"
   },
   "devDependencies": {
     "@types/node": "^20.14.0",
     "typescript": "^5.5.0"
   }
 }
-

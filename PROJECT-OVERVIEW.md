@@ -368,6 +368,14 @@ The Actor outputs multiple types of data to the dataset:
     - Supports real-time API discovery
     - Completes full API type coverage: REST, GraphQL, and WebSocket
 
+12. **CLI Tool** ✅
+    - Command-line interface for local development
+    - Decoupled core runner (no Apify dependencies)
+    - Saves all artifacts to local filesystem
+    - Full feature parity with Apify Actor
+    - Installable globally: `npm install -g @apx/toolkit`
+    - Usage: `apx --url https://api.example.com`
+
 ---
 
 ## Performance Metrics
@@ -413,7 +421,8 @@ The Actor outputs multiple types of data to the dataset:
 8. Builds complete SDK packages with CI/CD ready to publish
 9. Generates documentation with inferred descriptions in 4 formats
 10. Supports REST, GraphQL, and WebSocket APIs - all in one tool
-11. Does ALL of this in one automated run
+11. Provides CLI tool for local development and CI/CD integration
+12. Does ALL of this in one automated run
 
 ### Comparison to Existing Tools
 
@@ -431,6 +440,7 @@ The Actor outputs multiple types of data to the dataset:
 | SDK Packages | Requires spec | ✅ Ready-to-publish packages with CI/CD |
 | Documentation | Requires spec | ✅ 4 formats with inferred descriptions |
 | Complex SPA Handling | Limited | ✅ Deep Interaction Fuzzer |
+| CLI Tool | ❌ Platform-only | ✅ Local CLI + Platform |
 | All-in-One | ❌ Multiple tools needed | ✅ Everything in one run |
 
 ---
@@ -479,6 +489,7 @@ The Actor outputs multiple types of data to the dataset:
 - **README.md** - Comprehensive main documentation
 - **docs/TESTING.md** - Testing guide
 - **docs/QUICK-TEST.md** - Quick start guide
+- **docs/CLI.md** - CLI usage guide
 - **EXTREME-TEST-FINDINGS.md** - Test analysis
 - **CRITICAL-FIXES-APPLIED.md** - Recent improvements
 
@@ -501,7 +512,7 @@ The Actor outputs multiple types of data to the dataset:
 - [ ] Advanced schema inference with AI
 
 ### Phase 3: Developer Experience
-- [ ] CLI tool
+- [x] CLI tool ✅ **COMPLETED** (apx command available globally)
 - [ ] VS Code extension
 - [ ] GitHub Action
 - [ ] Web UI
@@ -700,4 +711,5 @@ APX Toolkit is a **production-ready developer tool** that solves a real problem:
 - ✅ Improved OpenAPI descriptions with inferred field descriptions
 - ✅ CI/CD templates for all SDK packages
 - ✅ Deep Interaction Fuzzer for complex SPAs
+- ✅ CLI tool for local development and CI/CD integration
 

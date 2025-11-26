@@ -20,7 +20,7 @@
     "noFallthroughCasesInSwitch": true,
     "types": []
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "cli.ts"],
   "exclude": ["node_modules", "dist"]
 }
 
