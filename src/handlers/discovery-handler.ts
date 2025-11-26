@@ -1,7 +1,9 @@
 import type { PlaywrightCrawlingContext } from 'crawlee';
+import { Dataset } from 'crawlee';
 import type { ActorInput, DiscoveredAPI } from '../types.js';
 import { REQUEST_LABELS } from '../types.js';
 import { isAPIResponse, extractAPIMetadata } from '../utils/api-detector.js';
+import { generateExports } from '../utils/api-exporter.js';
 
 /**
  * Handler for START_DISCOVERY requests
@@ -103,5 +105,54 @@ export async function handleDiscovery(
     }
 
     log.info(`Discovery complete. Found ${discoveredAPIs.length} API endpoint(s).`);
+
+    // Generate API documentation exports if requested
+    const shouldGenerateDocs =
+        input.generateDocumentation !== false &&
+        (input.exportFormats && input.exportFormats.length > 0);
+    
+    if (shouldGenerateDocs && discoveredAPIs.length > 0) {
+        log.info('Generating API documentation exports...');
+        
+        const baseUrl = discoveredAPIs[0]?.baseUrl
+            ? new URL(discoveredAPIs[0].baseUrl).origin
+            : undefined;
+        
+        const exports = generateExports(
+            discoveredAPIs,
+            input.exportFormats || ['openapi', 'postman', 'curl'],
+            baseUrl
+        );
+
+        // Save exports to dataset
+        for (const exportData of exports) {
+            await Dataset.pushData({
+                _type: 'api_documentation',
+                format: exportData.format,
+                filename: exportData.filename,
+                content: exportData.content,
+                mimeType: exportData.mimeType,
+                apiCount: discoveredAPIs.length,
+                generatedAt: new Date().toISOString(),
+                sourceUrl: request.url,
+            });
+
+            log.info(`Generated ${exportData.format.toUpperCase()} export: ${exportData.filename}`);
+        }
+
+        // Also save a summary of discovered APIs
+        await Dataset.pushData({
+            _type: 'api_summary',
+            totalApis: discoveredAPIs.length,
+            apis: discoveredAPIs.map((api) => ({
+                url: api.baseUrl,
+                method: api.method,
+                hasPagination: !!api.paginationInfo,
+                dataPath: api.dataPath,
+            })),
+            generatedAt: new Date().toISOString(),
+            sourceUrl: request.url,
+        });
+    }
 }
 

@@ -71,6 +71,23 @@
           "description": "Type of pagination to use",
           "enum": ["auto", "offset", "page", "cursor"],
           "default": "auto"
+        },
+        "generateDocumentation": {
+          "title": "Generate API Documentation",
+          "type": "boolean",
+          "description": "Automatically generate API documentation in multiple formats (OpenAPI, Postman, cURL, Insomnia)",
+          "default": true
+        },
+        "exportFormats": {
+          "title": "Export Formats",
+          "type": "array",
+          "description": "Formats to export API documentation (openapi, postman, curl, insomnia)",
+          "editor": "stringList",
+          "default": ["openapi", "postman", "curl"],
+          "items": {
+            "type": "string",
+            "enum": ["openapi", "postman", "curl", "insomnia"]
+          }
         }
       },
       "required": ["startUrls"]

@@ -20,6 +20,23 @@ export interface ActorInput {
     maxConcurrency?: number;
     dataPath?: string;
     paginationType?: 'auto' | 'offset' | 'page' | 'cursor';
+    exportFormats?: ExportFormat[];
+    generateDocumentation?: boolean;
+}
+
+/**
+ * Export format options
+ */
+export type ExportFormat = 'openapi' | 'postman' | 'curl' | 'insomnia';
+
+/**
+ * API documentation export
+ */
+export interface APIExport {
+    format: ExportFormat;
+    content: string;
+    filename: string;
+    mimeType: string;
 }
 
 /**
