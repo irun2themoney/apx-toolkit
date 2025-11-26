@@ -10,6 +10,7 @@ import { generateTypeScriptDeclarationFile } from '../utils/typescript-generator
 import { generateAllTestSuites } from '../utils/test-generator.js';
 import { generateSDKPackages } from '../utils/sdk-generator.js';
 import { getStatistics } from '../utils/statistics.js';
+import { deepInteractionFuzzing } from '../utils/interaction-fuzzer.js';
 
 /**
  * Simulates user interactions to trigger API calls on landing pages
@@ -388,10 +389,30 @@ export async function handleDiscovery(
         // Short wait for any final lazy-loaded calls (reduced from 2s to 1s)
         await page.waitForTimeout(1000);
 
-        // If no APIs discovered yet and interaction simulation is enabled, try to trigger APIs
+        // If no APIs discovered yet and interaction simulation is enabled, try deep fuzzing
         if (discoveredAPIs.length === 0 && input.enableInteractionSimulation !== false) {
-            log.info('No APIs discovered on initial load. Attempting interaction simulation...');
-            await simulateInteractions(page, log, lastAPIActivityTime, discoveredAPIs, discoveredBaseUrls, responseBodyCache, responseExamples, input);
+            log.info('No APIs discovered on initial load. Attempting deep interaction fuzzing...');
+            
+            // Use deep interaction fuzzer for complex SPAs
+            await deepInteractionFuzzing(page, log, {
+                interactionDelayMs: input.interactionWaitTime || 500,
+            });
+            
+            // Wait a bit more for any APIs triggered by fuzzing
+            await page.waitForTimeout(2000);
+            
+            // If still no APIs, try basic interaction simulation as fallback
+            if (discoveredAPIs.length === 0) {
+                log.info('Deep fuzzing did not discover APIs. Attempting basic interaction simulation...');
+                await simulateInteractions(page, log, lastAPIActivityTime, discoveredAPIs, discoveredBaseUrls, responseBodyCache, responseExamples, input);
+            }
+        } else if (input.enableInteractionSimulation !== false && discoveredAPIs.length > 0) {
+            // Even if we found some APIs, run deep fuzzing to find more hidden ones
+            log.info('APIs discovered, but running deep fuzzing to find additional hidden APIs...');
+            await deepInteractionFuzzing(page, log, {
+                interactionDelayMs: input.interactionWaitTime || 500,
+            });
+            await page.waitForTimeout(2000);
         }
     } catch (error) {
         log.warning(`Error navigating to page: ${error}`);

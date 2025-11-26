@@ -459,7 +459,13 @@ Or with custom headers:
 }
 ```
 
-### With Interaction Simulation
+### With Deep Interaction Fuzzing
+
+APX automatically uses **Deep Interaction Fuzzing** for complex SPAs:
+- Random scrolls at lazy-load points (25%, 50%, 75%)
+- Input focus/blur to trigger validation APIs
+- Smart random clicks on interactive elements
+- Network idle detection to capture all triggered APIs
 
 For landing pages that require user interaction to trigger APIs:
 

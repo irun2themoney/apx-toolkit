@@ -123,9 +123,10 @@ Generates industry-standard documentation with human-readable descriptions:
 
 - **GraphQL API Detection**: Automatically detects GraphQL requests and generates Apollo/gql client code
 - **OAuth 2.0 Flow Support**: Automatically captures tokens from login flows
+- **Deep Interaction Fuzzing**: Advanced SPA handling with randomized scrolls, input focus/blur, and smart clicks to trigger hidden APIs in complex SPAs
 - **Automatic Pagination Detection**: Handles page-based, offset-based, and cursor-based pagination
 - **Rate Limit Detection**: Auto-detects rate limits from headers
-- **Interaction Simulation**: Automatically scrolls and clicks to trigger APIs on landing pages
+- **Interaction Simulation**: Automatically scrolls and clicks to trigger APIs on landing pages (fallback)
 - **Authentication Support**: API keys, Bearer tokens, custom headers, OAuth 2.0 automation
 - **Request/Response Examples**: Captures real API examples
 - **Error Handling**: Graceful handling with helpful error messages
@@ -343,6 +344,14 @@ The Actor outputs multiple types of data to the dataset:
    - Multi-version testing, code coverage, automatic publishing
    - SDK packages ready to push to GitHub with CI/CD
 
+10. **Deep Interaction Fuzzer** ✅
+    - Advanced SPA handling with randomized user behaviors
+    - Performs scrolls at lazy-load points (25%, 50%, 75%)
+    - Focus/blur input fields to trigger validation/pre-fetch APIs
+    - Random clicks on interactive elements
+    - Waits for network to settle after interactions
+    - Significantly improves discovery rate for complex SPAs
+
 ---
 
 ## Performance Metrics
@@ -457,10 +466,10 @@ The Actor outputs multiple types of data to the dataset:
 ## Future Improvements (Roadmap)
 
 ### Phase 1: Enhanced Discovery
-- [ ] More sophisticated interaction patterns
+- [x] More sophisticated interaction patterns ✅ **COMPLETED** (Deep Interaction Fuzzer)
 - [ ] HAR file import support
 - [ ] Custom interaction scripts
-- [ ] Better SPA handling
+- [x] Better SPA handling ✅ **COMPLETED** (Deep Interaction Fuzzer)
 
 ### Phase 2: Advanced Features
 - [x] OAuth flow support ✅ **COMPLETED**
@@ -481,8 +490,8 @@ The Actor outputs multiple types of data to the dataset:
 ## Known Issues & Limitations
 
 1. **Landing Pages**
-   - Some landing pages require specific user flows
-   - Interaction simulation helps but not 100%
+   - Most landing pages now handled by Deep Interaction Fuzzer
+   - Fuzzer performs randomized scrolls, input focus/blur, and smart clicks
    - **Workaround:** Use direct API endpoint URLs when possible
 
 2. **Authentication**
@@ -491,8 +500,9 @@ The Actor outputs multiple types of data to the dataset:
    - **Workaround:** Use authHeaders, apiKey, bearerToken, or OAuth flow
 
 3. **Complex SPAs**
-   - Variable success depending on how APIs are triggered
-   - **Workaround:** Increase discoveryTimeout, enable interaction simulation
+   - Significantly improved with Deep Interaction Fuzzer
+   - Fuzzer handles lazy-loading, validation APIs, and hidden triggers
+   - **Workaround:** Increase discoveryTimeout if needed, fuzzer runs automatically
 
 4. **Rate Limiting**
    - Some APIs may rate limit requests
