@@ -73,6 +73,9 @@ export interface DiscoveredAPI {
     isGraphQL?: boolean;
     graphQLQuery?: string;
     graphQLOperationName?: string;
+    isWebSocket?: boolean;
+    webSocketUrl?: string;
+    webSocketProtocols?: string[];
 }
 
 /**

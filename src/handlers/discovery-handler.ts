@@ -292,6 +292,17 @@ export async function handleDiscovery(
 
     log.info(`Starting API discovery for ${request.url}`);
 
+    // Set up WebSocket detection BEFORE page navigation
+    const webSocketConnections: Array<{ url: string; protocols?: string[] }> = [];
+    page.on('websocket', (ws) => {
+        const url = ws.url();
+        log.info(`WebSocket connection detected: ${url}`);
+        webSocketConnections.push({
+            url,
+            protocols: undefined, // Playwright doesn't expose protocol directly
+        });
+    });
+
     // Track API activity to enable early exit
     const lastAPIActivityTime = { value: Date.now() };
     const API_ACTIVITY_TIMEOUT = 3000; // 3 seconds of no activity = likely done
@@ -433,6 +444,26 @@ export async function handleDiscovery(
             '💡 Tip: Try enabling interaction simulation or provide a direct API endpoint URL instead of a landing page.'
         );
         return;
+    }
+
+    // Convert WebSocket connections to DiscoveredAPI format
+    for (const ws of webSocketConnections) {
+        const wsAPI: DiscoveredAPI = {
+            url: ws.url,
+            baseUrl: ws.url,
+            method: 'GET', // WebSocket uses GET for initial handshake
+            headers: {},
+            isWebSocket: true,
+            webSocketUrl: ws.url,
+            webSocketProtocols: ws.protocols,
+        };
+        
+        // Check if we already discovered this WebSocket
+        if (!discoveredBaseUrls.has(wsAPI.baseUrl)) {
+            discoveredBaseUrls.add(wsAPI.baseUrl);
+            discoveredAPIs.push(wsAPI);
+            log.info(`Discovered WebSocket API: ${ws.url}`);
+        }
     }
 
     // Enqueue discovered APIs for processing
