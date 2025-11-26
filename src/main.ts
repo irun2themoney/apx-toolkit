@@ -143,6 +143,11 @@ async function main() {
         if (apisDiscovered > 0) {
             statistics.recordDiscovery(apisDiscovered, discoveryDuration);
             console.log(`🔍 Discovered ${apisDiscovered} API endpoint(s)`);
+            
+            // Check queue status before starting HttpCrawler
+            const queueInfoBefore = await requestQueue.getInfo();
+            const pendingRequests = (queueInfoBefore?.totalRequestCount || 0) - (queueInfoBefore?.handledRequestCount || 0);
+            console.log(`📋 Queue status: ${queueInfoBefore?.totalRequestCount || 0} total, ${queueInfoBefore?.handledRequestCount || 0} handled, ${pendingRequests} pending`);
             console.log('⚡ Starting API processing phase...');
             console.log('');
         } else {

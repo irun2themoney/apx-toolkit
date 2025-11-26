@@ -1,13 +1,13 @@
 {
   "startUrls": [
     {
-      "url": "https://apilist.fun/"
+      "url": "https://reqres.in/"
     }
   ],
   "apiPatterns": [],
   "minResponseSize": 100,
-  "discoveryTimeout": 15000,
-  "maxPages": 2,
+  "discoveryTimeout": 20000,
+  "maxPages": 3,
   "maxConcurrency": 2,
   "dataPath": "",
   "paginationType": "auto",

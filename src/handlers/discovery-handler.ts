@@ -144,6 +144,9 @@ export async function handleDiscovery(
     }
 
     // Enqueue discovered APIs for processing
+    // Access the shared requestQueue from the crawler to ensure HttpCrawler can pick up requests
+    const requestQueue = (crawler as any).requestQueue;
+    
     for (const api of discoveredAPIs) {
         const initialUserData = {
             page: api.paginationInfo?.currentPage || 1,
@@ -154,15 +157,26 @@ export async function handleDiscovery(
             discoveredAPI: api,
         };
 
-        // Add the first API request
-        await crawler.addRequests([
-            {
+        // Add the first API request directly to the shared requestQueue
+        // This ensures HttpCrawler can pick it up
+        if (requestQueue) {
+            await requestQueue.addRequest({
                 url: api.baseUrl,
                 label: REQUEST_LABELS.API_PROCESS,
                 userData: initialUserData,
                 headers: api.headers,
-            },
-        ]);
+            });
+        } else {
+            // Fallback to crawler.addRequests if requestQueue not accessible
+            await crawler.addRequests([
+                {
+                    url: api.baseUrl,
+                    label: REQUEST_LABELS.API_PROCESS,
+                    userData: initialUserData,
+                    headers: api.headers,
+                },
+            ]);
+        }
 
         log.info(`Enqueued API request: ${api.baseUrl}`, {
             label: REQUEST_LABELS.API_PROCESS,

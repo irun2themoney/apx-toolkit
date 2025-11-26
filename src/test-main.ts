@@ -128,6 +128,10 @@ async function testMain() {
 
         console.log('\n✅ Discovery phase complete. Starting API processing phase...\n');
 
+        // Check queue status before starting HttpCrawler
+        const queueInfoBefore = await requestQueue.getInfo();
+        console.log(`📋 Queue status: ${queueInfoBefore?.totalRequestCount || 0} total, ${queueInfoBefore?.handledRequestCount || 0} handled, ${(queueInfoBefore?.totalRequestCount || 0) - (queueInfoBefore?.handledRequestCount || 0)} pending\n`);
+
         // Run HttpCrawler to process all API_PROCESS requests
         await httpCrawler.run();
 

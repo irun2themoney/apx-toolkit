@@ -215,12 +215,25 @@ export async function handleAPIProcessing(
         // Make the HTTP request with retry logic
         const response = await retryWithBackoff(
             async () => {
-                return await sendRequest({
+                const requestOptions: any = {
                     url: apiUrl,
                     headers: api.headers,
                     method: api.method,
-                    payload: api.body ? JSON.stringify(api.body) : undefined,
-                });
+                };
+                
+                // Add body for POST requests
+                if (api.method === 'POST' && api.body) {
+                    requestOptions.body = JSON.stringify(api.body);
+                    // Ensure Content-Type header is set for JSON
+                    if (!requestOptions.headers) {
+                        requestOptions.headers = {};
+                    }
+                    if (!requestOptions.headers['Content-Type']) {
+                        requestOptions.headers['Content-Type'] = 'application/json';
+                    }
+                }
+                
+                return await sendRequest(requestOptions);
             },
             {
                 maxAttempts: 3,
