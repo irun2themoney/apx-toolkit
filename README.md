@@ -6,7 +6,9 @@ APX is the ultimate developer tool that automatically discovers APIs and generat
 
 **What developers get:**
 - ✅ **Code snippets** in 12 languages (TypeScript, JavaScript, Python, Go, Rust, Java, PHP, Ruby, C#, Kotlin, cURL, PowerShell)
+- ✅ **REST, GraphQL & WebSocket support** - Auto-detects all API types and generates appropriate client code
 - ✅ **GraphQL support** - Auto-detects GraphQL APIs and generates Apollo/gql client code
+- ✅ **WebSocket support** - Auto-detects WebSocket connections and generates client code
 - ✅ **OAuth 2.0 flow** - Automatic token capture from login flows
 - ✅ **TypeScript type definitions** (.d.ts files)
 - ✅ **Test suites** with schema validation (Jest, pytest, Mocha, Vitest, Playwright)
