@@ -20,7 +20,8 @@ const mockActor = {
     getInput: async (): Promise<ActorInput> => {
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = dirname(__filename);
-        const inputPath = join(__dirname, '../../test-input.json');
+        // When compiled, dist/test-main.js needs to go up one level to find test-input.json
+        const inputPath = join(__dirname, '../test-input.json');
         const input = JSON.parse(readFileSync(inputPath, 'utf-8'));
         console.log('[MOCK] Actor.getInput() - loaded from test-input.json');
         return input;
