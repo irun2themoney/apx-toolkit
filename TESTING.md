@@ -1,6 +1,6 @@
 # Testing Guide
 
-This guide will help you test the API-First Auto-Tuner Actor locally before deploying to Apify.
+This guide will help you test Smart API Finder & Documenter Actor locally before deploying to Apify.
 
 ## Prerequisites
 
@@ -94,7 +94,7 @@ Edit `test-input.json` to test different scenarios:
 ## Expected Output
 
 ```
-🧪 Starting API-First Auto-Tuner - TEST MODE
+🧪 Starting Smart API Finder & Documenter - TEST MODE
 ==========================================
 
 [MOCK] Actor.init() called

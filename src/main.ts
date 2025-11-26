@@ -6,7 +6,7 @@ import { handleDiscovery } from './handlers/discovery-handler.js';
 import { handleAPIProcessing } from './handlers/api-handler.js';
 
 /**
- * API-First Auto-Tuner Actor
+ * Smart API Finder & Documenter Actor
  * 
  * Automatically discovers internal API endpoints and generates complete API documentation
  * in OpenAPI, Postman, cURL, and Insomnia formats.
@@ -69,7 +69,7 @@ async function main() {
         label: REQUEST_LABELS.START_DISCOVERY,
     }));
 
-    console.log('Starting API-First Auto-Tuner', {
+    console.log('Starting Smart API Finder & Documenter', {
         startUrls: input.startUrls.length,
         maxPages: input.maxPages,
         maxConcurrency: input.maxConcurrency,

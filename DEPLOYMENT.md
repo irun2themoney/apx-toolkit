@@ -1,4 +1,4 @@
-# Deployment Guide - API-First Auto-Tuner
+# Deployment Guide - Smart API Finder & Documenter
 
 ## Pre-Deployment Checklist
 

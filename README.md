@@ -1,4 +1,4 @@
-# API-First Auto-Tuner
+# Smart API Finder & Documenter
 
 **The only tool that automatically discovers APIs AND generates complete API documentation from any website.**
 
@@ -10,7 +10,7 @@ This Apify Actor intelligently discovers internal API endpoints using a browser 
 
 The biggest bottleneck in web scraping is handling modern dynamic websites that rely on JavaScript rendering. The traditional solution is to use a headless browser (like Puppeteer or Playwright), which is slow and expensive.
 
-**The API-First Auto-Tuner solves this by:**
+**Smart API Finder & Documenter solves this by:**
 
 1. **Discovery Phase**: Uses Playwright to load the initial page and intercept network traffic to identify internal API endpoints
 2. **Optimization Phase**: Automatically switches to fast HTTP requests for all subsequent data extraction
@@ -38,7 +38,7 @@ Instead of spending **weeks** manually:
 
 **Real Example:** Discovering and documenting APIs from a site takes:
 - **Manual:** 2-4 weeks of work
-- **API-First Auto-Tuner:** 10 seconds
+- **Smart API Finder & Documenter:** 10 seconds
 
 **This feature alone makes it impossible to do without.**
 
@@ -46,7 +46,7 @@ Instead of spending **weeks** manually:
 
 Traditional browser-based scraping is expensive. For scraping 10,000 pages:
 - **Browser-based**: $50-500 (depending on platform pricing)
-- **API-First Auto-Tuner**: $5-50 (uses browser only once for discovery)
+- **Smart API Finder & Documenter**: $5-50 (uses browser only once for discovery)
 
 **Real Example**: Scraping 100,000 product listings could cost $5,000 with traditional methods, but only $50-500 with this Actor. That's a **90-99% cost reduction**.
 
@@ -99,7 +99,7 @@ Instead of spending hours manually:
 
 ### 📈 **Comparison: Traditional vs API-First**
 
-| Feature | Traditional Browser Scraping | API-First Auto-Tuner |
+| Feature | Traditional Browser Scraping | Smart API Finder & Documenter |
 |---------|----------------------------|---------------------|
 | **Setup Time** | Hours of manual API reverse engineering | Automatic discovery (seconds) |
 | **Cost per 1,000 pages** | $5-50 | $0.50-5 (10-100x cheaper) |
@@ -117,7 +117,7 @@ Instead of spending hours manually:
 3. Write custom pagination logic
 4. Deal with fragile DOM selectors that break
 
-**The Solution**: API-First Auto-Tuner automatically:
+**The Solution**: Smart API Finder & Documenter automatically:
 1. Discovers the API endpoints for you
 2. Switches to fast, cheap HTTP requests
 3. Handles pagination automatically
@@ -365,7 +365,7 @@ The Actor automatically detects and handles various pagination patterns:
 ### Project Structure
 
 ```
-API-First-Auto-Tuner/
+Smart-API-Finder-Documenter/
 ├── src/
 │   ├── main.ts                    # Main entry point
 │   ├── handlers/

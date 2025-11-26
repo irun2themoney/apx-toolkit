@@ -2,7 +2,7 @@
 
 ## What We Built
 
-We've transformed the API-First Auto-Tuner from a "nice-to-have scraper" into an **"impossible-to-do-without API documentation generator"**.
+We've transformed Smart API Finder & Documenter from a "nice-to-have scraper" into an **"impossible-to-do-without API documentation generator"**.
 
 ## ✅ Implemented Features
 
@@ -41,7 +41,7 @@ We've transformed the API-First Auto-Tuner from a "nice-to-have scraper" into an
 
 ### Time Savings:
 - **Manual API documentation:** 2-4 weeks
-- **API-First Auto-Tuner:** 10 seconds
+- **Smart API Finder & Documenter:** 10 seconds
 - **Savings:** 99.99% time reduction
 
 ### Unique Value:

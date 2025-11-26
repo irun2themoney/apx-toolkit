@@ -1,7 +1,7 @@
 {
   "actorSpecification": 1,
-  "name": "api-first-auto-tuner",
-  "title": "API-First Auto-Tuner",
+  "name": "smart-api-finder-documenter",
+  "title": "Smart API Finder & Documenter",
   "description": "Automatically discovers internal API endpoints and generates complete API documentation in OpenAPI, Postman, cURL, and Insomnia formats. The only tool that saves weeks of manual API documentation work by doing it automatically in seconds.",
   "version": "1.0",
   "readme": "./README.md",
@@ -9,7 +9,7 @@
     "templateId": "typescript-playwright"
   },
   "input": {
-    "title": "API-First Auto-Tuner",
+    "title": "Smart API Finder & Documenter",
     "type": "object",
     "schemaVersion": 1,
     "properties": {

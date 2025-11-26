@@ -44,7 +44,7 @@ This will:
 ### Successful Test Output:
 
 ```
-🧪 Starting API-First Auto-Tuner - TEST MODE
+🧪 Starting Smart API Finder & Documenter - TEST MODE
 ==========================================
 
 [MOCK] Actor.init() called

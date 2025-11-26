@@ -1,5 +1,5 @@
 {
-  "name": "api-first-auto-tuner",
+  "name": "smart-api-finder-documenter",
   "version": "1.0.0",
   "description": "Automatically discovers internal API endpoints and generates complete API documentation in OpenAPI, Postman, cURL, and Insomnia formats. The only tool that saves weeks of manual API documentation work.",
   "type": "module",
@@ -29,7 +29,7 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/irun2themoney/api-first-auto-tuner.git"
+    "url": "https://github.com/irun2themoney/smart-api-finder-documenter.git"
   },
   "dependencies": {
     "crawlee": "^3.9.0",

@@ -1,4 +1,4 @@
-# Making API-First Auto-Tuner Indispensable
+# Making Smart API Finder & Documenter Indispensable
 
 ## Current State Analysis
 

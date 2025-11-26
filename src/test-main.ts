@@ -52,7 +52,7 @@ const mockActor = {
  * Test version of main function
  */
 async function testMain() {
-    console.log('🧪 Starting API-First Auto-Tuner - TEST MODE');
+    console.log('🧪 Starting Smart API Finder & Documenter - TEST MODE');
     console.log('==========================================\n');
 
     // Initialize mock Actor

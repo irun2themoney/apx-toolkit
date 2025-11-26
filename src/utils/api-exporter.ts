@@ -282,7 +282,7 @@ export function generateInsomniaWorkspace(
         _type: 'export',
         __export_format: 4,
         __export_date: new Date().toISOString(),
-        __export_source: 'api-first-auto-tuner',
+        __export_source: 'smart-api-finder-documenter',
         resources: [
             {
                 _id: 'wrk_discovered',
