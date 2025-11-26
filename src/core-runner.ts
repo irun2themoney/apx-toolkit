@@ -2,21 +2,21 @@
  * Core Runner - Decoupled execution logic for APX
  * This module contains the core APX functionality without Apify Actor dependencies
  * Can be used by CLI, test scripts, or other integrations
+ * 
+ * Key Decoupling Features:
+ * - Accepts native TypeScript objects (ActorInput) instead of reading from Apify KeyValueStore
+ * - Uses Crawlee's local storage (works without Apify platform)
+ * - Returns structured results instead of pushing to global Dataset
+ * - Fully executable outside Apify environment
  */
 
-import { PlaywrightCrawler, HttpCrawler, Router, RequestQueue } from 'crawlee';
+import { PlaywrightCrawler, HttpCrawler, Router, RequestQueue, Dataset } from 'crawlee';
 import type { ActorInput, DiscoveredAPI } from './types.js';
 import { REQUEST_LABELS } from './types.js';
 import { handleDiscovery } from './handlers/discovery-handler.js';
 import { handleAPIProcessing } from './handlers/api-handler.js';
 import { StatisticsCollector } from './utils/statistics.js';
 import { setStatistics } from './utils/statistics.js';
-import { generateExports } from './utils/api-exporter.js';
-import { generateAllCodeSnippets } from './utils/code-generator.js';
-import { generateTypeScriptDeclarationFile } from './utils/typescript-generator.js';
-import { generateAllTestSuites } from './utils/test-generator.js';
-import { generateSDKPackages } from './utils/sdk-generator.js';
-import { Dataset } from 'crawlee';
 
 export interface APXResult {
     summary: {
@@ -86,9 +86,24 @@ function validateInput(input: ActorInput): void {
  * Core APX execution function
  * Runs the complete APX workflow without Apify Actor dependencies
  * 
- * @param input - Configuration input
- * @param options - Optional execution options
- * @returns Structured result with all generated artifacts
+ * Decoupling Strategy:
+ * 1. Input: Accepts native TypeScript object (ActorInput) instead of reading from Apify KeyValueStore
+ * 2. Crawlee Setup: Uses Crawlee's local storage automatically (works without Apify platform)
+ *    - RequestQueue, Dataset, and other storage clients work locally via file system
+ *    - No special configuration needed - Crawlee detects environment automatically
+ * 3. Output: Collects generated data into structured object (APXResult) for return
+ *    - Data is collected from Dataset after processing
+ *    - All artifacts are structured and returned to caller
+ * 
+ * This allows APX to run in multiple environments:
+ * - Apify Actor (via main.ts)
+ * - CLI tool (via cli.ts)
+ * - Test scripts (via test-main.ts)
+ * - Any Node.js environment
+ * 
+ * @param input - Configuration input (native TypeScript object)
+ * @param options - Optional execution options (progress callbacks, error handlers)
+ * @returns Structured result with all generated artifacts and data
  */
 export async function runAPXCore(
     input: ActorInput,
@@ -109,6 +124,9 @@ export async function runAPXCore(
     setStatistics(statistics);
 
     // Create a shared request queue
+    // Crawlee automatically uses local storage when not on Apify platform
+    // Storage location: ./storage/request_queues/default (local) or Apify cloud (on platform)
+    // No special configuration needed - it works out of the box
     const requestQueue = await RequestQueue.open();
 
     // Create router for request handling
@@ -125,6 +143,7 @@ export async function runAPXCore(
     });
 
     // Configure PlaywrightCrawler for discovery phase
+    // Crawlee automatically uses local storage when not on Apify platform
     const playwrightCrawler = new PlaywrightCrawler({
         requestHandler: router,
         requestQueue,
@@ -138,6 +157,7 @@ export async function runAPXCore(
     });
 
     // Configure HttpCrawler for API processing phase
+    // Crawlee automatically uses local storage when not on Apify platform
     const httpCrawler = new HttpCrawler({
         requestHandler: router,
         requestQueue,
@@ -199,6 +219,7 @@ export async function runAPXCore(
 
         // Get final statistics
         const finalQueueInfo = await requestQueue.getInfo();
+        // Open dataset - Crawlee automatically uses local storage when not on Apify platform
         const dataset = await Dataset.open();
         const datasetInfo = await dataset.getInfo();
         
