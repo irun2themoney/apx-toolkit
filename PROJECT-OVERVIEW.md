@@ -699,7 +699,7 @@ APX Toolkit is a **production-ready developer tool** that solves a real problem:
 - ✅ Multi-platform support (Apify Actor + CLI tool)
 - ✅ Local development and CI/CD integration
 
-**Competitive Position:** APX is now the most complete API toolkit, handling the hardest problems (GraphQL, WebSocket, OAuth, enterprise languages, complex SPAs) and generating production-grade artifacts. **The only tool that supports REST, GraphQL, and WebSocket APIs automatically.**
+**Competitive Position:** APX is now the most complete API toolkit, handling the hardest problems (GraphQL, WebSocket, OAuth, enterprise languages, complex SPAs) and generating production-grade artifacts. **The only tool that supports REST, GraphQL, and WebSocket APIs automatically, available as both cloud platform and local CLI tool.**
 
 ---
 
@@ -760,6 +760,7 @@ APX Toolkit is a **production-ready developer tool** that solves a real problem:
 6. ✅ CI/CD Templates for SDK Packages
 7. ✅ Deep Interaction Fuzzer
 8. ✅ WebSocket API Detection
+9. ✅ CLI Tool for Local Development
 
 ### Competitive Position
 **APX is the ONLY tool that:**
@@ -767,8 +768,16 @@ APX Toolkit is a **production-ready developer tool** that solves a real problem:
 - Generates code for all three API types in one run
 - Includes OAuth automation, Deep Fuzzing, and CI/CD-ready outputs
 - Provides production-grade artifacts (schema-validated tests, inferred docs)
+- Offers both cloud platform (Apify) and local CLI tool
+- Can be integrated into CI/CD pipelines natively
 
-**Ready for:** Production use, competition submission, and further enhancement based on feedback.
+### Architecture Excellence
+- **Decoupled Core**: `core-runner.ts` allows execution without Apify dependencies
+- **Multi-Platform**: Same core engine powers both Apify Actor and CLI
+- **Developer-First**: CLI tool makes APX accessible for local development
+- **CI/CD Ready**: CLI integrates seamlessly into automated workflows
+
+**Ready for:** Production use, competition submission, professional developer adoption, and further enhancement based on feedback.
 
 ---
 
