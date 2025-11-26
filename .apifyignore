@@ -1,0 +1,53 @@
+# Apify ignore file - files to exclude from Actor deployment
+
+# Development files
+*.md
+!README.md
+TESTING.md
+TEST-RESULTS.md
+TEST-SETUP-SUMMARY.md
+QUICK-TEST.md
+DEPLOYMENT.md
+DEPLOY-CHECKLIST.md
+REGISTER-CHALLENGE.md
+KILLER-FEATURES.md
+MAKE-IT-ESSENTIAL.md
+FEATURE-COMPLETE.md
+
+# Test files
+test-input.json
+verify-build.js
+src/test-main.ts
+
+# Git
+.git/
+.gitignore
+.gitattributes
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Storage (local)
+storage/
+
+# Node modules (will be installed in Docker)
+node_modules/
+
+# Build artifacts (will be built in Docker)
+dist/
+
+# TypeScript
+*.tsbuildinfo
+tsconfig.json
+

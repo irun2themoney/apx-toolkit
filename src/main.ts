@@ -6,7 +6,13 @@ import { handleDiscovery } from './handlers/discovery-handler.js';
 import { handleAPIProcessing } from './handlers/api-handler.js';
 
 /**
- * Main entry point for the API-First Auto-Tuner Actor
+ * API-First Auto-Tuner Actor
+ * 
+ * Automatically discovers internal API endpoints and generates complete API documentation
+ * in OpenAPI, Postman, cURL, and Insomnia formats.
+ * 
+ * @version 1.0.0
+ * @author irun2themoney
  */
 async function main() {
     // Initialize Apify Actor

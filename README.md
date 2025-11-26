@@ -451,11 +451,19 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 
 ## License
 
-ISC
+ISC License
 
 ## Support
 
 For issues and questions:
 - Check the troubleshooting section above
 - Review Apify Actor logs for detailed error messages
-- Open an issue on the repository
+- Visit the Actor page: https://console.apify.com/actors/CwlApkVmChwWoPrps
+- Apify Documentation: https://docs.apify.com
+- Apify Discord: https://discord.gg/apify
+
+## Repository
+
+- **Actor ID**: `CwlApkVmChwWoPrps`
+- **Actor URL**: https://console.apify.com/actors/CwlApkVmChwWoPrps
+- **Apify Store**: Available on Apify Store

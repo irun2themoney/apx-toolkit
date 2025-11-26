@@ -1,0 +1,42 @@
+# Docker ignore file
+
+# Development files
+*.md
+!README.md
+.git/
+.gitignore
+.vscode/
+.idea/
+
+# Test files
+test-input.json
+verify-build.js
+src/test-main.ts
+TESTING.md
+TEST-RESULTS.md
+TEST-SETUP-SUMMARY.md
+QUICK-TEST.md
+DEPLOYMENT.md
+DEPLOY-CHECKLIST.md
+REGISTER-CHALLENGE.md
+KILLER-FEATURES.md
+MAKE-IT-ESSENTIAL.md
+FEATURE-COMPLETE.md
+
+# Node modules (installed in container)
+node_modules/
+
+# Build output (built in container)
+dist/
+
+# Storage
+storage/
+.apify/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+

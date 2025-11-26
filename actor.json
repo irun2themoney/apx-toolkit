@@ -4,6 +4,7 @@
   "title": "API-First Auto-Tuner",
   "description": "Automatically discovers internal API endpoints and generates complete API documentation in OpenAPI, Postman, cURL, and Insomnia formats. The only tool that saves weeks of manual API documentation work by doing it automatically in seconds.",
   "version": "1.0.0",
+  "readme": "./README.md",
   "meta": {
     "templateId": "typescript-playwright"
   },

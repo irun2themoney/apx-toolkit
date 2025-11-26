@@ -1,7 +1,7 @@
 {
   "name": "api-first-auto-tuner",
   "version": "1.0.0",
-  "description": "An Apify Actor that automatically discovers internal API endpoints and switches to fast HTTP requests for efficient data extraction",
+  "description": "Automatically discovers internal API endpoints and generates complete API documentation in OpenAPI, Postman, cURL, and Insomnia formats. The only tool that saves weeks of manual API documentation work.",
   "type": "module",
   "main": "dist/main.js",
   "scripts": {
@@ -17,11 +17,20 @@
     "crawlee",
     "scraping",
     "api-discovery",
+    "api-documentation",
+    "openapi",
+    "postman",
     "playwright",
-    "http-crawler"
+    "http-crawler",
+    "automation",
+    "web-scraping"
   ],
-  "author": "",
+  "author": "irun2themoney",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/irun2themoney/api-first-auto-tuner.git"
+  },
   "dependencies": {
     "crawlee": "^3.9.0",
     "playwright": "^1.48.0",
