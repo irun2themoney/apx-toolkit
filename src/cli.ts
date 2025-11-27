@@ -11,6 +11,7 @@ import yargs from 'yargs';
 import { hideBin } from 'yargs/helpers';
 import * as fs from 'fs';
 import * as path from 'path';
+import { sanitizePath, sanitizeFilename, validateURL, INPUT_LIMITS } from './utils/security.js';
 
 interface CLIArgs {
     url: string;
@@ -200,7 +201,7 @@ async function main() {
                 fs.mkdirSync(testSuitesDir, { recursive: true });
             }
             for (const suite of result.artifacts.testSuites) {
-                const filename = suite.filename || `test-${Date.now()}.js`;
+                const filename = sanitizeFilename(suite.filename || `test-${Date.now()}.js`);
                 fs.writeFileSync(
                     path.join(testSuitesDir, filename),
                     suite.code || ''
@@ -220,7 +221,8 @@ async function main() {
                     fs.mkdirSync(pkgDir, { recursive: true });
                 }
                 for (const [filename, content] of Object.entries(pkg.files || {})) {
-                    const filePath = path.join(pkgDir, filename);
+                    const safeFilename = sanitizeFilename(filename);
+                    const filePath = sanitizePath(path.join(pkgDir, safeFilename), pkgDir);
                     const dir = path.dirname(filePath);
                     if (!fs.existsSync(dir)) {
                         fs.mkdirSync(dir, { recursive: true });
@@ -238,7 +240,7 @@ async function main() {
                 fs.mkdirSync(docsDir, { recursive: true });
             }
             for (const doc of result.artifacts.documentation) {
-                const filename = doc.filename || `doc-${doc.format}.${doc.format === 'openapi' ? 'json' : 'json'}`;
+                const filename = sanitizeFilename(doc.filename || `doc-${doc.format}.${doc.format === 'openapi' ? 'json' : 'json'}`);
                 const content = typeof doc.content === 'string' ? doc.content : JSON.stringify(doc.content, null, 2);
                 fs.writeFileSync(
                     path.join(docsDir, filename),
