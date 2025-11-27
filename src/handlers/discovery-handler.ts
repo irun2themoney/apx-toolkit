@@ -58,9 +58,13 @@ async function simulateInteractions(
                         discoveredAPIs.push(apiMetadata);
                         
                         try {
-                            const body = cachedBody || await response.body();
-                            const json: APIResponse = JSON.parse(body.toString());
-                            responseExamples.set(apiMetadata.url, json);
+                            // Use cached body to avoid double-read (Playwright limitation)
+                            if (cachedBody) {
+                                const json: APIResponse = JSON.parse(cachedBody.toString());
+                                responseExamples.set(apiMetadata.url, json);
+                            } else {
+                                log.debug(`Response body not cached for ${url}, skipping example capture`);
+                            }
                         } catch (error) {
                             log.debug(`Could not capture response example for ${url}`);
                         }
@@ -343,10 +347,15 @@ export async function handleDiscovery(
                         discoveredAPIs.push(apiMetadata);
                         
                         // Capture response example for TypeScript types
+                        // Use cached body to avoid double-read (Playwright limitation)
                         try {
-                            const body = cachedBody || await response.body();
-                            const json: APIResponse = JSON.parse(body.toString());
-                            responseExamples.set(apiMetadata.url, json);
+                            if (cachedBody) {
+                                const json: APIResponse = JSON.parse(cachedBody.toString());
+                                responseExamples.set(apiMetadata.url, json);
+                            } else {
+                                // If not cached, we already read it above, so skip
+                                log.debug(`Response body not cached for ${url}, skipping example capture`);
+                            }
                         } catch (error) {
                             // If we can't parse, continue without example
                             log.debug(`Could not capture response example for ${url}`);

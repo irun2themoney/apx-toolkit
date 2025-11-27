@@ -306,8 +306,10 @@ export async function handleAPIProcessing(
         if (hasNextPage(json, userData, input.maxPages)) {
             const nextPageParams = getNextPageParams(userData, json);
 
-            await crawler.addRequests([
-                {
+            // Use requestQueue directly for consistency (same as discovery-handler)
+            const requestQueue = (crawler as any).requestQueue;
+            if (requestQueue) {
+                await requestQueue.addRequest({
                     url: api.baseUrl,
                     label: REQUEST_LABELS.API_PROCESS,
                     userData: {
@@ -315,8 +317,21 @@ export async function handleAPIProcessing(
                         ...nextPageParams,
                     },
                     headers: api.headers,
-                },
-            ]);
+                });
+            } else {
+                // Fallback to crawler.addRequests if requestQueue not accessible
+                await crawler.addRequests([
+                    {
+                        url: api.baseUrl,
+                        label: REQUEST_LABELS.API_PROCESS,
+                        userData: {
+                            ...userData,
+                            ...nextPageParams,
+                        },
+                        headers: api.headers,
+                    },
+                ]);
+            }
 
             log.info(`Enqueued next page: ${JSON.stringify(nextPageParams)}`);
             statistics?.recordPage();

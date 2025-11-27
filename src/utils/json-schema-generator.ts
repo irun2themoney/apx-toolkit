@@ -53,10 +53,12 @@ export function generateJSONSchema(
     }
 
     // Handle null/undefined
+    // OpenAPI 3.1 best practice: use nullable: true instead of type: 'null'
     if (data === null || data === undefined) {
         return {
-            type: 'null',
-            description: 'Null value',
+            type: 'string', // Default to string, can be overridden by context
+            nullable: true,
+            description: 'Nullable value',
         };
     }
 
