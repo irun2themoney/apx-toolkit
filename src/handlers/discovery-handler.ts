@@ -533,7 +533,8 @@ export async function handleDiscovery(
         const exports = generateExports(
             discoveredAPIs,
             input.exportFormats || ['openapi', 'postman', 'curl'],
-            baseUrl
+            baseUrl,
+            responseExamples
         );
 
         // Save exports to dataset
