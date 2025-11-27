@@ -2,7 +2,11 @@
 
 **From API discovery to production code in seconds.**
 
-APX is the ultimate developer tool that automatically discovers APIs and generates everything you need: **code in 10 languages, TypeScript types, test suites, SDK packages, and complete documentation** - all in one run.
+[![npm version](https://img.shields.io/npm/v/apx-toolkit.svg)](https://www.npmjs.com/package/apx-toolkit)
+[![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
+[![GitHub](https://img.shields.io/github/stars/irun2themoney/apx-toolkit?style=social)](https://github.com/irun2themoney/apx-toolkit)
+
+APX is the ultimate developer tool that automatically discovers APIs and generates everything you need: **code in 12 languages, TypeScript types, test suites, SDK packages, and complete documentation** - all in one run.
 
 **What developers get:**
 - ✅ **Code snippets** in 12 languages (TypeScript, JavaScript, Python, Go, Rust, Java, PHP, Ruby, C#, Kotlin, cURL, PowerShell)
@@ -37,7 +41,9 @@ apx --url https://api.example.com
 
 ### Apify Platform
 
-Deploy to Apify and run via web interface or API.
+**Live Actor**: [https://console.apify.com/actors/2eXbQISXqhTnIxWNJ](https://console.apify.com/actors/2eXbQISXqhTnIxWNJ)
+
+Deploy to Apify and run via web interface or API. The Actor is already deployed and ready to use!
 
 ---
 
@@ -164,7 +170,7 @@ Instead of spending **weeks** manually:
 
 **Industry-standard documentation automatically generated.**
 
-- **OpenAPI 3.0** - Import into Swagger UI, Redoc, or any OpenAPI tool
+- **OpenAPI 3.1** - Full JSON Schema validation, import into Swagger UI, Redoc, or any OpenAPI tool
 - **Postman Collection** - Ready to import and test
 - **cURL Commands** - Copy-paste ready
 - **Insomnia Workspace** - Import into Insomnia
@@ -376,7 +382,7 @@ The Actor outputs multiple types of data to the dataset:
 - All ready to publish
 
 ### 5. API Documentation
-- **OpenAPI 3.0** specification
+- **OpenAPI 3.1** specification (with JSON Schema validation)
 - **Postman Collection**
 - **cURL Commands**
 - **Insomnia Workspace**
@@ -663,13 +669,42 @@ This is an Apify Actor. To contribute:
 3. Test thoroughly (see [Testing Guide](docs/TESTING.md))
 4. Submit a pull request
 
+## Installation
+
+### npm Package
+
+```bash
+npm install -g apx-toolkit
+```
+
+### Apify Actor
+
+Visit the [Apify Actor page](https://console.apify.com/actors/2eXbQISXqhTnIxWNJ) to run it directly on the Apify platform.
+
+## Links
+
+- **npm Package**: [https://www.npmjs.com/package/apx-toolkit](https://www.npmjs.com/package/apx-toolkit)
+- **GitHub Repository**: [https://github.com/irun2themoney/apx-toolkit](https://github.com/irun2themoney/apx-toolkit)
+- **Apify Actor**: [https://console.apify.com/actors/2eXbQISXqhTnIxWNJ](https://console.apify.com/actors/2eXbQISXqhTnIxWNJ)
+
+## Documentation
+
+- **[Testing Guide](docs/TESTING.md)** - Comprehensive testing documentation
+- **[Quick Test Guide](docs/QUICK-TEST.md)** - Quick start testing instructions
+- **[CLI Guide](docs/CLI.md)** - Command-line interface documentation
+- **[Project Overview](PROJECT-OVERVIEW.md)** - Complete project documentation
+
 ## License
 
-MIT License - see LICENSE file for details
+ISC License - see LICENSE file for details
 
 ## Support
 
-For issues, questions, or feature requests, please open an issue on the repository.
+For issues, questions, or feature requests, please open an issue on the [GitHub repository](https://github.com/irun2themoney/apx-toolkit/issues).
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
 
 ---
 

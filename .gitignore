@@ -36,4 +36,9 @@ yarn-error.log*
 # Testing
 coverage/
 .nyc_output/
+test-input.json
+test-fuzzer-input.json
+test-interaction.json
+test-output/
+extreme-test-report-*.json
 

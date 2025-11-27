@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "apx-toolkit",
   "title": "APX - The API Toolkit",
-  "description": "APX: From API discovery to production code in seconds. Automatically discovers APIs and generates code in 10 languages, TypeScript types, test suites, SDK packages, and complete documentation.",
+  "description": "APX: From API discovery to production code in seconds. Automatically discovers APIs (REST, GraphQL, WebSocket) and generates complete integration packages: code in 12 languages, TypeScript types, test suites, SDK packages, and API documentation. Saves weeks of work in seconds.",
   "version": "1.0",
   "readme": "./README.md",
   "meta": {
