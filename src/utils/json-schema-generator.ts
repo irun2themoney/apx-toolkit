@@ -27,6 +27,7 @@ export interface JSONSchema {
     anyOf?: JSONSchema[];
     allOf?: JSONSchema[];
     $ref?: string;
+    nullable?: boolean; // OpenAPI 3.1: indicates if value can be null
 }
 
 /**
