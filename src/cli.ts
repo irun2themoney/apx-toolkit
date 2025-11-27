@@ -168,9 +168,18 @@ async function main() {
         });
 
         // Save results to local files
-        const outputDir = path.resolve(argv.output || './apx-output');
+        // Validate and sanitize output directory
+        const outputDir = sanitizePath(argv.output || './apx-output', process.cwd());
         if (!fs.existsSync(outputDir)) {
             fs.mkdirSync(outputDir, { recursive: true });
+        }
+        
+        // Validate URL
+        try {
+            validateURL(argv.url, true); // Allow localhost for CLI
+        } catch (error) {
+            console.error(`❌ Invalid URL: ${error instanceof Error ? error.message : String(error)}`);
+            process.exit(1);
         }
 
         // Save code snippets
