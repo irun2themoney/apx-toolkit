@@ -1,0 +1,62 @@
+[
+  {
+    "language": "typescript",
+    "code": "// TypeScript/Node.js\nconst response = await fetch('https://jsonplaceholder.typicode.com/posts' + '?page=1', {\n  method: 'GET',\n});\nconst data = await response.json();\nconsole.log(data);",
+    "description": "TypeScript/Node.js with fetch API"
+  },
+  {
+    "language": "javascript",
+    "code": "// JavaScript/Node.js\nconst response = await fetch('https://jsonplaceholder.typicode.com/posts' + '?page=1', {\n  method: 'GET',\n});\nconst data = await response.json();\nconsole.log(data);",
+    "description": "TypeScript/Node.js with fetch API"
+  },
+  {
+    "language": "python",
+    "code": "# Python\nimport requests\n\nurl = 'https://jsonplaceholder.typicode.com/posts'\nheaders = {\n}\n\nresponse = requests.get('https://jsonplaceholder.typicode.com/posts', headers=headers)\ndata = response.json()\nprint(data)",
+    "description": "Python with requests library"
+  },
+  {
+    "language": "go",
+    "code": "// Go\npackage main\n\nimport (\n    \"bytes\"\n    \"encoding/json\"\n    \"fmt\"\n    \"net/http\"\n)\n\nfunc main() {\n    url := \"https://jsonplaceholder.typicode.com/posts\"\n\n    req, _ := http.NewRequest(\"GET\", url, nil)\n\n    // Set headers\n\n    client := &http.Client{}\n    resp, _ := client.Do(req)\n    defer resp.Body.Close()\n\n    var data map[string]interface{}\n    json.NewDecoder(resp.Body).Decode(&data)\n    fmt.Println(data)\n}",
+    "description": "Go with net/http"
+  },
+  {
+    "language": "rust",
+    "code": "// Rust (requires reqwest and serde_json)\nuse reqwest;\nuse serde_json::json;\n\n#[tokio::main]\nasync fn main() -> Result<(), Box<dyn std::error::Error>> {\n    let client = reqwest::Client::new();\n\n    let res = client\n        .get(\"https://jsonplaceholder.typicode.com/posts\")\n        .send()\n        .await?;\n\n    let data: serde_json::Value = res.json().await?;\n    println!(\"{:?}\", data);\n\n    Ok(())\n}",
+    "description": "Rust with reqwest"
+  },
+  {
+    "language": "java",
+    "code": "// Java (requires OkHttp)\nimport okhttp3.*;\nimport java.io.IOException;\n\npublic class ApiClient {\n    public static void main(String[] args) throws IOException {\n        OkHttpClient client = new OkHttpClient();\n\n        Request.Builder requestBuilder = new Request.Builder()\n            .url(\"https://jsonplaceholder.typicode.com/posts\")\n            .get()\n            .build();\n\n        try (Response response = client.newCall(requestBuilder.build()).execute()) {\n            String data = response.body().string();\n            System.out.println(data);\n        }\n    }\n}",
+    "description": "Java with OkHttp"
+  },
+  {
+    "language": "php",
+    "code": "<?php\n// PHP with cURL\n\n$url = 'https://jsonplaceholder.typicode.com/posts';\n\n$headers = [\n];\n\n$ch = curl_init($url);\ncurl_setopt($ch, CURLOPT_RETURNTRANSFER, true);\ncurl_setopt($ch, CURLOPT_HTTPHEADER, $headers);\n\n$response = curl_exec($ch);\ncurl_close($ch);\n\n$data = json_decode($response, true);\nprint_r($data);\n?>",
+    "description": "PHP with cURL"
+  },
+  {
+    "language": "ruby",
+    "code": "# Ruby (requires net/http and json)\nrequire 'net/http'\nrequire 'json'\n\nuri = URI('https://jsonplaceholder.typicode.com/posts')\n\nreq = Net::HTTP::Get.new(uri)\n\n# Set headers\n\nres = Net::HTTP.start(uri.hostname, uri.port, use_ssl: uri.scheme == 'https') do |http|\n  http.request(req)\nend\n\ndata = JSON.parse(res.body)\nputs data",
+    "description": "Ruby with net/http"
+  },
+  {
+    "language": "curl",
+    "code": "# cURL\ncurl -X GET \\\n  \"https://jsonplaceholder.typicode.com/posts\"",
+    "description": "cURL command"
+  },
+  {
+    "language": "powershell",
+    "code": "# PowerShell\n$headers = @{\n}\n\n$response = Invoke-RestMethod -Uri \"https://jsonplaceholder.typicode.com/posts\" -Method GET -Headers $headers\n$response | ConvertTo-Json",
+    "description": "PowerShell with Invoke-RestMethod"
+  },
+  {
+    "language": "csharp",
+    "code": "// C# (.NET)\nusing System;\nusing System.Net.Http;\nusing System.Text;\nusing System.Text.Json;\nusing System.Threading.Tasks;\n\npublic class ApiClient\n{\n    private static readonly HttpClient client = new HttpClient();\n\n    public static async Task Main(string[] args)\n    {\n        var request = new HttpRequestMessage(HttpMethod.Get, \"https://jsonplaceholder.typicode.com/posts\");\n\n        // Add headers\n\n        var response = await client.SendAsync(request);\n        var content = await response.Content.ReadAsStringAsync();\n        var data = JsonSerializer.Deserialize<object>(content);\n        Console.WriteLine(data);\n    }\n}",
+    "description": "C# with HttpClient (.NET)"
+  },
+  {
+    "language": "kotlin",
+    "code": "// Kotlin\n// Requires: implementation(\"com.squareup.okhttp3:okhttp:4.11.0\")\n\nimport okhttp3.*\nimport java.io.IOException\n\nfun main() {\n    val client = OkHttpClient()\n\n    val request = Request.Builder()\n        .url(\"https://jsonplaceholder.typicode.com/posts\")\n        .apply {\n        }\n        .build()\n\n    client.newCall(request).execute().use { response ->\n        val data = response.body?.string()\n        println(data)\n    }\n}",
+    "description": "Kotlin with OkHttp"
+  }
+]
