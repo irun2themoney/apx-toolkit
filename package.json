@@ -1,11 +1,15 @@
 {
   "name": "apx-toolkit",
   "version": "1.0.0",
-  "description": "APX - The API Toolkit. From API discovery to production code in seconds. Automatically discovers APIs and generates code in 10 languages, TypeScript types, test suites, SDK packages, and complete documentation.",
+  "description": "APX - The API Toolkit. Automatically discovers APIs (REST, GraphQL, WebSocket) and generates complete integration packages: code in 12 languages, TypeScript types, test suites, SDK packages, and API documentation. Saves weeks of work in seconds.",
   "type": "module",
   "main": "dist/main.js",
   "bin": {
     "apx": "./dist/cli.js"
+  },
+  "homepage": "https://github.com/irun2themoney/apx-toolkit#readme",
+  "bugs": {
+    "url": "https://github.com/irun2themoney/apx-toolkit/issues"
   },
   "scripts": {
     "build": "tsc",
@@ -20,17 +24,31 @@
     "verify": "node verify-build.js"
   },
   "keywords": [
-    "apify",
-    "crawlee",
-    "scraping",
     "api-discovery",
     "api-documentation",
+    "api-toolkit",
+    "api-client-generator",
+    "code-generation",
     "openapi",
+    "graphql",
+    "websocket",
+    "rest-api",
     "postman",
-    "playwright",
-    "http-crawler",
+    "insomnia",
+    "curl",
+    "typescript",
+    "sdk-generator",
+    "test-generator",
+    "api-integration",
+    "developer-tools",
     "automation",
-    "web-scraping"
+    "playwright",
+    "crawlee",
+    "apify",
+    "web-scraping",
+    "api-testing",
+    "oauth",
+    "api-automation"
   ],
   "author": "irun2themoney",
   "license": "ISC",

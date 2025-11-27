@@ -27,7 +27,7 @@ APX is the ultimate developer tool that automatically discovers APIs and generat
 
 ```bash
 # Install globally
-npm install -g @apx/toolkit
+npm install -g apx-toolkit
 
 # Run APX
 apx --url https://api.example.com
