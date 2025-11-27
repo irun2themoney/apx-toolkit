@@ -30,10 +30,10 @@ npm install -g apx-toolkit
 
 ### Usage:
 ```bash
-apx-toolkit --url https://api.example.com
+apx --url https://api.example.com
 ```
 
-**Note**: The CLI command is `apx-toolkit` (package name). To use `apx` command, you can create an alias or we can update the bin entry.
+**Note**: Package name is `apx-toolkit`, but the CLI command is `apx` (as defined in package.json bin entry).
 
 ---
 
