@@ -40,7 +40,6 @@ export function generateOpenAPISpec(
 
     // Track schemas for reuse (JSON Schema best practice: use $ref)
     const schemaMap = new Map<string, any>();
-    const schemaCounter = new Map<string, number>();
 
     for (const api of apis) {
         const url = new URL(api.baseUrl);
