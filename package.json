@@ -1,5 +1,5 @@
 {
-  "name": "@apx/toolkit",
+  "name": "apx-toolkit",
   "version": "1.0.0",
   "description": "APX - The API Toolkit. From API discovery to production code in seconds. Automatically discovers APIs and generates code in 10 languages, TypeScript types, test suites, SDK packages, and complete documentation.",
   "type": "module",
