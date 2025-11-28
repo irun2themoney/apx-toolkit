@@ -11,6 +11,9 @@
     "discoveredApis": {
       "title": "Discovered APIs 📡",
       "description": "Summary of all discovered API endpoints with metadata",
+      "display": {
+        "type": "table"
+      },
       "filter": {
         "field": "_type",
         "operator": "equals",
@@ -20,6 +23,9 @@
     "extractedData": {
       "title": "Extracted Data 📊",
       "description": "All data items extracted from the discovered APIs",
+      "display": {
+        "type": "table"
+      },
       "filter": {
         "field": "_type",
         "operator": "notExists"
@@ -28,6 +34,9 @@
     "codeSnippets": {
       "title": "Code Snippets 💻",
       "description": "Ready-to-use code snippets in 12 programming languages",
+      "display": {
+        "type": "table"
+      },
       "filter": {
         "field": "_type",
         "operator": "equals",
@@ -37,6 +46,9 @@
     "typescriptTypes": {
       "title": "TypeScript Types 📘",
       "description": "Complete TypeScript type definitions for all discovered APIs",
+      "display": {
+        "type": "table"
+      },
       "filter": {
         "field": "_type",
         "operator": "equals",
@@ -46,6 +58,9 @@
     "apiDocumentation": {
       "title": "API Documentation 📚",
       "description": "API documentation in multiple formats (OpenAPI, Postman, cURL, Insomnia)",
+      "display": {
+        "type": "table"
+      },
       "filter": {
         "field": "_type",
         "operator": "equals",
@@ -55,6 +70,9 @@
     "testSuites": {
       "title": "Test Suites 🧪",
       "description": "Ready-to-run test suites in 5 testing frameworks",
+      "display": {
+        "type": "table"
+      },
       "filter": {
         "field": "_type",
         "operator": "equals",
@@ -64,6 +82,9 @@
     "sdkPackages": {
       "title": "SDK Packages 📦",
       "description": "Complete SDK packages for TypeScript, Python, and Go",
+      "display": {
+        "type": "table"
+      },
       "filter": {
         "field": "_type",
         "operator": "equals",
@@ -73,6 +94,9 @@
     "apiExamples": {
       "title": "API Examples 📝",
       "description": "Request/response examples for all discovered APIs",
+      "display": {
+        "type": "table"
+      },
       "filter": {
         "field": "_type",
         "operator": "equals",
@@ -82,6 +106,9 @@
     "executionSummary": {
       "title": "Execution Summary 📈",
       "description": "Statistics and summary of the Actor execution",
+      "display": {
+        "type": "table"
+      },
       "filter": {
         "field": "_type",
         "operator": "equals",
