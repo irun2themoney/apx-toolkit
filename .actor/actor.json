@@ -145,11 +145,6 @@
       "actorSpecification": 1,
       "title": "APX Toolkit Dataset",
       "description": "Dataset schema for APX Toolkit output, organizing discovered APIs, generated code, documentation, and extracted data",
-      "fields": {
-        "$schema": "http://json-schema.org/draft-07/schema#",
-        "type": "object",
-        "additionalProperties": true
-      },
       "views": {
         "discoveredApis": {
           "title": "Discovered APIs 📡",
