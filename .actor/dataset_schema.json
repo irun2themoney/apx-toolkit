@@ -1,0 +1,92 @@
+{
+  "actorSpecification": 1,
+  "title": "APX Toolkit Dataset",
+  "description": "Dataset schema for APX Toolkit output, organizing discovered APIs, generated code, documentation, and extracted data",
+  "fields": {
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "type": "object",
+    "additionalProperties": true
+  },
+  "views": {
+    "discoveredApis": {
+      "title": "Discovered APIs 📡",
+      "description": "Summary of all discovered API endpoints with metadata",
+      "filter": {
+        "field": "_type",
+        "operator": "equals",
+        "value": "api_summary"
+      }
+    },
+    "extractedData": {
+      "title": "Extracted Data 📊",
+      "description": "All data items extracted from the discovered APIs",
+      "filter": {
+        "field": "_type",
+        "operator": "notExists"
+      }
+    },
+    "codeSnippets": {
+      "title": "Code Snippets 💻",
+      "description": "Ready-to-use code snippets in 12 programming languages",
+      "filter": {
+        "field": "_type",
+        "operator": "equals",
+        "value": "code_snippets"
+      }
+    },
+    "typescriptTypes": {
+      "title": "TypeScript Types 📘",
+      "description": "Complete TypeScript type definitions for all discovered APIs",
+      "filter": {
+        "field": "_type",
+        "operator": "equals",
+        "value": "typescript_types"
+      }
+    },
+    "apiDocumentation": {
+      "title": "API Documentation 📚",
+      "description": "API documentation in multiple formats (OpenAPI, Postman, cURL, Insomnia)",
+      "filter": {
+        "field": "_type",
+        "operator": "equals",
+        "value": "api_documentation"
+      }
+    },
+    "testSuites": {
+      "title": "Test Suites 🧪",
+      "description": "Ready-to-run test suites in 5 testing frameworks",
+      "filter": {
+        "field": "_type",
+        "operator": "equals",
+        "value": "test_suites"
+      }
+    },
+    "sdkPackages": {
+      "title": "SDK Packages 📦",
+      "description": "Complete SDK packages for TypeScript, Python, and Go",
+      "filter": {
+        "field": "_type",
+        "operator": "equals",
+        "value": "sdk_package"
+      }
+    },
+    "apiExamples": {
+      "title": "API Examples 📝",
+      "description": "Request/response examples for all discovered APIs",
+      "filter": {
+        "field": "_type",
+        "operator": "equals",
+        "value": "api_examples"
+      }
+    },
+    "executionSummary": {
+      "title": "Execution Summary 📈",
+      "description": "Statistics and summary of the Actor execution",
+      "filter": {
+        "field": "_type",
+        "operator": "equals",
+        "value": "execution_summary"
+      }
+    }
+  }
+}

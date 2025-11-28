@@ -135,6 +135,15 @@ export function generateJSONSchema(
             propSchema.example = value;
         }
 
+        // OpenAPI 3.1: Mark as nullable if value is null (but still allow the type)
+        if (value === null) {
+            propSchema.nullable = true;
+            // Keep the type from context or default to string
+            if (!propSchema.type) {
+                propSchema.type = 'string';
+            }
+        }
+
         properties[key] = propSchema;
 
         // Mark as required if not null/undefined
