@@ -19,6 +19,14 @@ async function main() {
     // Initialize Apify Actor
     await Actor.init();
 
+    // Detect user discount tier for premium features
+    const userTier = process.env.APIFY_USER_DISCOUNT_TIER || 'FREE';
+    const isPremiumTier = ['SILVER', 'GOLD', 'PLATINUM', 'DIAMOND'].includes(userTier);
+    
+    if (isPremiumTier) {
+        Actor.log.info(`Premium tier user detected: ${userTier} - Premium features enabled`);
+    }
+
     // Get input configuration
     const input = (await Actor.getInput()) as ActorInput;
 
