@@ -1,145 +1,73 @@
 # APX Toolkit 🚀
 
-**The easiest way to discover and integrate with any API!**
+**Discover APIs. Generate code. Save weeks of work.**
 
 [![npm version](https://img.shields.io/npm/v/apx-toolkit.svg)](https://www.npmjs.com/package/apx-toolkit)
 [![License: ISC](https://img.shields.io/badge/License-ISC-blue.svg)](https://opensource.org/licenses/ISC)
 [![GitHub stars](https://img.shields.io/github/stars/irun2themoney/apx-toolkit?style=social)](https://github.com/irun2themoney/apx-toolkit)
 
-**APX Toolkit** automatically discovers APIs and generates everything you need: **code in 12 languages, TypeScript types, test suites, SDK packages, API documentation, mock servers, performance reports, contract tests, and more** - all in one run.
+---
 
-**Saves 2-4 weeks of work → 10 seconds!** ⚡
+## ⚡ What It Does
+
+APX automatically discovers APIs from any website and generates everything you need:
+
+- ✅ **Code** in 12 languages (TypeScript, Python, Go, Java, etc.)
+- ✅ **Documentation** (OpenAPI, Postman, cURL, Insomnia)
+- ✅ **TypeScript types** (.d.ts files)
+- ✅ **Test suites** (Jest, pytest, Mocha, etc.)
+- ✅ **SDK packages** (TypeScript, Python, Go)
+- ✅ **Mock servers** (Express.js)
+- ✅ **Performance reports** (k6 load tests)
+- ✅ **Contract tests** (Pact, Schemathesis)
+- ✅ **Dependency graphs** (interactive visualizations)
+- ✅ **MCP & x402 integrations** (AI assistant support)
+
+**Result:** 2-4 weeks of work → **10 seconds** ⚡
 
 ---
 
-## 🚀 Quick Start (60 seconds!)
+## 🚀 Quick Start (30 seconds)
 
-### Step 1: Go to Apify
-Visit: **[https://console.apify.com/actors/2eXbQISXqhTnIxWNJ](https://console.apify.com/actors/2eXbQISXqhTnIxWNJ)**
+### Option 1: Apify Platform (Easiest)
 
-### Step 2: Click "Start"
-Click the green **"Start"** button.
+1. **Go to:** [https://console.apify.com/actors/2eXbQISXqhTnIxWNJ](https://console.apify.com/actors/2eXbQISXqhTnIxWNJ)
+2. **Click "Start"**
+3. **Paste this:**
+   ```json
+   {
+     "startUrls": [{"url": "https://example.com"}]
+   }
+   ```
+4. **Wait 10-30 seconds** → Done! Check the Dataset tab.
 
-### Step 3: Paste This
-```json
-{
-  "startUrls": [{"url": "https://example.com"}]
-}
+### Option 2: CLI (Local)
+
+```bash
+npm install -g apx-toolkit
+apx --url https://example.com
 ```
 
-### Step 4: Wait 10-30 seconds
-Done! Check the Dataset tab for all your outputs.
+---
 
-**That's it!** 🎉
+## 📖 How It Works
+
+1. **You provide:** A website URL
+2. **APX discovers:** All APIs the site uses (REST, GraphQL, WebSocket)
+3. **APX generates:** Complete integration package
+4. **You get:** Production-ready code, docs, tests, SDKs
+
+**That's it!** No API specs needed. No manual setup. Just works.
 
 ---
 
-## ✨ What APX Toolkit Generates
-
-Every run automatically creates:
-
-- ✅ **Code snippets** in 12 languages (TypeScript, JavaScript, Python, Go, Rust, Java, PHP, Ruby, C#, Kotlin, cURL, PowerShell)
-- ✅ **TypeScript type definitions** (.d.ts files)
-- ✅ **Test suites** with schema validation (Jest, pytest, Mocha, Vitest, Playwright)
-- ✅ **SDK packages** ready to publish (TypeScript, Python, Go)
-- ✅ **API documentation** in multiple formats (OpenAPI, Postman, cURL, Insomnia)
-- ✅ **Request/response examples** with real API data
-- ✅ **Mock servers** (Express.js) with real API data
-- ✅ **Performance reports** with load test scripts (k6)
-- ✅ **Contract tests** (Pact, Schemathesis) for CI/CD
-- ✅ **Dependency graphs** (interactive HTML + Mermaid)
-- ✅ **MCP integration** for AI assistants
-- ✅ **x402 protocol** support for payment APIs
-
-**Result:** Weeks of developer work → **10 seconds**. Complete API integration package ready to use.
-
----
-
-## 📖 Documentation
-
-### 🎯 Quick Start
-- **[Quick Start Guide](docs/QUICK-START.md)** ⭐ - Get started in 60 seconds!
-- **[Common Use Cases](docs/COMMON-USE-CASES.md)** - Real-world examples
-- **[FAQ](docs/FAQ.md)** - Frequently asked questions
-
-### 👤 User Guides
-- **[User Guide](docs/USER-GUIDE.md)** - Complete user documentation
-- **[CLI Documentation](docs/CLI.md)** - Command-line interface
-- **[Test Scenarios](test-scenarios/)** - Ready-to-use configurations
-
-### 👨‍💻 Developer Resources
-- **[Developer Guide](docs/DEVELOPER-GUIDE.md)** - Architecture and development
-- **[Project Structure](PROJECT-STRUCTURE.md)** - Code organization
-- **[Contributing](CONTRIBUTING.md)** - How to contribute and give feedback
-
-### 📚 Reference
-- **[Documentation Index](docs/README.md)** - All documentation
-- **[Feature Roadmap](FEATURE-ROADMAP.md)** - Planned features
-
----
-
-## 🔧 Configuration
-
-### Simple (Recommended for First Time)
-```json
-{
-  "startUrls": [{"url": "https://example.com"}]
-}
-```
-**That's it!** All defaults are optimized for you.
-
-### Standard (Most Common)
-```json
-{
-  "startUrls": [{"url": "https://example.com"}],
-  "maxPages": 50,
-  "generateDocumentation": true,
-  "generateMockServer": true
-}
-```
-
-### Complete (Everything Enabled)
-```json
-{
-  "startUrls": [{"url": "https://example.com"}],
-  "maxPages": 100,
-  "generateDocumentation": true,
-  "generateMockServer": true,
-  "generatePerformanceBenchmark": true,
-  "generateContractTests": true,
-  "generateDependencyGraph": true
-}
-```
-
-### 💡 Pro Tips
-
-- **Use web pages, not API endpoints** - APX discovers APIs by watching pages make API calls
-- **Start simple** - Use defaults first, then customize
-- **Enable interaction simulation** - Discovers more APIs by clicking buttons
-- **Check all dataset views** - Each view organizes different outputs
-
-### 📚 More Examples
-See [Common Use Cases](docs/COMMON-USE-CASES.md) for real-world examples.
-
----
-
-## 🎯 Use Cases
+## 💡 Common Use Cases
 
 ### Discover APIs from a Website
 ```json
 {
   "startUrls": [{"url": "https://example.com"}],
-  "maxPages": 10,
-  "enableInteractionSimulation": true
-}
-```
-
-### Document an Existing API
-```json
-{
-  "startUrls": [{"url": "https://api.example.com"}],
-  "apiPatterns": ["/api/"],
-  "maxPages": 50
+  "maxPages": 10
 }
 ```
 
@@ -147,91 +75,77 @@ See [Common Use Cases](docs/COMMON-USE-CASES.md) for real-world examples.
 ```json
 {
   "startUrls": [{"url": "https://api.example.com"}],
-  "bearerToken": "YOUR_TOKEN"
+  "bearerToken": "your-token-here"
 }
 ```
 
-### Generate Mock Server
+### Full Feature Set
 ```json
 {
-  "startUrls": [{"url": "https://api.example.com"}],
-  "generateMockServer": true
+  "startUrls": [{"url": "https://example.com"}],
+  "generateMockServer": true,
+  "generatePerformanceBenchmark": true,
+  "generateContractTests": true,
+  "generateDependencyGraph": true
 }
 ```
 
 ---
 
-## 📦 Installation
+## 📦 What You Get
 
-### Apify Platform (Recommended)
-Visit: [https://console.apify.com/actors/2eXbQISXqhTnIxWNJ](https://console.apify.com/actors/2eXbQISXqhTnIxWNJ)
+Results are organized in 9 dataset views:
 
-### npm (CLI)
-```bash
-npm install -g apx-toolkit
-```
-
----
-
-## 🧪 Testing
-
-### Quick Test
-```bash
-# Using test script
-./run-test.sh
-
-# Or directly
-apify call apx-toolkit --input-file=test-scenarios/simple-api.json
-```
-
-### Test Scenarios
-
-Pre-configured test scenarios in `test-scenarios/`:
-- `simple-api.json` - Quick test
-- `multiple-apis.json` - Multiple APIs
-- `comprehensive-test.json` - All features
+1. **Discovered APIs** 📡 - API endpoints found
+2. **Extracted Data** 📊 - All data items
+3. **Code Snippets** 💻 - Code in 12 languages
+4. **TypeScript Types** 📘 - Type definitions
+5. **API Documentation** 📚 - OpenAPI, Postman, etc.
+6. **Test Suites** 🧪 - Ready-to-run tests
+7. **SDK Packages** 📦 - Publishable SDKs
+8. **API Examples** 📝 - Request/response examples
+9. **Execution Summary** 📈 - Statistics
 
 ---
 
-## 🤝 Contributing & Feedback
+## 🎯 Key Features
 
-**We love feedback!** Help us make APX Toolkit better:
-
-- 💬 **[Give Feedback](CONTRIBUTING.md#-give-feedback)** - Share your thoughts
-- 🐛 **[Report Bugs](CONTRIBUTING.md#-report-bugs)** - Help us fix issues
-- 💡 **[Suggest Features](CONTRIBUTING.md#-suggest-features)** - Share your ideas
-- 🚀 **[Share Success Stories](CONTRIBUTING.md#-share-your-success-stories)** - Tell us how APX helped you
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for more ways to contribute!
+- **Automatic Discovery** - Finds APIs by watching network traffic
+- **12 Languages** - TypeScript, Python, Go, Java, PHP, Ruby, C#, Kotlin, Rust, JavaScript, cURL, PowerShell
+- **Multiple Formats** - OpenAPI, Postman, cURL, Insomnia
+- **OAuth Support** - Automatic token capture
+- **GraphQL & WebSocket** - Full support
+- **Production Ready** - CI/CD templates, security audits, change detection
 
 ---
 
-## ⭐ Star Us!
+## 📚 Documentation
 
-If APX Toolkit helped you, please star us on GitHub! ⭐
-
-[![GitHub stars](https://img.shields.io/github/stars/irun2themoney/apx-toolkit?style=social)](https://github.com/irun2themoney/apx-toolkit)
+- **[Quick Start Guide](docs/QUICK-START.md)** - Get started in 60 seconds
+- **[User Guide](docs/USER-GUIDE.md)** - Complete documentation
+- **[Common Use Cases](docs/COMMON-USE-CASES.md)** - Real-world examples
+- **[FAQ](docs/FAQ.md)** - Frequently asked questions
 
 ---
 
-## 📚 Resources
+## 🤝 Contributing
 
-- **Actor URL**: [https://console.apify.com/actors/2eXbQISXqhTnIxWNJ](https://console.apify.com/actors/2eXbQISXqhTnIxWNJ)
-- **GitHub**: [https://github.com/irun2themoney/apx-toolkit](https://github.com/irun2themoney/apx-toolkit)
-- **npm**: [https://www.npmjs.com/package/apx-toolkit](https://www.npmjs.com/package/apx-toolkit)
+Found a bug? Have an idea? [Open an issue](https://github.com/irun2themoney/apx-toolkit/issues) or submit a PR!
 
 ---
 
 ## 📄 License
 
-ISC License - See [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-Built with [Apify](https://apify.com), [Crawlee](https://crawlee.dev), and [Playwright](https://playwright.dev).
-
-**Made with ❤️ for developers who want to integrate APIs faster.**
+ISC License - see [LICENSE](LICENSE) file for details.
 
 ---
 
-**APX Toolkit** - Your complete API toolkit. Save weeks of work in seconds. 🚀
+## 🔗 Links
+
+- **Live Actor:** [https://console.apify.com/actors/2eXbQISXqhTnIxWNJ](https://console.apify.com/actors/2eXbQISXqhTnIxWNJ)
+- **GitHub:** [https://github.com/irun2themoney/apx-toolkit](https://github.com/irun2themoney/apx-toolkit)
+- **npm:** [https://www.npmjs.com/package/apx-toolkit](https://www.npmjs.com/package/apx-toolkit)
+
+---
+
+**APX Toolkit** - Your complete API integration solution. Save weeks of work in seconds. 🚀
