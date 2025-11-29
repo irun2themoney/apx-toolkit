@@ -1,0 +1,282 @@
+{
+  "actorSpecification": 1,
+  "title": "APX Toolkit Dataset",
+  "description": "Dataset schema for APX Toolkit output containing discovered APIs, generated code, documentation, types, tests, SDKs, and extracted data",
+  "fields": {
+    "type": {
+      "type": "string",
+      "description": "Type of output item"
+    },
+    "data": {
+      "type": "object",
+      "description": "Output data content",
+      "additionalProperties": true
+    },
+    "url": {
+      "type": "string",
+      "description": "API endpoint URL"
+    },
+    "method": {
+      "type": "string",
+      "description": "HTTP method"
+    },
+    "statusCode": {
+      "type": "number",
+      "description": "HTTP status code"
+    },
+    "language": {
+      "type": "string",
+      "description": "Programming language for code snippets"
+    },
+    "code": {
+      "type": "string",
+      "description": "Generated code content"
+    },
+    "format": {
+      "type": "string",
+      "description": "Documentation format"
+    },
+    "content": {
+      "type": "string",
+      "description": "Documentation content"
+    },
+    "framework": {
+      "type": "string",
+      "description": "Test framework name"
+    },
+    "tests": {
+      "type": "string",
+      "description": "Test code content"
+    },
+    "package": {
+      "type": "string",
+      "description": "SDK package name"
+    },
+    "request": {
+      "type": "object",
+      "description": "API request example",
+      "additionalProperties": true
+    },
+    "response": {
+      "type": "object",
+      "description": "API response example",
+      "additionalProperties": true
+    },
+    "statistics": {
+      "type": "object",
+      "description": "Execution statistics",
+      "additionalProperties": true
+    }
+  },
+  "views": {
+    "discoveredApis": {
+      "title": "Discovered APIs 📡",
+      "description": "API endpoint summaries with metadata",
+      "transformation": {
+        "fields": ["type", "url", "method", "statusCode", "data"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "format": "link",
+            "label": "API URL"
+          },
+          "method": {
+            "format": "text",
+            "label": "Method"
+          },
+          "statusCode": {
+            "format": "number",
+            "label": "Status"
+          },
+          "type": {
+            "format": "text",
+            "label": "Type"
+          }
+        }
+      }
+    },
+    "extractedData": {
+      "title": "Extracted Data 📊",
+      "description": "All extracted data items from discovered APIs",
+      "transformation": {
+        "fields": ["type", "data"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "type": {
+            "format": "text",
+            "label": "Type"
+          },
+          "data": {
+            "format": "json",
+            "label": "Data"
+          }
+        }
+      }
+    },
+    "codeSnippets": {
+      "title": "Code Snippets 💻",
+      "description": "Ready-to-use code snippets in 12 programming languages",
+      "transformation": {
+        "fields": ["type", "language", "code", "url"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "language": {
+            "format": "text",
+            "label": "Language"
+          },
+          "url": {
+            "format": "link",
+            "label": "API URL"
+          },
+          "code": {
+            "format": "code",
+            "label": "Code"
+          }
+        }
+      }
+    },
+    "typescriptTypes": {
+      "title": "TypeScript Types 📘",
+      "description": "Complete TypeScript type definitions for all discovered APIs",
+      "transformation": {
+        "fields": ["type", "code"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "type": {
+            "format": "text",
+            "label": "Type"
+          },
+          "code": {
+            "format": "code",
+            "label": "Type Definition"
+          }
+        }
+      }
+    },
+    "apiDocumentation": {
+      "title": "API Documentation 📚",
+      "description": "API documentation in multiple formats (OpenAPI, Postman, cURL, Insomnia)",
+      "transformation": {
+        "fields": ["type", "format", "content", "url"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "format": {
+            "format": "text",
+            "label": "Format"
+          },
+          "url": {
+            "format": "link",
+            "label": "API URL"
+          },
+          "content": {
+            "format": "json",
+            "label": "Content"
+          }
+        }
+      }
+    },
+    "testSuites": {
+      "title": "Test Suites 🧪",
+      "description": "Ready-to-run test suites in 5 testing frameworks",
+      "transformation": {
+        "fields": ["type", "framework", "tests", "url"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "framework": {
+            "format": "text",
+            "label": "Framework"
+          },
+          "url": {
+            "format": "link",
+            "label": "API URL"
+          },
+          "tests": {
+            "format": "code",
+            "label": "Test Code"
+          }
+        }
+      }
+    },
+    "sdkPackages": {
+      "title": "SDK Packages 📦",
+      "description": "Complete SDK packages for TypeScript, Python, and Go",
+      "transformation": {
+        "fields": ["type", "language", "package", "code"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "language": {
+            "format": "text",
+            "label": "Language"
+          },
+          "package": {
+            "format": "text",
+            "label": "Package"
+          },
+          "code": {
+            "format": "code",
+            "label": "Code"
+          }
+        }
+      }
+    },
+    "apiExamples": {
+      "title": "API Examples 📝",
+      "description": "Request/response examples for all discovered APIs",
+      "transformation": {
+        "fields": ["type", "url", "request", "response"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "url": {
+            "format": "link",
+            "label": "API URL"
+          },
+          "request": {
+            "format": "json",
+            "label": "Request"
+          },
+          "response": {
+            "format": "json",
+            "label": "Response"
+          }
+        }
+      }
+    },
+    "executionSummary": {
+      "title": "Execution Summary 📈",
+      "description": "Statistics and summary of the Actor execution",
+      "transformation": {
+        "fields": ["type", "statistics"]
+      },
+      "display": {
+        "component": "table",
+        "properties": {
+          "type": {
+            "format": "text",
+            "label": "Type"
+          },
+          "statistics": {
+            "format": "json",
+            "label": "Statistics"
+          }
+        }
+      }
+    }
+  }
+}
+
