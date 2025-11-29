@@ -45,3 +45,15 @@ test-interaction.json
 test-output/
 extreme-test-report-*.json
 
+# Security
+*.pem
+*.key
+*.cert
+*.p12
+*.pfx
+secrets/
+credentials/
+*.secret
+.env.*
+!.env.example
+
