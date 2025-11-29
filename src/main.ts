@@ -266,10 +266,18 @@ async function main() {
                         },
                         discoveredAPIs,
                         {
-                            generateGitHubActions: true,
-                            generateSecurityReport: true,
+                            generateGitHubActions: input.generateGitHubActions !== false,
+                            generateSecurityReport: input.generateSecurityReport !== false,
                             generateChangeReport: false,
-                            generateDocs: true,
+                            generateDocs: input.generateEnhancedDocs !== false,
+                            generateMockServer: input.generateMockServer !== false,
+                            generatePerformanceBenchmark: input.generatePerformanceBenchmark !== false,
+                            generateContractTests: input.generateContractTests !== false,
+                            generateMCPIntegration: input.generateMCPIntegration !== false,
+                            generateX402Integration: input.generateX402Integration !== false,
+                            generateDependencyGraph: input.generateDependencyGraph !== false,
+                            onProgress: (msg) => console.log(`[Enhanced Output] ${msg}`),
+                            onError: (err) => console.error(`[Enhanced Output Error] ${err.message}`),
                         }
                     );
                     console.log('✅ Enhanced outputs generated!');

@@ -37,6 +37,13 @@ export interface ActorInput {
     generateSecurityReport?: boolean;
     generateEnhancedDocs?: boolean;
     enableGitIntegration?: boolean;
+    // New innovative features
+    generateMockServer?: boolean;
+    generatePerformanceBenchmark?: boolean;
+    generateContractTests?: boolean;
+    generateMCPIntegration?: boolean;
+    generateX402Integration?: boolean;
+    generateDependencyGraph?: boolean;
 }
 
 /**
@@ -68,7 +75,7 @@ export interface RateLimitInfo {
 export interface DiscoveredAPI {
     url: string;
     baseUrl: string;
-    method: 'GET' | 'POST';
+    method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
     headers: Record<string, string>;
     queryParams?: Record<string, string>;
     body?: unknown;
@@ -81,6 +88,11 @@ export interface DiscoveredAPI {
     isWebSocket?: boolean;
     webSocketUrl?: string;
     webSocketProtocols?: string[];
+    // Additional fields for enhanced features
+    requestExample?: any;
+    responseExample?: any;
+    data?: any;
+    bearerToken?: string;
 }
 
 /**

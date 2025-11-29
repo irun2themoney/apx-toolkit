@@ -159,6 +159,42 @@
         "type": "boolean",
         "description": "Automatically commit generated files to git (requires git repository)",
         "default": false
+      },
+      "generateMockServer": {
+        "title": "Generate Mock Server",
+        "type": "boolean",
+        "description": "Auto-generate production-ready mock server from discovered APIs (Express.js/Fastify). Uses real API response data.",
+        "default": true
+      },
+      "generatePerformanceBenchmark": {
+        "title": "Generate Performance Benchmark",
+        "type": "boolean",
+        "description": "Benchmark all API endpoints and generate performance reports with k6/Artillery load test scripts.",
+        "default": true
+      },
+      "generateContractTests": {
+        "title": "Generate Contract Tests",
+        "type": "boolean",
+        "description": "Generate contract tests (Pact, Schemathesis) to prevent breaking changes. Includes CI/CD integration.",
+        "default": true
+      },
+      "generateMCPIntegration": {
+        "title": "Generate MCP Integration",
+        "type": "boolean",
+        "description": "Generate Model Context Protocol (MCP) integration for AI assistant compatibility. Enables AI models to discover and interact with APIs.",
+        "default": true
+      },
+      "generateX402Integration": {
+        "title": "Generate x402 Protocol Integration",
+        "type": "boolean",
+        "description": "Detect and handle x402 payment-required API endpoints. Auto-generates payment handling code.",
+        "default": true
+      },
+      "generateDependencyGraph": {
+        "title": "Generate Dependency Graph",
+        "type": "boolean",
+        "description": "Create visual dependency graph showing API relationships, critical paths, and bottlenecks. Generates interactive HTML and Mermaid diagrams.",
+        "default": true
       }
     },
     "required": ["startUrls"]
