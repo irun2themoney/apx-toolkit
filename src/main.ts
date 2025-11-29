@@ -24,7 +24,7 @@ async function main() {
     const isPremiumTier = ['SILVER', 'GOLD', 'PLATINUM', 'DIAMOND'].includes(userTier);
     
     if (isPremiumTier) {
-        Actor.log.info(`Premium tier user detected: ${userTier} - Premium features enabled`);
+        console.log(`[Premium] User tier: ${userTier} - Premium features enabled`);
     }
 
     // Get input configuration
