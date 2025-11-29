@@ -1,7 +1,7 @@
 {
   "name": "apx-toolkit",
   "version": "1.0.3",
-  "description": "🚀 APX Toolkit - The easiest way to discover and integrate with any API! Automatically discovers APIs and generates everything you need: code in 12 languages, TypeScript types, test suites, SDK packages, API documentation, mock servers, performance reports, contract tests, and more. Saves 2-4 weeks of work → 10 seconds!",
+  "description": "Automatically discover APIs and generate complete integration packages: code in 12 languages, TypeScript types, test suites, SDK packages, API documentation, mock servers, performance reports, and contract tests. Saves 2-4 weeks of work in seconds.",
   "type": "module",
   "main": "dist/main.js",
   "bin": {

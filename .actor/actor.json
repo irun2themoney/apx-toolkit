@@ -2,7 +2,7 @@
   "actorSpecification": 1,
   "name": "apx-toolkit",
   "title": "APX Toolkit - API Discovery & Integration",
-  "description": "🚀 The easiest way to discover and integrate with any API! Automatically discovers APIs and generates everything you need: code in 12 languages, TypeScript types, test suites, SDK packages, API documentation, mock servers, performance reports, contract tests, and more. Saves 2-4 weeks of work → 10 seconds!",
+  "description": "Automatically discover APIs from any website and generate complete integration packages: code in 12 languages, TypeScript types, test suites, SDK packages, API documentation (OpenAPI, Postman, cURL, Insomnia), mock servers, performance reports, and contract tests. Supports REST, GraphQL, and WebSocket. Saves 2-4 weeks of developer work in seconds.",
   "version": "1.0",
   "readme": "./README.md",
   "meta": {
