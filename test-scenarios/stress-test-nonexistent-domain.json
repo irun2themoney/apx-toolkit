@@ -1,0 +1,8 @@
+{
+  "startUrls": [
+    {"url": "https://this-domain-does-not-exist-12345-xyz.com"}
+  ],
+  "maxPages": 1,
+  "discoveryTimeout": 5000
+}
+

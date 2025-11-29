@@ -1,0 +1,7 @@
+{
+  "startUrls": [
+    {"url": "not-a-valid-url"}
+  ],
+  "maxPages": 1
+}
+

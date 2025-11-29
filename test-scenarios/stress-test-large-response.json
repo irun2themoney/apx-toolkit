@@ -1,0 +1,8 @@
+{
+  "startUrls": [
+    {"url": "https://jsonplaceholder.typicode.com/posts"}
+  ],
+  "maxPages": 20,
+  "maxConcurrency": 5
+}
+
