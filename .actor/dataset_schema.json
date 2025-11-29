@@ -5,22 +5,44 @@
   "fields": {
     "type": "object",
     "properties": {
-      "type": {
+      "_type": {
         "type": "string",
         "title": "Type",
         "description": "Type of output item"
       },
-      "data": {
-        "type": "object",
-        "title": "Data",
-        "description": "Output data content",
-        "additionalProperties": true
-      },
-      "url": {
+      "sourceUrl": {
         "type": "string",
         "format": "uri",
-        "title": "URL",
-        "description": "API endpoint URL"
+        "title": "Source URL",
+        "description": "The page URL where the API was discovered"
+      },
+      "apiUrl": {
+        "type": "string",
+        "format": "uri",
+        "title": "API URL",
+        "description": "The discovered API endpoint URL"
+      },
+      "page": {
+        "type": "integer",
+        "title": "Page Number",
+        "description": "Pagination page (if applicable)"
+      },
+      "offset": {
+        "type": "integer",
+        "title": "Offset",
+        "description": "Pagination offset (if applicable)"
+      },
+      "timestamp": {
+        "type": "string",
+        "format": "date-time",
+        "title": "Timestamp",
+        "description": "When the API call was made"
+      },
+      "extractedAt": {
+        "type": "string",
+        "format": "date-time",
+        "title": "Extracted At",
+        "description": "When the data was extracted"
       },
       "method": {
         "type": "string",
@@ -28,19 +50,9 @@
         "description": "HTTP method"
       },
       "statusCode": {
-        "type": "number",
+        "type": "integer",
         "title": "Status Code",
-        "description": "HTTP status code"
-      },
-      "language": {
-        "type": "string",
-        "title": "Language",
-        "description": "Programming language for code snippets"
-      },
-      "code": {
-        "type": "string",
-        "title": "Code",
-        "description": "Generated code content"
+        "description": "HTTP status code of the response"
       },
       "format": {
         "type": "string",
@@ -50,40 +62,28 @@
       "content": {
         "type": "string",
         "title": "Content",
-        "description": "Documentation content"
+        "description": "Documentation or code content"
       },
-      "framework": {
+      "language": {
         "type": "string",
-        "title": "Framework",
-        "description": "Test framework name"
+        "title": "Language",
+        "description": "Programming language"
       },
-      "tests": {
+      "packageName": {
         "type": "string",
-        "title": "Tests",
-        "description": "Test code content"
-      },
-      "package": {
-        "type": "string",
-        "title": "Package",
+        "title": "Package Name",
         "description": "SDK package name"
       },
-      "request": {
-        "type": "object",
-        "title": "Request",
-        "description": "API request example",
-        "additionalProperties": true
+      "totalApis": {
+        "type": "integer",
+        "title": "Total APIs",
+        "description": "Total number of APIs discovered"
       },
-      "response": {
-        "type": "object",
-        "title": "Response",
-        "description": "API response example",
-        "additionalProperties": true
-      },
-      "statistics": {
-        "type": "object",
-        "title": "Statistics",
-        "description": "Execution statistics",
-        "additionalProperties": true
+      "generatedAt": {
+        "type": "string",
+        "format": "date-time",
+        "title": "Generated At",
+        "description": "When the item was generated"
       }
     },
     "additionalProperties": true
@@ -91,28 +91,44 @@
   "views": {
     "discoveredApis": {
       "title": "Discovered APIs 📡",
-      "description": "API endpoint summaries with metadata",
+      "description": "Overview of APIs discovered from start URLs, including endpoints and metadata",
       "transformation": {
-        "fields": ["type", "url", "method", "statusCode", "data"]
+        "fields": ["apiUrl", "sourceUrl", "statusCode", "timestamp", "extractedAt", "page", "offset", "method"]
       },
       "display": {
         "component": "table",
         "properties": {
-          "url": {
-            "format": "link",
-            "label": "API URL"
+          "apiUrl": {
+            "label": "API URL",
+            "format": "link"
           },
-          "method": {
-            "format": "text",
-            "label": "Method"
+          "sourceUrl": {
+            "label": "Source URL",
+            "format": "link"
           },
           "statusCode": {
-            "format": "number",
-            "label": "Status"
+            "label": "Status Code",
+            "format": "number"
           },
-          "type": {
-            "format": "text",
-            "label": "Type"
+          "timestamp": {
+            "label": "Timestamp",
+            "format": "date"
+          },
+          "extractedAt": {
+            "label": "Extracted At",
+            "format": "date"
+          },
+          "page": {
+            "label": "Page",
+            "format": "number"
+          },
+          "offset": {
+            "label": "Offset",
+            "format": "number"
+          },
+          "method": {
+            "label": "Method",
+            "format": "text"
           }
         }
       }
@@ -121,18 +137,26 @@
       "title": "Extracted Data 📊",
       "description": "All extracted data items from discovered APIs",
       "transformation": {
-        "fields": ["type", "data"]
+        "fields": ["_type", "sourceUrl", "apiUrl", "extractedAt"]
       },
       "display": {
         "component": "table",
         "properties": {
-          "type": {
+          "_type": {
             "format": "text",
             "label": "Type"
           },
-          "data": {
-            "format": "json",
-            "label": "Data"
+          "apiUrl": {
+            "format": "link",
+            "label": "API URL"
+          },
+          "sourceUrl": {
+            "format": "link",
+            "label": "Source URL"
+          },
+          "extractedAt": {
+            "format": "date",
+            "label": "Extracted At"
           }
         }
       }
@@ -141,22 +165,22 @@
       "title": "Code Snippets 💻",
       "description": "Ready-to-use code snippets in 12 programming languages",
       "transformation": {
-        "fields": ["type", "language", "code", "url"]
+        "fields": ["_type", "sourceUrl", "totalApis", "generatedAt"]
       },
       "display": {
         "component": "table",
         "properties": {
-          "language": {
-            "format": "text",
-            "label": "Language"
-          },
-          "url": {
+          "sourceUrl": {
             "format": "link",
-            "label": "API URL"
+            "label": "Source URL"
           },
-          "code": {
-            "format": "code",
-            "label": "Code"
+          "totalApis": {
+            "format": "number",
+            "label": "Total APIs"
+          },
+          "generatedAt": {
+            "format": "date",
+            "label": "Generated At"
           }
         }
       }
@@ -165,18 +189,22 @@
       "title": "TypeScript Types 📘",
       "description": "Complete TypeScript type definitions for all discovered APIs",
       "transformation": {
-        "fields": ["type", "code"]
+        "fields": ["_type", "sourceUrl", "totalApis", "generatedAt"]
       },
       "display": {
         "component": "table",
         "properties": {
-          "type": {
-            "format": "text",
-            "label": "Type"
+          "sourceUrl": {
+            "format": "link",
+            "label": "Source URL"
           },
-          "code": {
-            "format": "code",
-            "label": "Type Definition"
+          "totalApis": {
+            "format": "number",
+            "label": "Total APIs"
+          },
+          "generatedAt": {
+            "format": "date",
+            "label": "Generated At"
           }
         }
       }
@@ -185,7 +213,7 @@
       "title": "API Documentation 📚",
       "description": "API documentation in multiple formats (OpenAPI, Postman, cURL, Insomnia)",
       "transformation": {
-        "fields": ["type", "format", "content", "url"]
+        "fields": ["_type", "format", "sourceUrl", "generatedAt"]
       },
       "display": {
         "component": "table",
@@ -194,13 +222,13 @@
             "format": "text",
             "label": "Format"
           },
-          "url": {
+          "sourceUrl": {
             "format": "link",
-            "label": "API URL"
+            "label": "Source URL"
           },
-          "content": {
-            "format": "json",
-            "label": "Content"
+          "generatedAt": {
+            "format": "date",
+            "label": "Generated At"
           }
         }
       }
@@ -209,22 +237,22 @@
       "title": "Test Suites 🧪",
       "description": "Ready-to-run test suites in 5 testing frameworks",
       "transformation": {
-        "fields": ["type", "framework", "tests", "url"]
+        "fields": ["_type", "sourceUrl", "totalApis", "generatedAt"]
       },
       "display": {
         "component": "table",
         "properties": {
-          "framework": {
-            "format": "text",
-            "label": "Framework"
-          },
-          "url": {
+          "sourceUrl": {
             "format": "link",
-            "label": "API URL"
+            "label": "Source URL"
           },
-          "tests": {
-            "format": "code",
-            "label": "Test Code"
+          "totalApis": {
+            "format": "number",
+            "label": "Total APIs"
+          },
+          "generatedAt": {
+            "format": "date",
+            "label": "Generated At"
           }
         }
       }
@@ -233,7 +261,7 @@
       "title": "SDK Packages 📦",
       "description": "Complete SDK packages for TypeScript, Python, and Go",
       "transformation": {
-        "fields": ["type", "language", "package", "code"]
+        "fields": ["_type", "language", "packageName", "sourceUrl", "totalApis", "generatedAt"]
       },
       "display": {
         "component": "table",
@@ -242,13 +270,21 @@
             "format": "text",
             "label": "Language"
           },
-          "package": {
+          "packageName": {
             "format": "text",
             "label": "Package"
           },
-          "code": {
-            "format": "code",
-            "label": "Code"
+          "sourceUrl": {
+            "format": "link",
+            "label": "Source URL"
+          },
+          "totalApis": {
+            "format": "number",
+            "label": "Total APIs"
+          },
+          "generatedAt": {
+            "format": "date",
+            "label": "Generated At"
           }
         }
       }
@@ -257,22 +293,22 @@
       "title": "API Examples 📝",
       "description": "Request/response examples for all discovered APIs",
       "transformation": {
-        "fields": ["type", "url", "request", "response"]
+        "fields": ["_type", "sourceUrl", "totalApis", "generatedAt"]
       },
       "display": {
         "component": "table",
         "properties": {
-          "url": {
+          "sourceUrl": {
             "format": "link",
-            "label": "API URL"
+            "label": "Source URL"
           },
-          "request": {
-            "format": "json",
-            "label": "Request"
+          "totalApis": {
+            "format": "number",
+            "label": "Total Examples"
           },
-          "response": {
-            "format": "json",
-            "label": "Response"
+          "generatedAt": {
+            "format": "date",
+            "label": "Generated At"
           }
         }
       }
@@ -281,22 +317,29 @@
       "title": "Execution Summary 📈",
       "description": "Statistics and summary of the Actor execution",
       "transformation": {
-        "fields": ["type", "statistics"]
+        "fields": ["_type", "totalApis", "generatedAt", "sourceUrl"]
       },
       "display": {
         "component": "table",
         "properties": {
-          "type": {
+          "_type": {
             "format": "text",
             "label": "Type"
           },
-          "statistics": {
-            "format": "json",
-            "label": "Statistics"
+          "totalApis": {
+            "format": "number",
+            "label": "Total APIs"
+          },
+          "sourceUrl": {
+            "format": "link",
+            "label": "Source URL"
+          },
+          "generatedAt": {
+            "format": "date",
+            "label": "Generated At"
           }
         }
       }
     }
   }
 }
-
