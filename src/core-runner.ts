@@ -17,6 +17,7 @@ import { handleDiscovery } from './handlers/discovery-handler.js';
 import { handleAPIProcessing } from './handlers/api-handler.js';
 import { StatisticsCollector } from './utils/statistics.js';
 import { setStatistics } from './utils/statistics.js';
+import { ProgressTracker, type ProgressCallback } from './utils/progress-tracker.js';
 
 export interface APXResult {
     summary: {
@@ -110,11 +111,21 @@ export async function runAPXCore(
     options?: {
         onProgress?: (message: string) => void;
         onError?: (error: Error) => void;
+        progressTracker?: ProgressTracker;
     }
 ): Promise<APXResult> {
     const startTime = Date.now();
     const log = options?.onProgress || ((msg: string) => console.log(msg));
     const onError = options?.onError || ((err: Error) => console.error(err.message));
+    
+    // Initialize progress tracker
+    const progressTracker = options?.progressTracker || new ProgressTracker();
+    progressTracker.onProgress((event) => {
+        const progressMsg = event.progress !== undefined 
+            ? `[${event.progress}%] ${event.message}`
+            : event.message;
+        log(progressMsg);
+    });
 
     // Validate input
     validateInput(input);
@@ -185,11 +196,13 @@ export async function runAPXCore(
 
     try {
         const discoveryStartTime = Date.now();
+        progressTracker.discovery('Starting API discovery phase...');
         
         // Run PlaywrightCrawler for discovery
         await playwrightCrawler.run(initialRequests);
 
         const discoveryDuration = (Date.now() - discoveryStartTime) / 1000;
+        progressTracker.discovery(`Discovery phase complete (${discoveryDuration.toFixed(1)}s)`, undefined, undefined, 100);
         log(`✅ Discovery phase complete (${discoveryDuration.toFixed(1)}s)`);
         log('');
 
@@ -199,14 +212,17 @@ export async function runAPXCore(
         
         if (apisDiscovered > 0) {
             statistics.recordDiscovery(apisDiscovered, discoveryDuration);
+            progressTracker.discovery(`Discovered ${apisDiscovered} API endpoint(s)`, undefined, apisDiscovered, apisDiscovered);
             log(`🔍 Discovered ${apisDiscovered} API endpoint(s)`);
             
             const queueInfoBefore = await requestQueue.getInfo();
             const pendingRequests = (queueInfoBefore?.totalRequestCount || 0) - (queueInfoBefore?.handledRequestCount || 0);
             log(`📋 Queue status: ${queueInfoBefore?.totalRequestCount || 0} total, ${queueInfoBefore?.handledRequestCount || 0} handled, ${pendingRequests} pending`);
+            progressTracker.processing('Starting API processing phase...', undefined, pendingRequests, 0);
             log('⚡ Starting API processing phase...');
             log('');
         } else {
+            progressTracker.discovery('No APIs discovered', undefined, 0, 0);
             log('⚠️  No APIs discovered. The site may not use API calls or they may require user interaction.');
             log('');
         }
@@ -214,6 +230,10 @@ export async function runAPXCore(
         // Run HttpCrawler to process all API_PROCESS requests
         await httpCrawler.run();
 
+        const queueInfoAfter = await requestQueue.getInfo();
+        const processed = queueInfoAfter?.handledRequestCount || 0;
+        const total = queueInfoAfter?.totalRequestCount || 0;
+        progressTracker.processing('API processing phase complete', undefined, total, processed);
         log('✅ API processing phase complete.');
         log('');
 

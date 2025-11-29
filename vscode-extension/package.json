@@ -1,0 +1,57 @@
+{
+  "name": "apx-toolkit",
+  "displayName": "APX Toolkit",
+  "description": "Discover APIs and generate code, docs, tests, and SDKs directly from VS Code",
+  "version": "0.1.0",
+  "publisher": "apx-toolkit",
+  "engines": {
+    "vscode": "^1.80.0"
+  },
+  "categories": [
+    "Other",
+    "Snippets",
+    "Linters"
+  ],
+  "activationEvents": [
+    "onCommand:apx.discoverAPI",
+    "onCommand:apx.generateCode"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "apx.discoverAPI",
+        "title": "Discover API with APX",
+        "category": "APX"
+      },
+      {
+        "command": "apx.generateCode",
+        "title": "Generate Code from API",
+        "category": "APX"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "apx.discoverAPI",
+          "when": "explorerResourceIsFolder",
+          "group": "apx"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.80.0",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "dependencies": {
+    "apx-toolkit": "^1.0.2"
+  }
+}
+

@@ -135,6 +135,30 @@
         "type": "boolean",
         "description": "Enable automatic OAuth 2.0 token capture from login flow (requires loginUrl)",
         "default": false
+      },
+      "generateGitHubActions": {
+        "title": "Generate GitHub Actions",
+        "type": "boolean",
+        "description": "Generate GitHub Actions workflow for automated API discovery",
+        "default": true
+      },
+      "generateSecurityReport": {
+        "title": "Generate Security Audit Report",
+        "type": "boolean",
+        "description": "Generate security audit report for discovered APIs",
+        "default": true
+      },
+      "generateEnhancedDocs": {
+        "title": "Generate Enhanced Documentation",
+        "type": "boolean",
+        "description": "Generate markdown documentation with JSDoc comments",
+        "default": true
+      },
+      "enableGitIntegration": {
+        "title": "Enable Git Integration",
+        "type": "boolean",
+        "description": "Automatically commit generated files to git (requires git repository)",
+        "default": false
       }
     },
     "required": ["startUrls"]

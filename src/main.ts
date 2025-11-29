@@ -1,10 +1,12 @@
 import { PlaywrightCrawler, HttpCrawler, Router, Dataset, RequestQueue } from 'crawlee';
 import { Actor } from 'apify';
-import type { ActorInput } from './types.js';
+import type { ActorInput, DiscoveredAPI } from './types.js';
 import { REQUEST_LABELS } from './types.js';
 import { handleDiscovery } from './handlers/discovery-handler.js';
 import { handleAPIProcessing } from './handlers/api-handler.js';
 import { StatisticsCollector, formatStatistics } from './utils/statistics.js';
+import { generateEnhancedOutputs } from './utils/output-generator.js';
+import { ProgressTracker } from './utils/progress-tracker.js';
 
 /**
  * APX - The API Toolkit
@@ -133,8 +135,9 @@ async function main() {
     console.log('='.repeat(60));
     console.log('');
 
+    const discoveryStartTime = Date.now();
+    
     try {
-        const discoveryStartTime = Date.now();
         
         // Run PlaywrightCrawler for discovery
         // This will discover APIs and enqueue API_PROCESS requests
@@ -201,6 +204,55 @@ async function main() {
         }
         if (summary.summary.examplesCaptured) {
             console.log('📝 Request/response examples captured');
+        }
+        
+        // Generate enhanced outputs (GitHub Actions, security reports, etc.)
+        if (apisDiscovered > 0) {
+            console.log('');
+            console.log('🚀 Generating enhanced developer outputs...');
+            
+            try {
+                // Collect discovered APIs from dataset
+                const discoveredAPIs: DiscoveredAPI[] = [];
+                if (datasetInfo && datasetInfo.itemCount && datasetInfo.itemCount > 0) {
+                    const items = await dataset.getData();
+                    for (const item of items.items || []) {
+                        if (item._type === 'api_summary' && item.apis) {
+                            discoveredAPIs.push(...(item.apis as DiscoveredAPI[]));
+                        } else if (item.discoveredAPI) {
+                            discoveredAPIs.push(item.discoveredAPI as DiscoveredAPI);
+                        }
+                    }
+                }
+                
+                if (discoveredAPIs.length > 0) {
+                    await generateEnhancedOutputs(
+                        {
+                            summary: {
+                                apisDiscovered,
+                                requestsProcessed: finalQueueInfo?.handledRequestCount || 0,
+                                itemsExtracted: datasetInfo?.itemCount || 0,
+                                discoveryDuration: (Date.now() - discoveryStartTime) / 1000,
+                                totalDuration: (Date.now() - discoveryStartTime) / 1000,
+                            },
+                            artifacts: {} as any,
+                            data: [],
+                            statistics: {} as any,
+                        },
+                        discoveredAPIs,
+                        {
+                            generateGitHubActions: true,
+                            generateSecurityReport: true,
+                            generateChangeReport: false,
+                            generateDocs: true,
+                        }
+                    );
+                    console.log('✅ Enhanced outputs generated!');
+                }
+            } catch (error) {
+                console.warn('⚠️  Enhanced outputs generation failed:', error instanceof Error ? error.message : String(error));
+                // Don't fail the entire run
+            }
         }
         
     } catch (error) {

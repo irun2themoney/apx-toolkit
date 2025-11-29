@@ -32,6 +32,11 @@ export interface ActorInput {
     // Interaction simulation for landing pages
     enableInteractionSimulation?: boolean;
     interactionWaitTime?: number;
+    // Enhanced developer experience features
+    generateGitHubActions?: boolean;
+    generateSecurityReport?: boolean;
+    generateEnhancedDocs?: boolean;
+    enableGitIntegration?: boolean;
 }
 
 /**
