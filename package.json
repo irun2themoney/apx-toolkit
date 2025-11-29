@@ -54,7 +54,10 @@
   "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/irun2themoney/apx-toolkit.git"
+    "url": "git+https://github.com/irun2themoney/apx-toolkit.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "apify": "^3.0.0",
