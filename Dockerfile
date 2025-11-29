@@ -18,8 +18,8 @@ RUN npm install --loglevel=error
 # Copy source code
 COPY . .
 
-# Build TypeScript
-RUN npm run build
+# Build TypeScript (use npx to ensure tsc is found)
+RUN npx tsc
 
 # Run the actor
 CMD ["npm", "start"]
