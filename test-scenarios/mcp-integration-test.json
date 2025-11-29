@@ -1,0 +1,15 @@
+{
+  "startUrls": [
+    {
+      "url": "https://jsonplaceholder.typicode.com/posts"
+    }
+  ],
+  "maxPages": 2,
+  "generateMockServer": false,
+  "generatePerformanceBenchmark": false,
+  "generateContractTests": false,
+  "generateMCPIntegration": true,
+  "generateX402Integration": false,
+  "generateDependencyGraph": false
+}
+

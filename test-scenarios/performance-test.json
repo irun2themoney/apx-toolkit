@@ -1,0 +1,21 @@
+{
+  "startUrls": [
+    {
+      "url": "https://jsonplaceholder.typicode.com/posts"
+    },
+    {
+      "url": "https://jsonplaceholder.typicode.com/users"
+    },
+    {
+      "url": "https://jsonplaceholder.typicode.com/comments"
+    }
+  ],
+  "maxPages": 3,
+  "generateMockServer": false,
+  "generatePerformanceBenchmark": true,
+  "generateContractTests": false,
+  "generateMCPIntegration": false,
+  "generateX402Integration": false,
+  "generateDependencyGraph": false
+}
+

@@ -1,0 +1,25 @@
+{
+  "startUrls": [
+    {
+      "url": "https://jsonplaceholder.typicode.com/posts"
+    },
+    {
+      "url": "https://jsonplaceholder.typicode.com/users"
+    }
+  ],
+  "maxPages": 5,
+  "maxConcurrency": 3,
+  "generateDocumentation": true,
+  "exportFormats": ["openapi", "postman", "curl", "insomnia"],
+  "generateGitHubActions": true,
+  "generateSecurityReport": true,
+  "generateEnhancedDocs": true,
+  "enableGitIntegration": false,
+  "generateMockServer": true,
+  "generatePerformanceBenchmark": true,
+  "generateContractTests": true,
+  "generateMCPIntegration": true,
+  "generateX402Integration": true,
+  "generateDependencyGraph": true
+}
+
