@@ -12,14 +12,14 @@ USER myuser
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install --loglevel=error
+# Install dependencies (including devDependencies for build)
+RUN npm install --include=dev --loglevel=error
 
 # Copy source code
 COPY . .
 
-# Build TypeScript (use npx to ensure tsc is found)
-RUN npx tsc
+# Build TypeScript
+RUN npm run build
 
 # Run the actor
 CMD ["npm", "start"]
