@@ -435,8 +435,32 @@ export async function handleDiscovery(
             await page.waitForTimeout(2000);
         }
     } catch (error) {
-        log.warning(`Error navigating to page: ${error}`);
-        // Continue anyway - we might have captured some responses
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        log.warning(`Error navigating to page: ${errorMessage}`);
+        
+        // Provide helpful error messages based on error type
+        if (errorMessage.includes('net::ERR_NAME_NOT_RESOLVED') || 
+            errorMessage.includes('net::ERR_NAME_RESOLUTION_FAILED') ||
+            errorMessage.includes('getaddrinfo ENOTFOUND')) {
+            log.error(`❌ Domain not found: ${request.url}`);
+            log.warning('💡 This domain does not exist or is unreachable. Please check the URL.');
+        } else if (errorMessage.includes('timeout') || errorMessage.includes('Navigation timeout')) {
+            log.warning(`⏱️  Navigation timeout for: ${request.url}`);
+            log.warning('💡 The page took too long to load. Consider increasing discoveryTimeout.');
+        } else if (errorMessage.includes('net::ERR_CONNECTION_REFUSED')) {
+            log.error(`❌ Connection refused: ${request.url}`);
+            log.warning('💡 The server refused the connection. The service may be down.');
+        } else if (errorMessage.includes('net::ERR_SSL')) {
+            log.warning(`🔒 SSL error for: ${request.url}`);
+            log.warning('💡 There may be an SSL certificate issue with this URL.');
+        }
+        
+        // Continue anyway - we might have captured some responses before the error
+        // Return early to avoid processing if navigation completely failed
+        if (discoveredAPIs.length === 0) {
+            log.warning('⚠️  No APIs discovered due to navigation error. Skipping this URL.');
+            return;
+        }
     } finally {
         // Clean up interval
         if (apiActivityCheckInterval) {

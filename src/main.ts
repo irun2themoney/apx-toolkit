@@ -107,6 +107,13 @@ async function main() {
             },
         },
         requestHandlerTimeoutSecs: 60,
+        // Handle failed requests gracefully
+        failedRequestHandler: async ({ request, error }) => {
+            console.warn(`⚠️  Failed to process request: ${request.url}`);
+            console.warn(`   Error: ${error instanceof Error ? error.message : String(error)}`);
+            console.warn(`   This URL will be skipped. Continuing with other URLs...`);
+            // Don't throw - allow other URLs to continue processing
+        },
     });
 
     // Configure HttpCrawler for API processing phase
@@ -116,6 +123,13 @@ async function main() {
         maxRequestsPerCrawl: (input.maxPages || 100) * (input.startUrls.length || 1),
         maxConcurrency: input.maxConcurrency || 5,
         requestHandlerTimeoutSecs: 30,
+        // Handle failed requests gracefully
+        failedRequestHandler: async ({ request, error }) => {
+            console.warn(`⚠️  Failed to process API request: ${request.url}`);
+            console.warn(`   Error: ${error instanceof Error ? error.message : String(error)}`);
+            console.warn(`   This API request will be skipped. Continuing with other requests...`);
+            // Don't throw - allow other requests to continue processing
+        },
     });
 
     // Prepare initial requests with START_DISCOVERY label
@@ -141,7 +155,18 @@ async function main() {
         
         // Run PlaywrightCrawler for discovery
         // This will discover APIs and enqueue API_PROCESS requests
-        await playwrightCrawler.run(initialRequests);
+        // Errors in individual requests are handled by failedRequestHandler
+        try {
+            await playwrightCrawler.run(initialRequests);
+        } catch (error) {
+            // Only log if it's a critical error (not individual request failures)
+            const errorMessage = error instanceof Error ? error.message : String(error);
+            if (!errorMessage.includes('Request failed') && !errorMessage.includes('Navigation')) {
+                console.warn(`⚠️  Discovery phase encountered errors: ${errorMessage}`);
+                console.warn('   Some URLs may have failed, but continuing with successful discoveries...');
+            }
+            // Don't throw - allow processing to continue
+        }
 
         const discoveryDuration = (Date.now() - discoveryStartTime) / 1000;
         console.log(`✅ Discovery phase complete (${discoveryDuration.toFixed(1)}s)`);
