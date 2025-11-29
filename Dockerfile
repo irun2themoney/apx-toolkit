@@ -7,8 +7,8 @@ WORKDIR /usr/src/app
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies
-RUN npm install
+# Install dependencies (Apify base images run as non-root user, so no permission issues)
+RUN npm install --loglevel=error
 
 # Copy source code
 COPY . .
