@@ -1,0 +1,15 @@
+{
+  "startUrls": [
+    {
+      "url": "https://jsonplaceholder.typicode.com/posts"
+    },
+    {
+      "url": "https://jsonplaceholder.typicode.com/users"
+    }
+  ],
+  "maxPages": 5,
+  "maxConcurrency": 3,
+  "generateDocumentation": true,
+  "exportFormats": ["openapi", "postman", "curl", "insomnia"]
+}
+

@@ -1,0 +1,62 @@
+{
+  "actorOutputSchemaVersion": 1,
+  "title": "APX Toolkit Output",
+  "description": "Complete API integration package: discovered APIs, generated code, documentation, types, tests, SDKs, and extracted data",
+  "properties": {
+    "discoveredApis": {
+      "type": "string",
+      "title": "Discovered APIs 📡",
+      "description": "Summary of all discovered API endpoints with metadata",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=discoveredApis"
+    },
+    "extractedData": {
+      "type": "string",
+      "title": "Extracted Data 📊",
+      "description": "All data items extracted from the discovered APIs",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=extractedData"
+    },
+    "codeSnippets": {
+      "type": "string",
+      "title": "Code Snippets 💻",
+      "description": "Ready-to-use code snippets in 12 programming languages",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=codeSnippets"
+    },
+    "typescriptTypes": {
+      "type": "string",
+      "title": "TypeScript Types 📘",
+      "description": "Complete TypeScript type definitions for all discovered APIs",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=typescriptTypes"
+    },
+    "apiDocumentation": {
+      "type": "string",
+      "title": "API Documentation 📚",
+      "description": "API documentation in multiple formats (OpenAPI, Postman, cURL, Insomnia)",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=apiDocumentation"
+    },
+    "testSuites": {
+      "type": "string",
+      "title": "Test Suites 🧪",
+      "description": "Ready-to-run test suites in 5 testing frameworks",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=testSuites"
+    },
+    "sdkPackages": {
+      "type": "string",
+      "title": "SDK Packages 📦",
+      "description": "Complete SDK packages for TypeScript, Python, and Go",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=sdkPackages"
+    },
+    "apiExamples": {
+      "type": "string",
+      "title": "API Examples 📝",
+      "description": "Request/response examples for all discovered APIs",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=apiExamples"
+    },
+    "executionSummary": {
+      "type": "string",
+      "title": "Execution Summary 📈",
+      "description": "Statistics and summary of the Actor execution",
+      "template": "{{links.apiDefaultDatasetUrl}}/items?view=executionSummary"
+    }
+  }
+}
+

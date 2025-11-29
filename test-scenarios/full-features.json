@@ -1,0 +1,16 @@
+{
+  "startUrls": [
+    {
+      "url": "https://jsonplaceholder.typicode.com/posts"
+    }
+  ],
+  "maxPages": 10,
+  "maxConcurrency": 5,
+  "generateDocumentation": true,
+  "exportFormats": ["openapi", "postman", "curl", "insomnia"],
+  "enableInteractionSimulation": true,
+  "interactionWaitTime": 2000,
+  "minResponseSize": 100,
+  "discoveryTimeout": 15000
+}
+

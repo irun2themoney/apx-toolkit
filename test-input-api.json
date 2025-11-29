@@ -1,0 +1,12 @@
+{
+  "startUrls": [
+    {
+      "url": "https://jsonplaceholder.typicode.com/posts"
+    }
+  ],
+  "maxPages": 10,
+  "discoveryTimeout": 10000,
+  "generateDocumentation": true,
+  "exportFormats": ["openapi", "postman", "curl"],
+  "enableInteractionSimulation": true
+}
