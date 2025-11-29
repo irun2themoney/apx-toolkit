@@ -4,10 +4,15 @@ FROM apify/actor-node-playwright-chrome:20
 # Set working directory
 WORKDIR /usr/src/app
 
+# Ensure the working directory is owned by the myuser (Apify base image user)
+USER root
+RUN chown -R myuser:myuser /usr/src/app
+USER myuser
+
 # Copy package files
 COPY package*.json ./
 
-# Install dependencies (Apify base images run as non-root user, so no permission issues)
+# Install dependencies
 RUN npm install --loglevel=error
 
 # Copy source code
