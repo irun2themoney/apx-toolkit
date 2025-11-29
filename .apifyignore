@@ -49,5 +49,5 @@ dist/
 
 # TypeScript
 *.tsbuildinfo
-tsconfig.json
+# Note: tsconfig.json is needed for build, so don't exclude it
 
