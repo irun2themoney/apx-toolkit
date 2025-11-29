@@ -98,6 +98,7 @@ Results are organized in 9 dataset views:
 
 ## 🛠️ Features
 
+### Core Features
 - **Automatic API Discovery** - Finds APIs by monitoring network traffic
 - **Multi-Format Documentation** - OpenAPI, Postman, cURL, Insomnia
 - **12 Language Support** - Generate code in your preferred language
@@ -107,6 +108,16 @@ Results are organized in 9 dataset views:
 - **GraphQL & WebSocket** - Full support for modern APIs
 - **Pagination Detection** - Auto-detects and handles pagination
 - **Rate Limit Detection** - Identifies rate limits automatically
+
+### 🚀 Enhanced Developer Experience (NEW!)
+- **Progress Streaming** - Real-time progress updates with ETA
+- **GitHub Actions Integration** - Auto-generate CI/CD workflows
+- **Git Integration** - Auto-commit generated files with changelog
+- **Security Audit Reports** - Vulnerability detection and best practices
+- **Change Detection** - Track API changes and breaking changes
+- **Enhanced Documentation** - Markdown docs with JSDoc comments
+- **VS Code Extension** - Discover APIs directly from your IDE
+- **Interactive API Explorer** - Web UI to test APIs interactively
 
 ## 📦 Installation
 
@@ -143,6 +154,13 @@ Visit: [https://console.apify.com/actors/2eXbQISXqhTnIxWNJ](https://console.apif
 - `enableInteractionSimulation` - Auto-click/scroll for SPAs
 - `paginationType` - Manual pagination control
 - `dataPath` - Custom data extraction path
+
+### Enhanced Features (NEW!)
+
+- `generateGitHubActions` - Generate GitHub Actions workflow (default: true)
+- `generateSecurityReport` - Generate security audit report (default: true)
+- `generateEnhancedDocs` - Generate enhanced markdown docs (default: true)
+- `enableGitIntegration` - Auto-commit to git (default: false)
 
 See [User Guide](docs/USER-GUIDE.md) for complete configuration options.
 
