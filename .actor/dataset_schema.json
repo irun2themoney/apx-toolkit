@@ -3,70 +3,90 @@
   "title": "APX Toolkit Dataset",
   "description": "Dataset schema for APX Toolkit output containing discovered APIs, generated code, documentation, types, tests, SDKs, and extracted data",
   "fields": {
-    "type": {
-      "type": "string",
-      "description": "Type of output item"
+    "type": "object",
+    "properties": {
+      "type": {
+        "type": "string",
+        "title": "Type",
+        "description": "Type of output item"
+      },
+      "data": {
+        "type": "object",
+        "title": "Data",
+        "description": "Output data content",
+        "additionalProperties": true
+      },
+      "url": {
+        "type": "string",
+        "format": "uri",
+        "title": "URL",
+        "description": "API endpoint URL"
+      },
+      "method": {
+        "type": "string",
+        "title": "Method",
+        "description": "HTTP method"
+      },
+      "statusCode": {
+        "type": "number",
+        "title": "Status Code",
+        "description": "HTTP status code"
+      },
+      "language": {
+        "type": "string",
+        "title": "Language",
+        "description": "Programming language for code snippets"
+      },
+      "code": {
+        "type": "string",
+        "title": "Code",
+        "description": "Generated code content"
+      },
+      "format": {
+        "type": "string",
+        "title": "Format",
+        "description": "Documentation format"
+      },
+      "content": {
+        "type": "string",
+        "title": "Content",
+        "description": "Documentation content"
+      },
+      "framework": {
+        "type": "string",
+        "title": "Framework",
+        "description": "Test framework name"
+      },
+      "tests": {
+        "type": "string",
+        "title": "Tests",
+        "description": "Test code content"
+      },
+      "package": {
+        "type": "string",
+        "title": "Package",
+        "description": "SDK package name"
+      },
+      "request": {
+        "type": "object",
+        "title": "Request",
+        "description": "API request example",
+        "additionalProperties": true
+      },
+      "response": {
+        "type": "object",
+        "title": "Response",
+        "description": "API response example",
+        "additionalProperties": true
+      },
+      "statistics": {
+        "type": "object",
+        "title": "Statistics",
+        "description": "Execution statistics",
+        "additionalProperties": true
+      }
     },
-    "data": {
-      "type": "object",
-      "description": "Output data content",
-      "additionalProperties": true
-    },
-    "url": {
-      "type": "string",
-      "description": "API endpoint URL"
-    },
-    "method": {
-      "type": "string",
-      "description": "HTTP method"
-    },
-    "statusCode": {
-      "type": "number",
-      "description": "HTTP status code"
-    },
-    "language": {
-      "type": "string",
-      "description": "Programming language for code snippets"
-    },
-    "code": {
-      "type": "string",
-      "description": "Generated code content"
-    },
-    "format": {
-      "type": "string",
-      "description": "Documentation format"
-    },
-    "content": {
-      "type": "string",
-      "description": "Documentation content"
-    },
-    "framework": {
-      "type": "string",
-      "description": "Test framework name"
-    },
-    "tests": {
-      "type": "string",
-      "description": "Test code content"
-    },
-    "package": {
-      "type": "string",
-      "description": "SDK package name"
-    },
-    "request": {
-      "type": "object",
-      "description": "API request example",
-      "additionalProperties": true
-    },
-    "response": {
-      "type": "object",
-      "description": "API response example",
-      "additionalProperties": true
-    },
-    "statistics": {
-      "type": "object",
-      "description": "Execution statistics",
-      "additionalProperties": true
-    }
+    "additionalProperties": true
   },
   "views": {
     "discoveredApis": {
