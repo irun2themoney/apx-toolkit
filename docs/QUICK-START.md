@@ -92,9 +92,20 @@ After the run completes, you'll find:
 
 ## ❓ Need Help?
 
-- 📖 Full Guide: See `docs/USER-GUIDE.md`
-- 🐛 Issues: Check error messages for helpful tips
-- 💬 Examples: See `test-scenarios/` folder
+- 📖 **Full Guide:** [User Guide](USER-GUIDE.md)
+- ❓ **FAQ:** [Frequently Asked Questions](FAQ.md)
+- 💬 **Feedback:** [Give us feedback](../CONTRIBUTING.md#-give-feedback)
+- 🐛 **Issues:** [Report bugs](https://github.com/irun2themoney/apx-toolkit/issues)
+
+---
+
+## ⭐ Love APX Toolkit?
+
+**Star us on GitHub!** ⭐
+
+[![GitHub stars](https://img.shields.io/github/stars/irun2themoney/apx-toolkit?style=social)](https://github.com/irun2themoney/apx-toolkit)
+
+**Share your success story!** We'd love to hear how APX helped you.
 
 ---
 

@@ -178,5 +178,17 @@
 
 ---
 
+---
+
+## 💬 Share Your Use Case!
+
+**Did APX Toolkit help you?** We'd love to hear about it!
+
+- [Share your story](../CONTRIBUTING.md#-share-your-success-stories)
+- [Give feedback](../CONTRIBUTING.md#-give-feedback)
+- [Star us on GitHub](https://github.com/irun2themoney/apx-toolkit) ⭐
+
+---
+
 **Choose your use case and get started!** 🚀
 

@@ -223,5 +223,18 @@ Or use `apiKey` or `authHeaders` fields.
 
 ---
 
-**Have a question not answered here?** Check the full [User Guide](USER-GUIDE.md) or open an issue on GitHub!
+**Have a question not answered here?**
+- Check the full [User Guide](USER-GUIDE.md)
+- [Open an Issue](https://github.com/irun2themoney/apx-toolkit/issues)
+- [Give Feedback](../CONTRIBUTING.md#-give-feedback)
+
+---
+
+## ⭐ Love APX Toolkit?
+
+**Star us on GitHub!** ⭐
+
+[![GitHub stars](https://img.shields.io/github/stars/irun2themoney/apx-toolkit?style=social)](https://github.com/irun2themoney/apx-toolkit)
+
+**Your feedback helps make APX better for everyone!** 🙏
 

@@ -55,25 +55,24 @@ Every run automatically creates:
 
 ## 📖 Documentation
 
-### 🎯 Start Here
-- **[Getting Started Guide](docs/GETTING-STARTED.md)** ⭐ - Your first steps (start here!)
+### 🎯 Quick Start
+- **[Quick Start Guide](docs/QUICK-START.md)** ⭐ - Get started in 60 seconds!
+- **[Common Use Cases](docs/COMMON-USE-CASES.md)** - Real-world examples
+- **[FAQ](docs/FAQ.md)** - Frequently asked questions
 
-### 👤 User Documentation
-- **[Complete User Guide](docs/USER-GUIDE.md)** - Everything you need to know
+### 👤 User Guides
+- **[User Guide](docs/USER-GUIDE.md)** - Complete user documentation
 - **[CLI Documentation](docs/CLI.md)** - Command-line interface
-- **[Test Run Guide](docs/TEST-RUN-GUIDE.md)** - How to test the Actor
-- **[Test Scenarios](test-scenarios/)** - Ready-to-use test configurations
+- **[Test Scenarios](test-scenarios/)** - Ready-to-use configurations
 
-### 👨‍💻 Developer Documentation
+### 👨‍💻 Developer Resources
 - **[Developer Guide](docs/DEVELOPER-GUIDE.md)** - Architecture and development
 - **[Project Structure](PROJECT-STRUCTURE.md)** - Code organization
-- **[Feature Roadmap](FEATURE-ROADMAP.md)** - Planned features
-- **[Developer Experience Enhancements](DEVELOPER-EXPERIENCE-ENHANCEMENTS.md)** - All enhancements
+- **[Contributing](CONTRIBUTING.md)** - How to contribute and give feedback
 
 ### 📚 Reference
 - **[Documentation Index](docs/README.md)** - All documentation
-- **[Monetization Guide](docs/MONETIZATION-TIERED-PRICING.md)** - Pricing setup
-- **[Competition Status](COMPETITION-READY.md)** - Competition readiness
+- **[Feature Roadmap](FEATURE-ROADMAP.md)** - Planned features
 
 ## 🎯 Use Cases
 
