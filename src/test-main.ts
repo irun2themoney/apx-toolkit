@@ -21,10 +21,11 @@ const mockActor = {
     getInput: async (): Promise<ActorInput> => {
         const __filename = fileURLToPath(import.meta.url);
         const __dirname = dirname(__filename);
-        // When compiled, dist/test-main.js needs to go up one level to find test-input.json
-        const inputPath = join(__dirname, '../test-input.json');
+        // Check for command line argument first, then default to test-input.json
+        const inputFile = process.argv[2] || 'test-input.json';
+        const inputPath = join(__dirname, '..', inputFile);
         const input = JSON.parse(readFileSync(inputPath, 'utf-8'));
-        console.log('[MOCK] Actor.getInput() - loaded from test-input.json');
+        console.log(`[MOCK] Actor.getInput() - loaded from ${inputFile}`);
         return input;
     },
     log: {
