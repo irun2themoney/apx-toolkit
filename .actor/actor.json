@@ -13,52 +13,56 @@
     "type": "object",
     "schemaVersion": 1,
     "properties": {
-      "startUrls": {
-        "title": "Start URLs",
-        "type": "array",
-        "description": "Array of URLs to start the discovery process from",
-        "editor": "json",
-        "prefill": [
-          {
-            "url": "https://example.com"
-          }
-        ]
-      },
-      "apiPatterns": {
-        "title": "API URL Patterns",
-        "type": "array",
-        "description": "Optional patterns to match API endpoints (e.g., ['/api/', '/v1/data']). If empty, will auto-detect JSON responses",
-        "editor": "stringList",
-        "default": []
-      },
-      "minResponseSize": {
-        "title": "Minimum Response Size (bytes)",
-        "type": "integer",
-        "description": "Minimum size of API response to consider (filters out small config responses)",
-        "default": 1000,
-        "minimum": 0
-      },
-      "discoveryTimeout": {
-        "title": "Discovery Timeout (ms)",
-        "type": "integer",
-        "description": "How long to wait for API discovery in milliseconds",
-        "default": 10000,
-        "minimum": 1000
-      },
-      "maxPages": {
-        "title": "Maximum Pages",
-        "type": "integer",
-        "description": "Maximum number of pages to scrape from the discovered API",
-        "default": 100,
-        "minimum": 1
-      },
-      "maxConcurrency": {
-        "title": "Max Concurrency",
-        "type": "integer",
-        "description": "Maximum number of concurrent requests for API processing",
-        "default": 5,
-        "minimum": 1
-      },
+            "startUrls": {
+              "title": "Start URLs",
+              "type": "array",
+              "description": "Array of URLs to start the discovery process from. APX will visit these URLs and discover any APIs they use. Tip: Use web pages (not direct API endpoints) for best results.",
+              "editor": "json",
+              "prefill": [
+                {
+                  "url": "https://example.com"
+                }
+              ],
+              "example": [
+                {"url": "https://example.com"},
+                {"url": "https://another-site.com"}
+              ]
+            },
+            "apiPatterns": {
+              "title": "API URL Patterns (Advanced)",
+              "type": "array",
+              "description": "Optional: Filter specific API endpoints by URL pattern. Examples: ['/api/', '/v1/data']. Leave empty to auto-detect all JSON responses.",
+              "editor": "stringList",
+              "default": []
+            },
+            "minResponseSize": {
+              "title": "Minimum Response Size (bytes)",
+              "type": "integer",
+              "description": "Filter out small responses (like config files). Default: 1000 bytes. Increase to focus on larger data APIs.",
+              "default": 1000,
+              "minimum": 0
+            },
+            "discoveryTimeout": {
+              "title": "Discovery Timeout (ms)",
+              "type": "integer",
+              "description": "How long to wait for API discovery on each page. Default: 10 seconds. Increase for slower sites.",
+              "default": 10000,
+              "minimum": 1000
+            },
+            "maxPages": {
+              "title": "Maximum Pages",
+              "type": "integer",
+              "description": "Maximum number of API pages to process. Default: 100. Increase to get more data, decrease for faster runs.",
+              "default": 100,
+              "minimum": 1
+            },
+            "maxConcurrency": {
+              "title": "Max Concurrency",
+              "type": "integer",
+              "description": "Number of API requests to make simultaneously. Default: 5. Increase for speed (but may hit rate limits).",
+              "default": 5,
+              "minimum": 1
+            },
       "dataPath": {
         "title": "Data Path",
         "type": "string",

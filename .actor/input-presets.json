@@ -1,0 +1,87 @@
+{
+  "presets": {
+    "simple": {
+      "name": "Simple Discovery",
+      "description": "Quick API discovery with minimal configuration",
+      "input": {
+        "startUrls": [{"url": "https://example.com"}],
+        "maxPages": 10,
+        "generateDocumentation": true,
+        "exportFormats": ["openapi", "postman"],
+        "generateMockServer": true,
+        "generatePerformanceBenchmark": false,
+        "generateContractTests": false,
+        "generateMCPIntegration": false,
+        "generateX402Integration": false,
+        "generateDependencyGraph": false
+      }
+    },
+    "standard": {
+      "name": "Standard Package",
+      "description": "Complete API integration package with all essential features",
+      "input": {
+        "startUrls": [{"url": "https://example.com"}],
+        "maxPages": 50,
+        "maxConcurrency": 5,
+        "generateDocumentation": true,
+        "exportFormats": ["openapi", "postman", "curl"],
+        "generateMockServer": true,
+        "generatePerformanceBenchmark": true,
+        "generateContractTests": true,
+        "generateMCPIntegration": false,
+        "generateX402Integration": false,
+        "generateDependencyGraph": true
+      }
+    },
+    "complete": {
+      "name": "Complete Package",
+      "description": "Everything! All features enabled for maximum output",
+      "input": {
+        "startUrls": [{"url": "https://example.com"}],
+        "maxPages": 100,
+        "maxConcurrency": 5,
+        "generateDocumentation": true,
+        "exportFormats": ["openapi", "postman", "curl", "insomnia"],
+        "generateGitHubActions": true,
+        "generateSecurityReport": true,
+        "generateEnhancedDocs": true,
+        "generateMockServer": true,
+        "generatePerformanceBenchmark": true,
+        "generateContractTests": true,
+        "generateMCPIntegration": true,
+        "generateX402Integration": true,
+        "generateDependencyGraph": true
+      }
+    },
+    "developer": {
+      "name": "Developer Tools",
+      "description": "Focus on developer experience: mocks, tests, and docs",
+      "input": {
+        "startUrls": [{"url": "https://example.com"}],
+        "maxPages": 50,
+        "generateMockServer": true,
+        "generateContractTests": true,
+        "generateDependencyGraph": true,
+        "generateEnhancedDocs": true,
+        "generatePerformanceBenchmark": false,
+        "generateMCPIntegration": false,
+        "generateX402Integration": false
+      }
+    },
+    "performance": {
+      "name": "Performance Focus",
+      "description": "Focus on performance analysis and optimization",
+      "input": {
+        "startUrls": [{"url": "https://example.com"}],
+        "maxPages": 50,
+        "generatePerformanceBenchmark": true,
+        "generateDependencyGraph": true,
+        "generateMockServer": false,
+        "generateContractTests": false,
+        "generateMCPIntegration": false,
+        "generateX402Integration": false
+      }
+    }
+  }
+}
+

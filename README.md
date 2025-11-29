@@ -143,38 +143,80 @@ Results are organized in 9 dataset views:
 - **VS Code Extension** - Discover APIs directly from your IDE
 - **Interactive API Explorer** - Web UI to test APIs interactively
 
+## 🚀 Quick Start (60 seconds!)
+
+### Step 1: Go to Apify
+Visit: **[https://console.apify.com/actors/2eXbQISXqhTnIxWNJ](https://console.apify.com/actors/2eXbQISXqhTnIxWNJ)**
+
+### Step 2: Click "Start"
+Click the green **"Start"** button.
+
+### Step 3: Paste This
+```json
+{
+  "startUrls": [{"url": "https://example.com"}]
+}
+```
+
+### Step 4: Wait 10-30 seconds
+Done! Check the Dataset tab for all your outputs.
+
+**That's it!** 🎉
+
+---
+
 ## 📦 Installation
 
-### npm
+### Apify Platform (Recommended)
+Visit: [https://console.apify.com/actors/2eXbQISXqhTnIxWNJ](https://console.apify.com/actors/2eXbQISXqhTnIxWNJ)
 
+### npm (CLI)
 ```bash
 npm install -g apx-toolkit
 ```
 
-### Apify Platform
-
-Visit: [https://console.apify.com/actors/2eXbQISXqhTnIxWNJ](https://console.apify.com/actors/2eXbQISXqhTnIxWNJ)
-
 ## 🔧 Configuration
 
-### Basic Input
-
+### Simple (Recommended for First Time)
 ```json
 {
-  "startUrls": [
-    {"url": "https://api.example.com"}
-  ],
-  "maxPages": 100,
-  "maxConcurrency": 5,
+  "startUrls": [{"url": "https://example.com"}]
+}
+```
+**That's it!** All defaults are optimized for you.
+
+### Standard (Most Common)
+```json
+{
+  "startUrls": [{"url": "https://example.com"}],
+  "maxPages": 50,
   "generateDocumentation": true,
-  "exportFormats": ["openapi", "postman", "curl"]
+  "generateMockServer": true
 }
 ```
 
-### Advanced Options
+### Complete (Everything Enabled)
+```json
+{
+  "startUrls": [{"url": "https://example.com"}],
+  "maxPages": 100,
+  "generateDocumentation": true,
+  "generateMockServer": true,
+  "generatePerformanceBenchmark": true,
+  "generateContractTests": true,
+  "generateDependencyGraph": true
+}
+```
 
-- `apiPatterns` - Filter specific API endpoints
-- `bearerToken` / `apiKey` - Authentication
+### 💡 Pro Tips
+
+- **Use web pages, not API endpoints** - APX discovers APIs by watching pages make API calls
+- **Start simple** - Use defaults first, then customize
+- **Enable interaction simulation** - Discovers more APIs by clicking buttons
+- **Check all dataset views** - Each view organizes different outputs
+
+### 📚 More Examples
+See `docs/COMMON-USE-CASES.md` for real-world examples.
 - `enableInteractionSimulation` - Auto-click/scroll for SPAs
 - `paginationType` - Manual pagination control
 - `dataPath` - Custom data extraction path

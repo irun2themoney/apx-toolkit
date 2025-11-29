@@ -7,6 +7,7 @@ import { handleAPIProcessing } from './handlers/api-handler.js';
 import { StatisticsCollector, formatStatistics } from './utils/statistics.js';
 import { generateEnhancedOutputs } from './utils/output-generator.js';
 import { ProgressTracker } from './utils/progress-tracker.js';
+import { USER_MESSAGES, getSuggestion } from './utils/user-friendly-messages.js';
 
 /**
  * APX - The API Toolkit
@@ -49,30 +50,30 @@ async function main() {
         }
     }
 
-    // Validate optional parameters
-    if (input.minResponseSize !== undefined && input.minResponseSize < 0) {
-        throw new Error('minResponseSize must be >= 0');
-    }
-    if (input.discoveryTimeout !== undefined && input.discoveryTimeout < 1000) {
-        throw new Error('discoveryTimeout must be >= 1000ms');
-    }
-    if (input.maxPages !== undefined && input.maxPages < 1) {
-        throw new Error('maxPages must be >= 1');
-    }
-    if (input.maxConcurrency !== undefined && input.maxConcurrency < 1) {
-        throw new Error('maxConcurrency must be >= 1');
-    }
-    if (input.paginationType && !['auto', 'offset', 'page', 'cursor'].includes(input.paginationType)) {
-        throw new Error('paginationType must be one of: auto, offset, page, cursor');
-    }
-    if (input.exportFormats) {
-        const validFormats = ['openapi', 'postman', 'curl', 'insomnia'];
-        for (const format of input.exportFormats) {
-            if (!validFormats.includes(format)) {
-                throw new Error(`Invalid export format: ${format}. Must be one of: ${validFormats.join(', ')}`);
+        // Validate optional parameters with user-friendly messages
+        if (input.minResponseSize !== undefined && input.minResponseSize < 0) {
+            throw new Error(USER_MESSAGES.errors.validation('minResponseSize', 'must be 0 or greater'));
+        }
+        if (input.discoveryTimeout !== undefined && input.discoveryTimeout < 1000) {
+            throw new Error(USER_MESSAGES.errors.validation('discoveryTimeout', 'must be at least 1000ms (1 second)'));
+        }
+        if (input.maxPages !== undefined && input.maxPages < 1) {
+            throw new Error(USER_MESSAGES.errors.validation('maxPages', 'must be at least 1'));
+        }
+        if (input.maxConcurrency !== undefined && input.maxConcurrency < 1) {
+            throw new Error(USER_MESSAGES.errors.validation('maxConcurrency', 'must be at least 1'));
+        }
+        if (input.paginationType && !['auto', 'offset', 'page', 'cursor'].includes(input.paginationType)) {
+            throw new Error(USER_MESSAGES.errors.validation('paginationType', `must be one of: auto, offset, page, or cursor`));
+        }
+        if (input.exportFormats) {
+            const validFormats = ['openapi', 'postman', 'curl', 'insomnia'];
+            for (const format of input.exportFormats) {
+                if (!validFormats.includes(format)) {
+                    throw new Error(USER_MESSAGES.errors.validation('exportFormats', `"${format}" is not valid. Choose from: ${validFormats.join(', ')}`));
+                }
             }
         }
-    }
 
     // Initialize statistics collector
     const statistics = new StatisticsCollector();
@@ -138,16 +139,32 @@ async function main() {
         label: REQUEST_LABELS.START_DISCOVERY,
     }));
 
-    console.log('🚀 Starting APX - The API Toolkit');
-    console.log('='.repeat(60));
-    console.log(`📋 Configuration:`);
-    console.log(`   Start URLs: ${input.startUrls.length}`);
-    console.log(`   Max Pages: ${input.maxPages || 100}`);
-    console.log(`   Max Concurrency: ${input.maxConcurrency || 5}`);
-    console.log(`   Generate Documentation: ${input.generateDocumentation !== false ? 'Yes' : 'No'}`);
-    console.log(`   Export Formats: ${input.exportFormats?.join(', ') || 'openapi, postman, curl'}`);
-    console.log('='.repeat(60));
-    console.log('');
+        // Import user-friendly messages
+        const { USER_MESSAGES, formatProgress } = await import('./utils/user-friendly-messages.js');
+        
+        console.log(USER_MESSAGES.welcome());
+        console.log('📋 Your Configuration:');
+        console.log(`   • Start URLs: ${input.startUrls.length} URL${input.startUrls.length > 1 ? 's' : ''}`);
+        console.log(`   • Max Pages: ${input.maxPages || 100}`);
+        console.log(`   • Max Concurrency: ${input.maxConcurrency || 5}`);
+        console.log(`   • Generate Documentation: ${input.generateDocumentation !== false ? '✅ Yes' : '❌ No'}`);
+        console.log(`   • Export Formats: ${input.exportFormats?.join(', ') || 'openapi, postman, curl'}`);
+        console.log('');
+        
+        // Show enabled features
+        const enabledFeatures: string[] = [];
+        if (input.generateMockServer !== false) enabledFeatures.push('Mock Server');
+        if (input.generatePerformanceBenchmark !== false) enabledFeatures.push('Performance');
+        if (input.generateContractTests !== false) enabledFeatures.push('Contract Tests');
+        if (input.generateMCPIntegration !== false) enabledFeatures.push('MCP Integration');
+        if (input.generateX402Integration !== false) enabledFeatures.push('x402 Integration');
+        if (input.generateDependencyGraph !== false) enabledFeatures.push('Dependency Graph');
+        
+        if (enabledFeatures.length > 0) {
+            console.log('✨ Enhanced Features Enabled:');
+            enabledFeatures.forEach(feature => console.log(`   • ${feature}`));
+            console.log('');
+        }
 
     const discoveryStartTime = Date.now();
     
@@ -183,13 +200,19 @@ async function main() {
             // Check queue status before starting HttpCrawler
             const queueInfoBefore = await requestQueue.getInfo();
             const pendingRequests = (queueInfoBefore?.totalRequestCount || 0) - (queueInfoBefore?.handledRequestCount || 0);
-            console.log(`📋 Queue status: ${queueInfoBefore?.totalRequestCount || 0} total, ${queueInfoBefore?.handledRequestCount || 0} handled, ${pendingRequests} pending`);
-            console.log('⚡ Starting API processing phase...');
-            console.log('');
-        } else {
-            console.log('⚠️  No APIs discovered. The site may not use API calls or they may require user interaction.');
-            console.log('');
-        }
+                console.log(`📋 Queue status: ${queueInfoBefore?.totalRequestCount || 0} total, ${queueInfoBefore?.handledRequestCount || 0} handled, ${pendingRequests} pending`);
+                console.log('');
+                console.log(USER_MESSAGES.processing.starting(apisDiscovered));
+                console.log('');
+            } else {
+                console.log(USER_MESSAGES.discovery.none());
+                console.log('');
+                if (input.enableInteractionSimulation === false) {
+                    console.log(USER_MESSAGES.tips.betterDiscovery());
+                }
+                console.log(USER_MESSAGES.tips.moreApis());
+                console.log('');
+            }
 
         // Run HttpCrawler to process all API_PROCESS requests
         // It uses the same request queue, so it will pick up requests enqueued by discovery
