@@ -1,24 +1,45 @@
 # 📚 APX Toolkit - Complete User Guide
 
-**Your complete guide to using APX Toolkit for API discovery and code generation.**
+**Everything you need to know to use APX Toolkit effectively**
 
 ---
 
-## 🎯 What is APX Toolkit?
+## Table of Contents
 
-APX Toolkit automatically:
-- 🔍 **Discovers** APIs from websites and applications
-- 📝 **Documents** APIs in multiple formats
-- 💻 **Generates** code in 12 programming languages
-- 🧪 **Creates** test suites in 5 frameworks
-- 📦 **Builds** ready-to-publish SDK packages
-- 📘 **Provides** TypeScript type definitions
-
-**Saves weeks of work in seconds!**
+1. [Introduction](#introduction)
+2. [Getting Started](#getting-started)
+3. [Input Configuration](#input-configuration)
+4. [Output Structure](#output-structure)
+5. [Use Cases](#use-cases)
+6. [Advanced Features](#advanced-features)
+7. [Enhanced Developer Features](#enhanced-developer-features-new)
+8. [Troubleshooting](#troubleshooting)
+9. [Best Practices](#best-practices)
 
 ---
 
-## 🚀 Getting Started
+## Introduction
+
+### What is APX Toolkit?
+
+APX Toolkit is an automated developer tool that:
+- **Discovers** APIs automatically from websites
+- **Generates** complete integration packages
+- **Documents** APIs in multiple formats
+- **Creates** production-ready code, tests, and SDKs
+
+**Unique Features:**
+- ✅ Only tool with automatic API discovery
+- ✅ Supports REST, GraphQL, and WebSocket
+- ✅ OAuth 2.0 automation
+- ✅ Security auditing
+- ✅ Change detection
+- ✅ GitHub Actions integration
+- ✅ VS Code extension
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
@@ -27,96 +48,204 @@ APX Toolkit automatically:
 
 ### Quick Start
 
-1. **Visit your Actor:** https://console.apify.com/actors/2eXbQISXqhTnIxWNJ
-2. **Click "Start"**
-3. **Enter your input** (see examples below)
-4. **Click "Start"** and wait for results!
+1. Visit: https://console.apify.com/actors/2eXbQISXqhTnIxWNJ
+2. Click "Start"
+3. Enter input (see examples below)
+4. Wait for results (usually 10-30 seconds)
+
+See [Getting Started Guide](GETTING-STARTED.md) for detailed steps.
 
 ---
 
-## 📝 Input Configuration
+## Input Configuration
 
 ### Required Fields
 
 ```json
 {
   "startUrls": [
-    {
-      "url": "https://example.com"
-    }
+    {"url": "https://example.com"}
   ]
 }
 ```
 
-### Complete Input Schema
+### Basic Configuration
+
+```json
+{
+  "startUrls": [{"url": "https://api.example.com"}],
+  "maxPages": 100,
+  "maxConcurrency": 5,
+  "generateDocumentation": true,
+  "exportFormats": ["openapi", "postman", "curl"]
+}
+```
+
+### Complete Configuration
 
 ```json
 {
   "startUrls": [
-    {
-      "url": "https://example.com"
-    }
+    {"url": "https://api.example.com"}
   ],
   "apiPatterns": ["/api/", "/v1/"],
   "minResponseSize": 1000,
   "discoveryTimeout": 10000,
   "maxPages": 100,
   "maxConcurrency": 5,
-  "dataPath": "",
+  "dataPath": "data.items",
   "paginationType": "auto",
   "generateDocumentation": true,
   "exportFormats": ["openapi", "postman", "curl", "insomnia"],
   "enableInteractionSimulation": true,
   "interactionWaitTime": 2000,
-  "authHeaders": {},
-  "apiKey": "",
-  "bearerToken": "",
-  "loginUrl": "",
-  "oauthFlow": false
+  "bearerToken": "your-token-here",
+  "apiKey": "your-api-key",
+  "loginUrl": "https://api.example.com/login",
+  "oauthFlow": true,
+  "generateGitHubActions": true,
+  "generateSecurityReport": true,
+  "generateEnhancedDocs": true,
+  "enableGitIntegration": false
 }
 ```
 
 ### Field Descriptions
 
-#### Basic Configuration
+#### Core Discovery
 
-- **`startUrls`** (required): Array of URLs to start discovery
-  ```json
-  "startUrls": [{"url": "https://api.example.com"}]
-  ```
+- **`startUrls`** (required): Array of URLs to start discovery from
+- **`apiPatterns`**: Filter specific API endpoints (e.g., `["/api/", "/v1/"]`)
+- **`minResponseSize`**: Minimum response size in bytes (filters small configs)
+- **`discoveryTimeout`**: How long to wait for API discovery (ms)
+- **`maxPages`**: Maximum pages to process from discovered APIs
+- **`maxConcurrency`**: Number of concurrent requests
 
-- **`maxPages`**: Maximum number of pages to process (default: 100)
-- **`maxConcurrency`**: Concurrent requests (default: 5)
+#### Data Extraction
 
-#### API Discovery
+- **`dataPath`**: JSONPath to extract data (e.g., `"data.items"`)
+- **`paginationType`**: `"auto"`, `"offset"`, `"page"`, or `"cursor"`
 
-- **`apiPatterns`**: URL patterns to match (e.g., `["/api/", "/v1/"]`)
-- **`minResponseSize`**: Minimum response size in bytes (default: 1000)
-- **`discoveryTimeout`**: How long to wait for discovery in ms (default: 10000)
+#### Documentation
+
+- **`generateDocumentation`**: Generate API docs (default: true)
+- **`exportFormats`**: `["openapi", "postman", "curl", "insomnia"]`
 
 #### Interaction
 
-- **`enableInteractionSimulation`**: Auto-click/scroll to trigger APIs (default: true)
-- **`interactionWaitTime`**: Wait time after interactions in ms (default: 2000)
+- **`enableInteractionSimulation`**: Auto-click/scroll for SPAs (default: true)
+- **`interactionWaitTime`**: Wait time after interactions (ms, default: 2000)
 
 #### Authentication
 
-- **`bearerToken`**: Bearer token for authentication
-- **`apiKey`**: API key (added as X-API-Key header)
+- **`bearerToken`**: Bearer token (added as `Authorization: Bearer TOKEN`)
+- **`apiKey`**: API key (added as `X-API-Key` header)
 - **`authHeaders`**: Custom headers object
-- **`loginUrl`**: URL for OAuth flow
-- **`oauthFlow`**: Enable OAuth token capture
+- **`loginUrl`**: URL for OAuth 2.0 login flow
+- **`oauthFlow`**: Enable automatic OAuth token capture
 
-#### Output
+#### Enhanced Features (NEW!)
 
-- **`generateDocumentation`**: Generate API docs (default: true)
-- **`exportFormats`**: Formats to export: `["openapi", "postman", "curl", "insomnia"]`
+- **`generateGitHubActions`**: Generate GitHub Actions workflow (default: true)
+- **`generateSecurityReport`**: Generate security audit (default: true)
+- **`generateEnhancedDocs`**: Generate enhanced markdown docs (default: true)
+- **`enableGitIntegration`**: Auto-commit to git (default: false)
 
 ---
 
-## 🎨 Use Cases & Examples
+## Output Structure
 
-### 1. Discover APIs from a Website
+### Dataset Views (9 Views)
+
+APX organizes results into 9 dataset views:
+
+1. **Discovered APIs** 📡
+   - API endpoint summaries
+   - Methods, URLs, headers
+   - Pagination info
+   - Rate limit info
+
+2. **Extracted Data** 📊
+   - All data items from APIs
+   - Structured JSON data
+   - Source URLs
+
+3. **Code Snippets** 💻
+   - Code in 12 languages:
+     - TypeScript, JavaScript, Python, Go, Rust
+     - Java, PHP, Ruby, C#, Kotlin
+     - cURL, PowerShell
+
+4. **TypeScript Types** 📘
+   - Complete `.d.ts` files
+   - Full type definitions
+   - Ready for IDE integration
+
+5. **API Documentation** 📚
+   - OpenAPI 3.0 spec
+   - Postman collection
+   - cURL commands
+   - Insomnia collection
+
+6. **Test Suites** 🧪
+   - Jest (JavaScript)
+   - pytest (Python)
+   - Mocha (JavaScript)
+   - Vitest (TypeScript)
+   - Playwright (E2E)
+
+7. **SDK Packages** 📦
+   - TypeScript SDK
+   - Python SDK
+   - Go SDK
+   - All with CI/CD templates
+
+8. **API Examples** 📝
+   - Request examples
+   - Response examples
+   - Real API data
+
+9. **Execution Summary** 📈
+   - Statistics
+   - Metrics
+   - Performance data
+
+### Enhanced Outputs (NEW!)
+
+#### GitHub Actions Workflow
+
+Location: `.github/workflows/apx-discovery.yml`
+
+**Features:**
+- Scheduled API discovery
+- Auto-update on changes
+- PR generation
+- Artifact uploads
+
+#### Security Audit Report
+
+Location: `SECURITY-AUDIT.md` and `security-audit.json`
+
+**Includes:**
+- Security score (0-100)
+- Vulnerability detection
+- Best practices check
+- Recommendations
+
+#### Enhanced Documentation
+
+Location: `API.md`, `README.md`, `jsdoc-comments.json`
+
+**Features:**
+- Markdown API reference
+- JSDoc/TSDoc comments
+- Interactive documentation
+
+---
+
+## Use Cases
+
+### 1. API Discovery from Website
 
 **Goal:** Find all APIs used by a website
 
@@ -124,252 +253,405 @@ APX Toolkit automatically:
 {
   "startUrls": [{"url": "https://example.com"}],
   "maxPages": 10,
-  "enableInteractionSimulation": true,
-  "interactionWaitTime": 3000
+  "enableInteractionSimulation": true
 }
 ```
 
-### 2. Document an Existing API
+**Result:** All API endpoints discovered and documented.
 
-**Goal:** Generate documentation for known API endpoints
+---
+
+### 2. API Documentation Generation
+
+**Goal:** Generate complete documentation for an API
 
 ```json
 {
-  "startUrls": [
-    {"url": "https://api.example.com/users"},
-    {"url": "https://api.example.com/products"}
-  ],
+  "startUrls": [{"url": "https://api.example.com"}],
   "apiPatterns": ["/api/"],
   "maxPages": 50,
-  "generateDocumentation": true,
-  "exportFormats": ["openapi", "postman"]
+  "exportFormats": ["openapi", "postman", "curl", "insomnia"]
 }
 ```
 
-### 3. Generate Code for Integration
+**Result:** Documentation in all 4 formats.
 
-**Goal:** Get ready-to-use code snippets
+---
+
+### 3. Code Generation for Integration
+
+**Goal:** Get ready-to-use code in your language
 
 ```json
 {
   "startUrls": [{"url": "https://api.example.com"}],
-  "maxPages": 20,
-  "generateDocumentation": true
+  "maxPages": 20
 }
 ```
 
-**Output:** Code in JavaScript, Python, Go, Java, C#, PHP, Ruby, Swift, Kotlin, Rust, Dart, and Bash
+**Result:** Code snippets in 12 languages, TypeScript types, test suites.
 
-### 4. Create Test Suites
+---
 
-**Goal:** Generate tests for discovered APIs
-
-```json
-{
-  "startUrls": [{"url": "https://api.example.com"}],
-  "maxPages": 10
-}
-```
-
-**Output:** Tests for Jest, pytest, Mocha, Vitest, and Playwright
-
-### 5. Build SDK Packages
+### 4. SDK Package Creation
 
 **Goal:** Create publishable SDK packages
 
 ```json
 {
   "startUrls": [{"url": "https://api.example.com"}],
-  "maxPages": 15
+  "maxPages": 50
 }
 ```
 
-**Output:** Complete SDK packages for TypeScript, Python, and Go
+**Result:** Complete SDK packages for TypeScript, Python, and Go.
 
-### 6. With Authentication
+---
 
-**Goal:** Discover APIs behind authentication
+### 5. Security Auditing
+
+**Goal:** Audit API security
 
 ```json
 {
   "startUrls": [{"url": "https://api.example.com"}],
-  "bearerToken": "your-token-here",
-  "maxPages": 20
+  "generateSecurityReport": true
 }
 ```
 
-Or with API key:
+**Result:** Security audit report with score and recommendations.
+
+---
+
+### 6. CI/CD Automation
+
+**Goal:** Automate API discovery in CI/CD
 
 ```json
 {
   "startUrls": [{"url": "https://api.example.com"}],
-  "apiKey": "your-api-key",
-  "maxPages": 20
+  "generateGitHubActions": true
 }
 ```
 
-### 7. OAuth Flow
+**Result:** GitHub Actions workflow ready for automation.
 
-**Goal:** Automatically capture OAuth tokens
+---
+
+## Advanced Features
+
+### OAuth 2.0 Flow
+
+APX can automatically capture OAuth tokens:
 
 ```json
 {
-  "startUrls": [{"url": "https://app.example.com"}],
-  "loginUrl": "https://app.example.com/login",
-  "oauthFlow": true,
-  "maxPages": 20
+  "startUrls": [{"url": "https://api.example.com"}],
+  "loginUrl": "https://api.example.com/login",
+  "oauthFlow": true
 }
 ```
 
----
-
-## 📊 Understanding Output
-
-### Dataset Structure
-
-Your results are saved in the Apify Dataset with these views:
-
-1. **Discovered APIs** 📡 - API endpoint summaries
-2. **Extracted Data** 📊 - All extracted data items
-3. **Code Snippets** 💻 - Code in 12 languages
-4. **TypeScript Types** 📘 - Type definitions
-5. **API Documentation** 📚 - OpenAPI, Postman, cURL, Insomnia
-6. **Test Suites** 🧪 - Tests in 5 frameworks
-7. **SDK Packages** 📦 - Ready-to-publish SDKs
-8. **API Examples** 📝 - Request/response examples
-9. **Execution Summary** 📈 - Statistics and metrics
-
-### Accessing Results
-
-1. **After run completes**, click the dataset link
-2. **Browse views** to see different output types
-3. **Download** individual items or entire dataset
-4. **Export** as JSON, CSV, Excel, etc.
+**How it works:**
+1. APX navigates to login URL
+2. Monitors network traffic
+3. Captures authentication tokens
+4. Uses tokens for API requests
 
 ---
 
-## 🔧 Advanced Configuration
+### GraphQL Support
 
-### Pagination
+APX automatically detects GraphQL APIs:
 
-APX automatically detects pagination types:
+- Detects GraphQL queries
+- Extracts operation names
+- Generates GraphQL-specific code
+- Creates GraphQL documentation
+
+**No special configuration needed!**
+
+---
+
+### WebSocket Support
+
+APX detects WebSocket connections:
+
+- Monitors WebSocket connections
+- Generates WebSocket client code
+- Documents WebSocket protocols
+
+**Automatic detection!**
+
+---
+
+### Pagination Handling
+
+APX automatically detects and handles pagination:
+
 - **Offset-based:** `?offset=0&limit=10`
 - **Page-based:** `?page=1&size=10`
 - **Cursor-based:** `?cursor=abc123`
 
-You can specify manually:
-
-```json
-{
-  "paginationType": "offset",
-  "dataPath": "data.items"
-}
-```
-
-### Data Extraction
-
-Specify custom data paths:
-
-```json
-{
-  "dataPath": "results.data"
-}
-```
-
-If empty, APX auto-detects the data structure.
-
-### Filtering APIs
-
-Use patterns to filter specific endpoints:
-
-```json
-{
-  "apiPatterns": ["/api/v1/", "/rest/"],
-  "minResponseSize": 500
-}
-```
+Set `paginationType: "auto"` for automatic detection.
 
 ---
 
-## 🐛 Troubleshooting
+## Enhanced Developer Features (NEW!)
+
+### 1. Progress Streaming
+
+Real-time progress updates with:
+- Current phase (discovery, processing, generation)
+- Progress percentage
+- Estimated time remaining
+- Current item being processed
+
+**Visible in:** Apify Console logs and VS Code extension
+
+---
+
+### 2. GitHub Actions Integration
+
+Auto-generates `.github/workflows/apx-discovery.yml`:
+
+```yaml
+name: APX API Discovery
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Daily
+  workflow_dispatch:
+jobs:
+  discover-api:
+    steps:
+      - name: Discover API
+        run: apx --url ${{ secrets.API_URL }}
+```
+
+**Features:**
+- Scheduled discovery
+- Auto-update on changes
+- PR generation
+- Artifact uploads
+
+---
+
+### 3. Security Audit Reports
+
+Comprehensive security analysis:
+
+- **Security Score:** 0-100 rating
+- **Vulnerability Detection:** Critical, high, medium, low issues
+- **Best Practices:** Recommendations
+- **Report Format:** Markdown + JSON
+
+**Example Issues Detected:**
+- HTTP instead of HTTPS
+- Exposed API keys in URLs
+- Missing authentication
+- No rate limiting info
+- Sensitive data in URLs
+
+---
+
+### 4. Change Detection
+
+Track API changes over time:
+
+- **Added APIs:** New endpoints discovered
+- **Removed APIs:** Endpoints no longer available
+- **Modified APIs:** Changed parameters, headers
+- **Breaking Changes:** Critical changes detected
+
+**Use Case:** Monitor APIs for breaking changes.
+
+---
+
+### 5. Enhanced Documentation
+
+Professional documentation generation:
+
+- **Markdown API Reference:** Complete API docs
+- **JSDoc/TSDoc Comments:** IDE integration
+- **README Generation:** Package documentation
+- **Interactive Docs:** Web-based explorer
+
+---
+
+### 6. Git Integration
+
+Automate version control:
+
+- **Auto-commit:** Generated files committed automatically
+- **Changelog:** Auto-generated changelog entries
+- **Version Tagging:** Automatic version tags
+- **Branch Management:** Create branches for updates
+
+**Enable:** Set `enableGitIntegration: true`
+
+---
+
+### 7. VS Code Extension
+
+Discover APIs directly from VS Code:
+
+- Right-click → "Discover API with APX"
+- Progress tracking in IDE
+- Integrated workflow
+- No context switching
+
+**Installation:** See `vscode-extension/README.md`
+
+---
+
+### 8. Interactive API Explorer
+
+Web UI for testing APIs:
+
+- Browse discovered APIs
+- Test endpoints interactively
+- View request/response
+- Generate code on-the-fly
+
+**Location:** `web-ui/index.html`
+
+---
+
+## Troubleshooting
 
 ### No APIs Discovered
 
-**Problem:** Run completes but no APIs found
+**Possible Causes:**
+- Site doesn't use API calls
+- APIs require user interaction
+- APIs are loaded dynamically
 
 **Solutions:**
-1. Enable interaction simulation:
-   ```json
-   {
-     "enableInteractionSimulation": true,
-     "interactionWaitTime": 3000
-   }
-   ```
-2. Increase discovery timeout:
-   ```json
-   {
-     "discoveryTimeout": 20000
-   }
-   ```
-3. Try different URLs
-4. Check if APIs require authentication
-
-### Timeout Errors
-
-**Problem:** Run times out
-
-**Solutions:**
-1. Reduce `maxPages`
-2. Increase `discoveryTimeout`
-3. Reduce `maxConcurrency`
-
-### Authentication Issues
-
-**Problem:** APIs return 401/403 errors
-
-**Solutions:**
-1. Add `bearerToken` or `apiKey`
-2. Use `authHeaders` for custom auth
-3. Enable `oauthFlow` for OAuth sites
-
-### Missing Data
-
-**Problem:** APIs discovered but no data extracted
-
-**Solutions:**
-1. Specify `dataPath` manually
-2. Check API response structure
-3. Verify pagination settings
+- Enable `enableInteractionSimulation: true`
+- Increase `discoveryTimeout`
+- Check if site uses APIs
 
 ---
 
-## 💡 Best Practices
+### Authentication Errors
 
-1. **Start Small:** Test with `maxPages: 1` first
-2. **Use Patterns:** Filter APIs with `apiPatterns`
-3. **Enable Interactions:** For SPAs and dynamic sites
-4. **Monitor Logs:** Watch real-time progress
-5. **Check Results:** Verify output in dataset views
-6. **Iterate:** Adjust settings based on results
+**Possible Causes:**
+- Invalid token
+- Token expired
+- Wrong authentication method
+
+**Solutions:**
+- Verify token is valid
+- Use OAuth flow for automatic capture
+- Check authentication headers
 
 ---
 
-## 📞 Support & Resources
+### Timeout Issues
+
+**Possible Causes:**
+- Slow API responses
+- Network issues
+- Too many pages
+
+**Solutions:**
+- Increase `discoveryTimeout`
+- Reduce `maxPages`
+- Check network connectivity
+
+---
+
+## Best Practices
+
+### 1. Start Simple
+
+Begin with minimal configuration:
+
+```json
+{
+  "startUrls": [{"url": "https://api.example.com"}],
+  "maxPages": 1
+}
+```
+
+Then expand based on results.
+
+---
+
+### 2. Use API Patterns
+
+Filter specific endpoints:
+
+```json
+{
+  "apiPatterns": ["/api/v1/", "/rest/"]
+}
+```
+
+Reduces noise and speeds up discovery.
+
+---
+
+### 3. Enable Interactions for SPAs
+
+For single-page applications:
+
+```json
+{
+  "enableInteractionSimulation": true,
+  "interactionWaitTime": 2000
+}
+```
+
+Helps discover APIs triggered by user actions.
+
+---
+
+### 4. Use Security Reports
+
+Always review security audit:
+
+```json
+{
+  "generateSecurityReport": true
+}
+```
+
+Identifies vulnerabilities and best practices.
+
+---
+
+### 5. Automate with GitHub Actions
+
+Set up automated discovery:
+
+```json
+{
+  "generateGitHubActions": true
+}
+```
+
+Keeps API documentation up-to-date automatically.
+
+---
+
+## Examples
+
+See `test-scenarios/` folder for ready-to-use examples:
+
+- `simple-api.json` - Quick test
+- `multiple-apis.json` - Multiple APIs
+- `full-features.json` - All features enabled
+
+---
+
+## Resources
 
 - **Actor URL:** https://console.apify.com/actors/2eXbQISXqhTnIxWNJ
 - **GitHub:** https://github.com/irun2themoney/apx-toolkit
-- **Documentation:** See `README.md` for full details
+- **npm:** https://www.npmjs.com/package/apx-toolkit
+- **Documentation:** See `docs/` folder
 
 ---
 
-## 🎉 You're Ready!
-
-You now have everything you need to:
-- ✅ Discover APIs automatically
-- ✅ Generate complete integration packages
-- ✅ Create documentation in multiple formats
-- ✅ Build SDK packages
-- ✅ Generate test suites
-
 **Happy API discovering!** 🚀
-

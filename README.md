@@ -10,15 +10,21 @@ APX is the ultimate developer tool that automatically discovers APIs and generat
 
 ## 🚀 Quick Start
 
-### Apify Platform (Recommended)
+### Option 1: Apify Platform (Recommended - No Installation)
 
 **Live Actor**: [https://console.apify.com/actors/2eXbQISXqhTnIxWNJ](https://console.apify.com/actors/2eXbQISXqhTnIxWNJ)
 
-1. Click "Start" on the Actor page
-2. Enter your input (see examples below)
-3. Get complete API integration package in seconds!
+1. Click **"Start"** on the Actor page
+2. Paste this input:
+   ```json
+   {
+     "startUrls": [{"url": "https://jsonplaceholder.typicode.com/posts"}],
+     "maxPages": 1
+   }
+   ```
+3. Click **"Start"** and get complete API integration package in 10-30 seconds!
 
-### CLI (Local Development)
+### Option 2: CLI (Local Development)
 
 ```bash
 # Install globally
@@ -29,6 +35,8 @@ apx --url https://api.example.com
 
 # Output saved to ./apx-output
 ```
+
+See [Getting Started Guide](docs/GETTING-STARTED.md) for detailed instructions.
 
 ## ✨ What APX Generates
 
@@ -47,9 +55,25 @@ Every run automatically creates:
 
 ## 📖 Documentation
 
-- **[Quick Start Guide](docs/QUICK-START.md)** - Get started in 5 minutes
-- **[Complete User Guide](docs/USER-GUIDE.md)** - Full documentation with examples
+### 🎯 Start Here
+- **[Getting Started Guide](docs/GETTING-STARTED.md)** ⭐ - Your first steps (start here!)
+
+### 👤 User Documentation
+- **[Complete User Guide](docs/USER-GUIDE.md)** - Everything you need to know
+- **[CLI Documentation](docs/CLI.md)** - Command-line interface
+- **[Test Run Guide](docs/TEST-RUN-GUIDE.md)** - How to test the Actor
 - **[Test Scenarios](test-scenarios/)** - Ready-to-use test configurations
+
+### 👨‍💻 Developer Documentation
+- **[Developer Guide](docs/DEVELOPER-GUIDE.md)** - Architecture and development
+- **[Project Structure](PROJECT-STRUCTURE.md)** - Code organization
+- **[Feature Roadmap](FEATURE-ROADMAP.md)** - Planned features
+- **[Developer Experience Enhancements](DEVELOPER-EXPERIENCE-ENHANCEMENTS.md)** - All enhancements
+
+### 📚 Reference
+- **[Documentation Index](docs/README.md)** - All documentation
+- **[Monetization Guide](docs/MONETIZATION-TIERED-PRICING.md)** - Pricing setup
+- **[Competition Status](COMPETITION-READY.md)** - Competition readiness
 
 ## 🎯 Use Cases
 

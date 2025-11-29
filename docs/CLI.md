@@ -1,203 +1,207 @@
-# APX CLI - Command Line Interface
+# 💻 APX Toolkit - CLI Documentation
 
-The APX CLI allows you to run APX locally without the Apify platform, making it perfect for integration into your development workflow.
+**Command-line interface for APX Toolkit**
+
+---
 
 ## Installation
 
-### Global Installation
-
 ```bash
-npm install -g @apx/toolkit
+npm install -g apx-toolkit
 ```
 
-After installation, the `apx` command will be available globally.
+---
 
-### Local Installation
+## Basic Usage
 
-```bash
-npm install @apx/toolkit
-npx apx --help
-```
-
-## Usage
-
-### Basic Usage
+### Discover API from URL
 
 ```bash
 apx --url https://api.example.com
 ```
 
-This will:
-- Discover APIs from the URL
-- Generate all artifacts (code, types, tests, SDKs, docs)
-- Save everything to `./apx-output` directory
-
-### Custom Output Directory
+### With Output Directory
 
 ```bash
-apx --url https://api.example.com --output ./my-api-files
+apx --url https://api.example.com --output ./my-api
 ```
 
-### With Authentication
-
-```bash
-# API Key
-apx --url https://api.example.com --api-key YOUR_API_KEY
-
-# Bearer Token
-apx --url https://api.example.com --bearer-token YOUR_TOKEN
-
-# OAuth Flow
-apx --url https://api.example.com --login-url https://api.example.com/login --oauth-flow
-```
-
-### Advanced Options
+### With Options
 
 ```bash
 apx \
   --url https://api.example.com \
   --max-pages 50 \
   --max-concurrency 10 \
-  --discovery-timeout 20000 \
-  --export-formats openapi,postman,curl \
-  --output ./output
+  --export-formats openapi,postman,curl
 ```
+
+---
 
 ## Command Options
 
-| Option | Alias | Description | Default |
-|--------|-------|-------------|---------|
-| `--url` | `-u` | Starting URL for API discovery | Required |
-| `--output` | `-o` | Output directory | `./apx-output` |
-| `--login-url` | | OAuth login URL | - |
-| `--api-key` | | API key for authentication | - |
-| `--bearer-token` | | Bearer token for authentication | - |
-| `--max-pages` | | Maximum pages to scrape | 100 |
-| `--max-concurrency` | | Max concurrent requests | 5 |
-| `--discovery-timeout` | | Discovery timeout (ms) | 10000 |
-| `--min-response-size` | | Minimum response size (bytes) | 1000 |
-| `--api-patterns` | | Comma-separated URL patterns | - |
-| `--data-path` | | JSONPath to extract data | - |
-| `--pagination-type` | | Pagination type (auto/offset/page/cursor) | auto |
-| `--export-formats` | | Comma-separated formats | openapi,postman,curl |
-| `--generate-docs` | | Generate documentation | true |
-| `--interaction-simulation` | | Enable interaction simulation | true |
-| `--interaction-wait-time` | | Wait time after interactions (ms) | 2000 |
-| `--oauth-flow` | | Enable OAuth flow | false |
+### Required
 
-## Output Structure
+| Option | Description | Example |
+|--------|-------------|---------|
+| `--url` | API URL to discover | `--url https://api.example.com` |
 
-After running, the output directory will contain:
+### Optional
 
-```
-apx-output/
-├── code-snippets/          # Code snippets for each API
-│   └── api_name.json
-├── types.d.ts              # TypeScript type definitions
-├── test-suites/            # Test suites (Jest, pytest, etc.)
-│   ├── api.test.js
-│   └── api_test.py
-├── sdk-packages/           # SDK packages (TypeScript, Python, Go)
-│   ├── typescript-sdk/
-│   ├── python-sdk/
-│   └── go-sdk/
-├── documentation/          # API documentation
-│   ├── api-spec.json       # OpenAPI
-│   ├── postman-collection.json
-│   └── curl-commands.sh
-├── examples.json           # Request/response examples
-├── data.json              # Extracted data items
-└── summary.json           # Execution summary and statistics
-```
+| Option | Description | Default |
+|--------|-------------|---------|
+| `--output` | Output directory | `./apx-output` |
+| `--max-pages` | Maximum pages to process | 100 |
+| `--max-concurrency` | Concurrent requests | 5 |
+| `--export-formats` | Comma-separated formats | `openapi,postman,curl` |
+| `--generate-docs` | Generate documentation | true |
+| `--interaction-simulation` | Enable interaction simulation | true |
+| `--bearer-token` | Bearer token for auth | - |
+| `--api-key` | API key for auth | - |
+| `--oauth-flow` | Enable OAuth flow | false |
+| `--login-url` | OAuth login URL | - |
+| `--generate-github-actions` | Generate GitHub Actions | true |
+| `--generate-security-report` | Generate security audit | true |
+| `--generate-enhanced-docs` | Generate enhanced docs | true |
+| `--enable-git-integration` | Auto-commit to git | false |
+
+---
 
 ## Examples
 
-### Discover GitHub API
+### Quick Discovery
 
 ```bash
-apx --url https://api.github.com --output ./github-api
+apx --url https://jsonplaceholder.typicode.com/posts --max-pages 1
 ```
 
-### Discover with OAuth
+### Full Features
+
+```bash
+apx \
+  --url https://api.example.com \
+  --max-pages 50 \
+  --export-formats openapi,postman,curl,insomnia \
+  --generate-security-report \
+  --generate-github-actions \
+  --enable-git-integration
+```
+
+### With Authentication
+
+```bash
+apx \
+  --url https://api.example.com \
+  --bearer-token "your-token-here"
+```
+
+### OAuth Flow
 
 ```bash
 apx \
   --url https://api.example.com \
   --login-url https://api.example.com/login \
-  --oauth-flow \
-  --output ./authenticated-api
-```
-
-### Quick Discovery (Minimal Output)
-
-```bash
-apx \
-  --url https://api.example.com \
-  --max-pages 10 \
-  --export-formats openapi \
-  --output ./quick-output
-```
-
-## Integration Examples
-
-### CI/CD Pipeline
-
-```yaml
-# .github/workflows/discover-api.yml
-- name: Discover API
-  run: |
-    npm install -g @apx/toolkit
-    apx --url ${{ secrets.API_URL }} --output ./api-artifacts
-```
-
-### npm Script
-
-```json
-{
-  "scripts": {
-    "discover-api": "apx --url https://api.example.com --output ./api"
-  }
-}
-```
-
-### Makefile
-
-```makefile
-discover:
-	apx --url $(API_URL) --output ./api-artifacts
-```
-
-## Troubleshooting
-
-### No APIs Discovered
-
-- Try enabling interaction simulation: `--interaction-simulation true`
-- Increase discovery timeout: `--discovery-timeout 20000`
-- Check if the site requires authentication
-
-### Authentication Errors
-
-- Use `--api-key` or `--bearer-token` for simple auth
-- Use `--login-url` and `--oauth-flow` for OAuth 2.0
-
-### Performance Issues
-
-- Reduce `--max-concurrency` if hitting rate limits
-- Reduce `--max-pages` for faster runs
-
-## Help
-
-```bash
-apx --help
-```
-
-## Version
-
-```bash
-apx --version
+  --oauth-flow
 ```
 
 ---
 
-**Note:** The CLI uses the same core engine as the Apify Actor, so you get identical results whether running locally or on Apify platform.
+## Output Structure
 
+After running, output directory contains:
+
+```
+apx-output/
+├── code-snippets/          # Code in 12 languages
+├── types.d.ts              # TypeScript types
+├── test-suites/            # Test suites
+├── sdk-packages/           # SDK packages
+├── documentation/          # API documentation
+├── examples.json           # Request/response examples
+├── data.json              # Extracted data
+├── summary.json           # Execution summary
+├── .github/
+│   └── workflows/
+│       └── apx-discovery.yml  # GitHub Actions (NEW)
+├── SECURITY-AUDIT.md       # Security report (NEW)
+├── API.md                  # Enhanced docs (NEW)
+└── README.md               # Package README (NEW)
+```
+
+---
+
+## Integration
+
+### npm Scripts
+
+```json
+{
+  "scripts": {
+    "discover-api": "apx --url $API_URL --output ./api-artifacts"
+  }
+}
+```
+
+### CI/CD
+
+```yaml
+- name: Discover API
+  run: |
+    npm install -g apx-toolkit
+    apx --url ${{ secrets.API_URL }} --output ./api-artifacts
+```
+
+---
+
+## Troubleshooting
+
+### Command Not Found
+
+```bash
+# Make sure apx-toolkit is installed globally
+npm install -g apx-toolkit
+
+# Verify installation
+apx --version
+```
+
+### Permission Errors
+
+```bash
+# Use sudo (Linux/Mac)
+sudo npm install -g apx-toolkit
+
+# Or use npx
+npx apx-toolkit --url https://api.example.com
+```
+
+---
+
+## Advanced Usage
+
+### Using Input File
+
+```bash
+apx --input-file config.json
+```
+
+**config.json:**
+```json
+{
+  "startUrls": [{"url": "https://api.example.com"}],
+  "maxPages": 50,
+  "generateDocumentation": true
+}
+```
+
+---
+
+## See Also
+
+- **[User Guide](USER-GUIDE.md)** - Complete feature documentation
+- **[Getting Started](GETTING-STARTED.md)** - Quick start guide
+- **[Developer Guide](DEVELOPER-GUIDE.md)** - Development documentation
+
+---
+
+**Happy CLI usage!** 💻

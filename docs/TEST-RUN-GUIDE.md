@@ -1,205 +1,212 @@
-# 🚀 Test Run Guide - APX Toolkit Actor
+# 🧪 Test Run Guide - APX Toolkit
 
-## ✅ Actor Successfully Deployed!
-
-**Actor URL:** https://console.apify.com/actors/2eXbQISXqhTnIxWNJ  
-**Status:** ✅ Built and Ready
+**How to test APX Toolkit and verify it works correctly**
 
 ---
 
-## 🧪 How to Create a Test Run
+## Quick Test (30 seconds)
 
-### Option 1: Via Apify Console (Recommended)
+### Option 1: Apify Console
 
-1. **Go to your Actor:**
-   - Visit: https://console.apify.com/actors/2eXbQISXqhTnIxWNJ
-   - Or search for "apx-toolkit" in the Apify Console
-
-2. **Click "Start" button** (top right)
-
-3. **Configure Input:**
-   Use this test input:
+1. Go to: https://console.apify.com/actors/2eXbQISXqhTnIxWNJ
+2. Click **"Start"**
+3. Paste this input:
    ```json
    {
-     "startUrls": [
-       {
-         "url": "https://jsonplaceholder.typicode.com/posts"
-       }
-     ],
-     "maxPages": 1,
-     "maxConcurrency": 2,
-     "generateDocumentation": true,
-     "exportFormats": ["openapi", "postman", "curl"],
-     "enableInteractionSimulation": false
+     "startUrls": [{"url": "https://jsonplaceholder.typicode.com/posts"}],
+     "maxPages": 1
    }
    ```
+4. Click **"Start"** and wait ~10-30 seconds
+5. Check **"Dataset"** tab for results
 
-4. **Click "Start"** to begin the run
-
-5. **Monitor Execution:**
-   - Watch logs in real-time
-   - See progress as it discovers APIs
-   - Check the dataset for results
-
-### Option 2: Via Apify CLI
+### Option 2: Apify CLI
 
 ```bash
-# Create a test run
-apify call apx-toolkit --input=test-apify-run.json
-
-# Or with inline input
-apify call apx-toolkit --input='{"startUrls":[{"url":"https://jsonplaceholder.typicode.com/posts"}],"maxPages":1}'
+apify call apx-toolkit --input-file=test-scenarios/simple-api.json
 ```
 
 ---
 
-## 📊 What to Expect
+## Test Scenarios
 
-### During Execution:
-1. **Discovery Phase:**
-   - Actor navigates to start URLs
-   - Monitors network traffic
-   - Discovers API endpoints
+### Simple API Test
 
-2. **Processing Phase:**
-   - Fetches data from discovered APIs
-   - Extracts structured data
-   - Generates code snippets
-   - Creates documentation
+**File:** `test-scenarios/simple-api.json`
 
-3. **Output:**
-   - Dataset with all discovered APIs
-   - Generated code in 12 languages
-   - API documentation (OpenAPI, Postman, cURL)
-   - TypeScript type definitions
-   - Test suites
-   - SDK packages
-
-### Expected Results:
-- ✅ APIs discovered and documented
-- ✅ Code snippets generated
-- ✅ Documentation created
-- ✅ Dataset populated with results
-
----
-
-## 🔍 Monitoring Your Run
-
-### In Apify Console:
-1. **Logs Tab:**
-   - Real-time execution logs
-   - Progress updates
-   - Any errors or warnings
-
-2. **Dataset Tab:**
-   - View all extracted data
-   - See generated artifacts
-   - Download results
-
-3. **Statistics:**
-   - APIs discovered count
-   - Requests processed
-   - Items extracted
-   - Execution time
-
----
-
-## 🎯 Test Scenarios
-
-### Simple Test (Quick):
 ```json
 {
   "startUrls": [{"url": "https://jsonplaceholder.typicode.com/posts"}],
-  "maxPages": 1
+  "maxPages": 1,
+  "maxConcurrency": 2,
+  "generateDocumentation": true,
+  "exportFormats": ["openapi", "postman", "curl"]
 }
 ```
 
-### Full Test (Comprehensive):
+**Expected:** 1 API discovered, code snippets generated
+
+---
+
+### Multiple APIs Test
+
+**File:** `test-scenarios/multiple-apis.json`
+
 ```json
 {
   "startUrls": [
     {"url": "https://jsonplaceholder.typicode.com/posts"},
     {"url": "https://jsonplaceholder.typicode.com/users"}
   ],
-  "maxPages": 10,
-  "maxConcurrency": 5,
-  "generateDocumentation": true,
-  "exportFormats": ["openapi", "postman", "curl", "insomnia"],
-  "enableInteractionSimulation": true
+  "maxPages": 2
 }
 ```
 
-### Real-World Test:
+**Expected:** 2+ APIs discovered
+
+---
+
+### Full Features Test
+
+**File:** `test-scenarios/full-features.json`
+
 ```json
 {
-  "startUrls": [{"url": "https://api.github.com"}],
-  "apiPatterns": ["/api/"],
+  "startUrls": [{"url": "https://jsonplaceholder.typicode.com/posts"}],
   "maxPages": 5,
-  "authHeaders": {
-    "Authorization": "Bearer YOUR_TOKEN"
-  }
+  "generateDocumentation": true,
+  "exportFormats": ["openapi", "postman", "curl", "insomnia"],
+  "generateGitHubActions": true,
+  "generateSecurityReport": true,
+  "generateEnhancedDocs": true
 }
+```
+
+**Expected:** All features enabled, enhanced outputs generated
+
+---
+
+## What to Verify
+
+### ✅ Basic Functionality
+
+- [ ] APIs discovered successfully
+- [ ] Code snippets generated
+- [ ] Documentation created
+- [ ] TypeScript types generated
+- [ ] Test suites created
+- [ ] SDK packages built
+
+### ✅ Enhanced Features (NEW!)
+
+- [ ] GitHub Actions workflow generated
+- [ ] Security audit report created
+- [ ] Enhanced documentation generated
+- [ ] Progress tracking working
+- [ ] All outputs in correct format
+
+### ✅ Dataset Views
+
+Check all 9 dataset views:
+1. Discovered APIs
+2. Extracted Data
+3. Code Snippets
+4. TypeScript Types
+5. API Documentation
+6. Test Suites
+7. SDK Packages
+8. API Examples
+9. Execution Summary
+
+---
+
+## Troubleshooting Tests
+
+### No APIs Discovered
+
+**Check:**
+- URL is accessible
+- Site uses API calls
+- Try enabling `enableInteractionSimulation: true`
+
+### Timeout Issues
+
+**Solution:**
+- Increase `discoveryTimeout`
+- Reduce `maxPages`
+- Check network connectivity
+
+### Authentication Errors
+
+**Solution:**
+- Verify token is valid
+- Check authentication method
+- Try OAuth flow if available
+
+---
+
+## Test Scripts
+
+### Using Test Script
+
+```bash
+./run-test.sh
+```
+
+Interactive script to choose test scenario.
+
+### Direct Test
+
+```bash
+apify call apx-toolkit --input-file=test-scenarios/simple-api.json
 ```
 
 ---
 
-## ✅ Success Indicators
+## Expected Results
 
-Your run is successful if you see:
-- ✅ Run status: "SUCCEEDED"
-- ✅ Dataset contains items
-- ✅ Logs show "Execution completed successfully"
-- ✅ Statistics show APIs discovered > 0
-- ✅ Generated artifacts in dataset
+### Successful Run
 
----
+- ✅ Run status: SUCCEEDED
+- ✅ APIs discovered: 1+
+- ✅ Items extracted: 1+
+- ✅ All dataset views populated
+- ✅ Enhanced outputs generated (if enabled)
 
-## 🐛 Troubleshooting
+### Output Files
 
-### If Run Fails:
-1. **Check Logs:**
-   - Look for error messages
-   - Check input validation errors
-
-2. **Verify Input:**
-   - Ensure startUrls are valid URLs
-   - Check JSON syntax
-
-3. **Common Issues:**
-   - Invalid URLs → Use valid HTTP/HTTPS URLs
-   - Timeout → Increase `discoveryTimeout`
-   - No APIs found → Try different URLs or enable interaction simulation
+- Code snippets in multiple languages
+- TypeScript type definitions
+- API documentation (OpenAPI, Postman, etc.)
+- Test suites
+- SDK packages
+- Security audit report (if enabled)
+- GitHub Actions workflow (if enabled)
 
 ---
 
-## 📝 Next Steps After Successful Test
+## Performance Benchmarks
 
-1. **Publish Actor:**
-   - Go to Actor Settings
-   - Set visibility to "Public"
-   - Add description and tags
-   - Click "Publish"
+### Typical Run Times
 
-2. **Submit to Competition:**
-   - Get Actor URL
-   - Fill out competition form
-   - Submit for evaluation
+- **Simple API:** 10-15 seconds
+- **Multiple APIs:** 20-30 seconds
+- **Full Features:** 30-60 seconds
 
-3. **Monitor Usage:**
-   - Track runs
-   - Monitor performance
-   - Collect feedback
+### Resource Usage
+
+- **Memory:** ~200-500 MB
+- **CPU:** Moderate during discovery
+- **Network:** Depends on API responses
 
 ---
 
-## 🎉 You're Ready!
+## See Also
 
-Your Actor is:
-- ✅ Built successfully
-- ✅ Deployed to Apify
-- ✅ Ready to test
-- ✅ Ready to publish
-- ✅ Ready to compete
+- **[Getting Started](GETTING-STARTED.md)** - First steps
+- **[User Guide](USER-GUIDE.md)** - Complete documentation
+- **[Developer Guide](DEVELOPER-GUIDE.md)** - Development info
 
-**Go create your first test run and see the magic happen!** 🚀
+---
 
+**Happy testing!** 🧪
