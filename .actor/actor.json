@@ -140,7 +140,7 @@
       "required": ["startUrls"]
   },
   "storages": {
-    "dataset": "dataset_schema.json"
+    "dataset": "./dataset_schema.json"
   }
 }
 
