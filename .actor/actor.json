@@ -13,134 +13,133 @@
     "type": "object",
     "schemaVersion": 1,
     "properties": {
-        "startUrls": {
-          "title": "Start URLs",
-          "type": "array",
-          "description": "Array of URLs to start the discovery process from",
-          "editor": "json",
-          "prefill": [
-            {
-              "url": "https://example.com"
-            }
-          ]
-        },
-        "apiPatterns": {
-          "title": "API URL Patterns",
-          "type": "array",
-          "description": "Optional patterns to match API endpoints (e.g., ['/api/', '/v1/data']). If empty, will auto-detect JSON responses",
-          "editor": "stringList",
-          "default": []
-        },
-        "minResponseSize": {
-          "title": "Minimum Response Size (bytes)",
-          "type": "integer",
-          "description": "Minimum size of API response to consider (filters out small config responses)",
-          "default": 1000,
-          "minimum": 0
-        },
-        "discoveryTimeout": {
-          "title": "Discovery Timeout (ms)",
-          "type": "integer",
-          "description": "How long to wait for API discovery in milliseconds",
-          "default": 10000,
-          "minimum": 1000
-        },
-        "maxPages": {
-          "title": "Maximum Pages",
-          "type": "integer",
-          "description": "Maximum number of pages to scrape from the discovered API",
-          "default": 100,
-          "minimum": 1
-        },
-        "maxConcurrency": {
-          "title": "Max Concurrency",
-          "type": "integer",
-          "description": "Maximum number of concurrent requests for API processing",
-          "default": 5,
-          "minimum": 1
-        },
-        "dataPath": {
-          "title": "Data Path",
-          "type": "string",
-          "description": "JSONPath to extract data items from API response (e.g., 'data.items', 'results'). If empty, will auto-detect",
-          "editor": "textfield",
-          "default": ""
-        },
-        "paginationType": {
-          "title": "Pagination Type",
-          "type": "string",
-          "description": "Type of pagination to use",
-          "editor": "select",
-          "enum": ["auto", "offset", "page", "cursor"],
-          "default": "auto"
-        },
-        "generateDocumentation": {
-          "title": "Generate API Documentation",
-          "type": "boolean",
-          "description": "Automatically generate API documentation in multiple formats (OpenAPI, Postman, cURL, Insomnia)",
-          "default": true
-        },
-        "exportFormats": {
-          "title": "Export Formats",
-          "type": "array",
-          "description": "Formats to export API documentation (openapi, postman, curl, insomnia)",
-          "editor": "select",
-          "default": ["openapi", "postman", "curl"],
-          "items": {
-            "type": "string",
-            "enum": ["openapi", "postman", "curl", "insomnia"]
+      "startUrls": {
+        "title": "Start URLs",
+        "type": "array",
+        "description": "Array of URLs to start the discovery process from",
+        "editor": "json",
+        "prefill": [
+          {
+            "url": "https://example.com"
           }
-        },
-        "enableInteractionSimulation": {
-          "title": "Enable Interaction Simulation",
-          "type": "boolean",
-          "description": "Automatically scroll and click elements to trigger APIs on landing pages (default: true)",
-          "default": true
-        },
-        "interactionWaitTime": {
-          "title": "Interaction Wait Time (ms)",
-          "type": "integer",
-          "description": "Time to wait after each interaction in milliseconds (default: 2000)",
-          "default": 2000,
-          "minimum": 500,
-          "maximum": 10000
-        },
-        "authHeaders": {
-          "title": "Authentication Headers",
-          "type": "object",
-          "description": "Custom authentication headers (e.g., {\"Authorization\": \"Bearer TOKEN\"})",
-          "editor": "json",
-          "default": {}
-        },
-        "apiKey": {
-          "title": "API Key",
+        ]
+      },
+      "apiPatterns": {
+        "title": "API URL Patterns",
+        "type": "array",
+        "description": "Optional patterns to match API endpoints (e.g., ['/api/', '/v1/data']). If empty, will auto-detect JSON responses",
+        "editor": "stringList",
+        "default": []
+      },
+      "minResponseSize": {
+        "title": "Minimum Response Size (bytes)",
+        "type": "integer",
+        "description": "Minimum size of API response to consider (filters out small config responses)",
+        "default": 1000,
+        "minimum": 0
+      },
+      "discoveryTimeout": {
+        "title": "Discovery Timeout (ms)",
+        "type": "integer",
+        "description": "How long to wait for API discovery in milliseconds",
+        "default": 10000,
+        "minimum": 1000
+      },
+      "maxPages": {
+        "title": "Maximum Pages",
+        "type": "integer",
+        "description": "Maximum number of pages to scrape from the discovered API",
+        "default": 100,
+        "minimum": 1
+      },
+      "maxConcurrency": {
+        "title": "Max Concurrency",
+        "type": "integer",
+        "description": "Maximum number of concurrent requests for API processing",
+        "default": 5,
+        "minimum": 1
+      },
+      "dataPath": {
+        "title": "Data Path",
+        "type": "string",
+        "description": "JSONPath to extract data items from API response (e.g., 'data.items', 'results'). If empty, will auto-detect",
+        "editor": "textfield",
+        "default": ""
+      },
+      "paginationType": {
+        "title": "Pagination Type",
+        "type": "string",
+        "description": "Type of pagination to use",
+        "editor": "select",
+        "enum": ["auto", "offset", "page", "cursor"],
+        "default": "auto"
+      },
+      "generateDocumentation": {
+        "title": "Generate API Documentation",
+        "type": "boolean",
+        "description": "Automatically generate API documentation in multiple formats (OpenAPI, Postman, cURL, Insomnia)",
+        "default": true
+      },
+      "exportFormats": {
+        "title": "Export Formats",
+        "type": "array",
+        "description": "Formats to export API documentation (openapi, postman, curl, insomnia)",
+        "editor": "select",
+        "default": ["openapi", "postman", "curl"],
+        "items": {
           "type": "string",
-          "description": "API key for authentication (will be added as X-API-Key header)",
-          "editor": "textfield"
-        },
-        "bearerToken": {
-          "title": "Bearer Token",
-          "type": "string",
-          "description": "Bearer token for authentication (will be added as Authorization: Bearer TOKEN header)",
-          "editor": "textfield"
-        },
-        "loginUrl": {
-          "title": "Login URL (OAuth Flow)",
-          "type": "string",
-          "description": "URL for OAuth 2.0 login flow. APX will navigate to this URL and capture authentication tokens automatically",
-          "editor": "textfield"
-        },
-        "oauthFlow": {
-          "title": "Enable OAuth Flow",
-          "type": "boolean",
-          "description": "Enable automatic OAuth 2.0 token capture from login flow (requires loginUrl)",
-          "default": false
+          "enum": ["openapi", "postman", "curl", "insomnia"]
         }
       },
-      "required": ["startUrls"]
+      "enableInteractionSimulation": {
+        "title": "Enable Interaction Simulation",
+        "type": "boolean",
+        "description": "Automatically scroll and click elements to trigger APIs on landing pages (default: true)",
+        "default": true
+      },
+      "interactionWaitTime": {
+        "title": "Interaction Wait Time (ms)",
+        "type": "integer",
+        "description": "Time to wait after each interaction in milliseconds (default: 2000)",
+        "default": 2000,
+        "minimum": 500,
+        "maximum": 10000
+      },
+      "authHeaders": {
+        "title": "Authentication Headers",
+        "type": "object",
+        "description": "Custom authentication headers (e.g., {\"Authorization\": \"Bearer TOKEN\"})",
+        "editor": "json",
+        "default": {}
+      },
+      "apiKey": {
+        "title": "API Key",
+        "type": "string",
+        "description": "API key for authentication (will be added as X-API-Key header)",
+        "editor": "textfield"
+      },
+      "bearerToken": {
+        "title": "Bearer Token",
+        "type": "string",
+        "description": "Bearer token for authentication (will be added as Authorization: Bearer TOKEN header)",
+        "editor": "textfield"
+      },
+      "loginUrl": {
+        "title": "Login URL (OAuth Flow)",
+        "type": "string",
+        "description": "URL for OAuth 2.0 login flow. APX will navigate to this URL and capture authentication tokens automatically",
+        "editor": "textfield"
+      },
+      "oauthFlow": {
+        "title": "Enable OAuth Flow",
+        "type": "boolean",
+        "description": "Enable automatic OAuth 2.0 token capture from login flow (requires loginUrl)",
+        "default": false
+      }
+    },
+    "required": ["startUrls"]
   },
   "storages": {
     "dataset": "./dataset_schema.json"
   }
 }
-
