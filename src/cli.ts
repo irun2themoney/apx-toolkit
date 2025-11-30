@@ -213,7 +213,7 @@ async function main() {
                 const filename = sanitizeFilename(suite.filename || `test-${Date.now()}.js`);
                 fs.writeFileSync(
                     path.join(testSuitesDir, filename),
-                    suite.code || ''
+                    suite.code || suite.tests || ''
                 );
             }
         }

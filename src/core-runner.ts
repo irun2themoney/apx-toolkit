@@ -41,6 +41,8 @@ export interface Documentation {
     format: string;
     content: string;
     filename: string;
+    mimeType?: string;
+    [key: string]: unknown; // Allow additional properties
 }
 
 export interface APIExample {
@@ -48,6 +50,7 @@ export interface APIExample {
     method: string;
     request?: Record<string, unknown>;
     response?: Record<string, unknown>;
+    [key: string]: unknown; // Allow additional properties
 }
 
 export interface APXResult {
@@ -347,17 +350,19 @@ export async function runAPXCore(
                 });
             } else if (item._type === 'api_examples') {
                 if (item.examples && Array.isArray(item.examples)) {
-                    const examples = item.examples.filter((ex): ex is APIExample => 
-                        typeof ex === 'object' && 
-                        ex !== null && 
-                        typeof (ex as Record<string, unknown>).apiUrl === 'string' &&
-                        typeof (ex as Record<string, unknown>).method === 'string'
-                    ).map(ex => ({
-                        apiUrl: (ex as Record<string, unknown>).apiUrl as string,
-                        method: (ex as Record<string, unknown>).method as string,
-                        request: (ex as Record<string, unknown>).request as Record<string, unknown> | undefined,
-                        response: (ex as Record<string, unknown>).response as Record<string, unknown> | undefined,
-                    }));
+                    const examples = item.examples.filter((ex): ex is APIExample => {
+                        if (typeof ex !== 'object' || ex === null) return false;
+                        const e = ex as unknown as Record<string, unknown>;
+                        return typeof e.apiUrl === 'string' && typeof e.method === 'string';
+                    }).map(ex => {
+                        const e = ex as unknown as Record<string, unknown>;
+                        return {
+                            apiUrl: e.apiUrl as string,
+                            method: e.method as string,
+                            request: e.request as Record<string, unknown> | undefined,
+                            response: e.response as Record<string, unknown> | undefined,
+                        } as APIExample;
+                    });
                     artifacts.examples.push(...examples);
                 } else if (
                     typeof item.apiUrl === 'string' && 
