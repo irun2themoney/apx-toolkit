@@ -1,0 +1,19 @@
+{
+  "startUrls": [
+    {
+      "url": "https://jsonplaceholder.typicode.com"
+    }
+  ],
+  "maxPages": 5,
+  "maxConcurrency": 3,
+  "discoveryTimeout": 10000,
+  "generateDocumentation": true,
+  "exportFormats": ["openapi", "postman", "curl"],
+  "enableInteractionSimulation": true,
+  "generateMockServer": true,
+  "generatePerformanceBenchmark": true,
+  "generateContractTests": true,
+  "generateMCPIntegration": true,
+  "generateX402Integration": true,
+  "generateDependencyGraph": true
+}
