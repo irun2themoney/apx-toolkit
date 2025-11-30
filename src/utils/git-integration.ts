@@ -78,7 +78,7 @@ export function createBranch(branchName: string, directory: string = process.cwd
     try {
         execSync(`git checkout -b ${branchName}`, { cwd: directory, stdio: 'inherit' });
         console.log(`✅ Created branch: ${branchName}`);
-    } catch (error: any) {
+    } catch (error: unknown) {
         if (error.message.includes('already exists')) {
             execSync(`git checkout ${branchName}`, { cwd: directory, stdio: 'inherit' });
             console.log(`✅ Switched to existing branch: ${branchName}`);
@@ -119,8 +119,9 @@ export function commitChanges(
     try {
         execSync(`git commit -m "${message}"`, { cwd: directory, stdio: 'inherit' });
         console.log(`✅ Committed: ${message}`);
-    } catch (error: any) {
-        if (error.message.includes('nothing to commit')) {
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (errorMessage.includes('nothing to commit')) {
             console.log('ℹ️  No changes to commit');
         } else {
             throw error;
@@ -136,8 +137,9 @@ export function createTag(tag: string, message?: string, directory: string = pro
         const tagMessage = message || `APX discovery update: ${tag}`;
         execSync(`git tag -a ${tag} -m "${tagMessage}"`, { cwd: directory, stdio: 'inherit' });
         console.log(`✅ Created tag: ${tag}`);
-    } catch (error: any) {
-        if (error.message.includes('already exists')) {
+    } catch (error: unknown) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (errorMessage.includes('already exists')) {
             console.log(`ℹ️  Tag ${tag} already exists`);
         } else {
             throw error;

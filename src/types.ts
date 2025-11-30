@@ -89,9 +89,9 @@ export interface DiscoveredAPI {
     webSocketUrl?: string;
     webSocketProtocols?: string[];
     // Additional fields for enhanced features
-    requestExample?: any;
-    responseExample?: any;
-    data?: any;
+    requestExample?: Record<string, unknown>;
+    responseExample?: Record<string, unknown>;
+    data?: Record<string, unknown>;
     bearerToken?: string;
 }
 

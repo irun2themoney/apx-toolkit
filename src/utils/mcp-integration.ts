@@ -120,7 +120,7 @@ export const mcpServer = {
     },
     
     // Call an API endpoint
-    call_api: async (endpoint: string, method: string, options: any = {}) => {
+    call_api: async (endpoint: string, method: string, options: Record<string, unknown> = {}) => {
       const api = apis.find(a => a.url === endpoint && a.method === method);
       if (!api) {
         throw new Error(\`API not found: \${method} \${endpoint}\`);
@@ -202,7 +202,7 @@ export class APXMCPClient {
     });
   }
   
-  async callAPI(endpoint: string, method: string, options: any = {}) {
+  async callAPI(endpoint: string, method: string, options: Record<string, unknown> = {}) {
     return await this.client.callTool({
       name: 'call_api',
       arguments: {

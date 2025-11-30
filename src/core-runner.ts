@@ -19,6 +19,37 @@ import { StatisticsCollector } from './utils/statistics.js';
 import { setStatistics } from './utils/statistics.js';
 import { ProgressTracker, type ProgressCallback } from './utils/progress-tracker.js';
 
+export interface CodeSnippet {
+    language: string;
+    code: string;
+    apiUrl: string;
+}
+
+export interface TestSuite {
+    framework: string;
+    tests: string;
+    filename: string;
+}
+
+export interface SDKPackage {
+    language: string;
+    packageName: string;
+    files: Record<string, string>;
+}
+
+export interface Documentation {
+    format: string;
+    content: string;
+    filename: string;
+}
+
+export interface APIExample {
+    apiUrl: string;
+    method: string;
+    request?: Record<string, unknown>;
+    response?: Record<string, unknown>;
+}
+
 export interface APXResult {
     summary: {
         apisDiscovered: number;
@@ -28,15 +59,15 @@ export interface APXResult {
         totalDuration: number;
     };
     artifacts: {
-        codeSnippets: Record<string, any[]>;
+        codeSnippets: Record<string, CodeSnippet[]>;
         typescriptTypes: string;
-        testSuites: any[];
-        sdkPackages: any[];
-        documentation: any[];
-        examples: any[];
+        testSuites: TestSuite[];
+        sdkPackages: SDKPackage[];
+        documentation: Documentation[];
+        examples: APIExample[];
     };
-    data: any[];
-    statistics: any;
+    data: Record<string, unknown>[];
+    statistics: import('./utils/statistics.js').ActorStatistics;
 }
 
 /**
@@ -244,7 +275,7 @@ export async function runAPXCore(
         const datasetInfo = await dataset.getInfo();
         
         // Collect all data items
-        const data: any[] = [];
+        const data: Record<string, unknown>[] = [];
         if (datasetInfo && datasetInfo.itemCount && datasetInfo.itemCount > 0) {
             const { items } = await dataset.getData({ limit: datasetInfo.itemCount });
             data.push(...items);
@@ -252,12 +283,12 @@ export async function runAPXCore(
 
         // Collect generated artifacts from dataset
         const artifacts = {
-            codeSnippets: {} as Record<string, any[]>,
+            codeSnippets: {} as Record<string, CodeSnippet[]>,
             typescriptTypes: '',
-            testSuites: [] as any[],
-            sdkPackages: [] as any[],
-            documentation: [] as any[],
-            examples: [] as any[],
+            testSuites: [] as TestSuite[],
+            sdkPackages: [] as SDKPackage[],
+            documentation: [] as Documentation[],
+            examples: [] as APIExample[],
         };
 
         // Extract artifacts from dataset items
@@ -322,10 +353,7 @@ export async function runAPXCore(
             },
             artifacts,
             data,
-            statistics: {
-                stats,
-                summary: summary.summary,
-            },
+            statistics: stats,
         };
     } catch (error) {
         onError(error instanceof Error ? error : new Error(String(error)));

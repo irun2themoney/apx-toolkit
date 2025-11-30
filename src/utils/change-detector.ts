@@ -9,8 +9,8 @@ export interface APIChange {
     type: 'added' | 'modified' | 'removed' | 'breaking';
     api: string;
     field?: string;
-    oldValue?: any;
-    newValue?: any;
+    oldValue?: unknown;
+    newValue?: unknown;
     message: string;
     severity: 'critical' | 'high' | 'medium' | 'low';
 }
