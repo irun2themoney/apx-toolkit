@@ -79,7 +79,8 @@ export function createBranch(branchName: string, directory: string = process.cwd
         execSync(`git checkout -b ${branchName}`, { cwd: directory, stdio: 'inherit' });
         console.log(`✅ Created branch: ${branchName}`);
     } catch (error: unknown) {
-        if (error.message.includes('already exists')) {
+        const errorMessage = error instanceof Error ? error.message : String(error);
+        if (errorMessage.includes('already exists') || errorMessage.includes('fatal: A branch named')) {
             execSync(`git checkout ${branchName}`, { cwd: directory, stdio: 'inherit' });
             console.log(`✅ Switched to existing branch: ${branchName}`);
         } else {

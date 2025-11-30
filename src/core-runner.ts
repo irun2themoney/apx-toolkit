@@ -299,33 +299,76 @@ export async function runAPXCore(
                     Object.assign(artifacts.codeSnippets, item.snippets);
                 }
             } else if (item._type === 'typescript_types') {
-                artifacts.typescriptTypes = item.content || '';
+                artifacts.typescriptTypes = typeof item.content === 'string' ? item.content : '';
             } else if (item._type === 'test_suites') {
                 // Test suites are stored with suites array
                 if (item.suites && Array.isArray(item.suites)) {
-                    artifacts.testSuites.push(...item.suites);
-                } else {
-                    artifacts.testSuites.push(item);
+                    const suites = item.suites.filter((suite): suite is TestSuite =>
+                        typeof suite === 'object' &&
+                        suite !== null &&
+                        typeof (suite as Record<string, unknown>).framework === 'string' &&
+                        typeof (suite as Record<string, unknown>).tests === 'string'
+                    ).map(suite => ({
+                        framework: (suite as Record<string, unknown>).framework as string,
+                        tests: (suite as Record<string, unknown>).tests as string,
+                        code: typeof (suite as Record<string, unknown>).code === 'string' 
+                            ? (suite as Record<string, unknown>).code as string 
+                            : undefined,
+                        filename: typeof (suite as Record<string, unknown>).filename === 'string'
+                            ? (suite as Record<string, unknown>).filename as string
+                            : 'test.ts',
+                    }));
+                    artifacts.testSuites.push(...suites);
+                } else if (
+                    typeof item.framework === 'string' &&
+                    typeof item.tests === 'string'
+                ) {
+                    artifacts.testSuites.push({
+                        framework: item.framework,
+                        tests: item.tests,
+                        code: typeof item.code === 'string' ? item.code : undefined,
+                        filename: typeof item.filename === 'string' ? item.filename : 'test.ts',
+                    });
                 }
             } else if (item._type === 'sdk_package') {
                 artifacts.sdkPackages.push({
-                    language: item.language,
-                    packageName: item.packageName,
-                    files: item.files,
-                    description: item.description,
+                    language: typeof item.language === 'string' ? item.language : 'unknown',
+                    packageName: typeof item.packageName === 'string' ? item.packageName : 'unknown',
+                    files: typeof item.files === 'object' && item.files !== null && !Array.isArray(item.files) 
+                        ? item.files as Record<string, string> 
+                        : {},
                 });
             } else if (item._type === 'api_documentation') {
                 artifacts.documentation.push({
-                    format: item.format,
-                    filename: item.filename,
-                    content: item.content,
-                    mimeType: item.mimeType,
+                    format: typeof item.format === 'string' ? item.format : 'unknown',
+                    filename: typeof item.filename === 'string' ? item.filename : 'unknown',
+                    content: typeof item.content === 'string' ? item.content : '',
+                    mimeType: typeof item.mimeType === 'string' ? item.mimeType : 'application/json',
                 });
             } else if (item._type === 'api_examples') {
                 if (item.examples && Array.isArray(item.examples)) {
-                    artifacts.examples.push(...item.examples);
-                } else {
-                    artifacts.examples.push(item);
+                    const examples = item.examples.filter((ex): ex is APIExample => 
+                        typeof ex === 'object' && 
+                        ex !== null && 
+                        typeof (ex as Record<string, unknown>).apiUrl === 'string' &&
+                        typeof (ex as Record<string, unknown>).method === 'string'
+                    ).map(ex => ({
+                        apiUrl: (ex as Record<string, unknown>).apiUrl as string,
+                        method: (ex as Record<string, unknown>).method as string,
+                        request: (ex as Record<string, unknown>).request as Record<string, unknown> | undefined,
+                        response: (ex as Record<string, unknown>).response as Record<string, unknown> | undefined,
+                    }));
+                    artifacts.examples.push(...examples);
+                } else if (
+                    typeof item.apiUrl === 'string' && 
+                    typeof item.method === 'string'
+                ) {
+                    artifacts.examples.push({
+                        apiUrl: item.apiUrl,
+                        method: item.method,
+                        request: item.request as Record<string, unknown> | undefined,
+                        response: item.response as Record<string, unknown> | undefined,
+                    });
                 }
             }
         }
