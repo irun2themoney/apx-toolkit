@@ -28,7 +28,9 @@ export interface CodeSnippet {
 export interface TestSuite {
     framework: string;
     tests: string;
+    code?: string;
     filename: string;
+    [key: string]: unknown; // Allow additional properties
 }
 
 export interface SDKPackage {
